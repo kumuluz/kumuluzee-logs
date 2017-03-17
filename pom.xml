@@ -27,7 +27,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <cdi-api.version>1.2</cdi-api.version>
-        <log4j-api.version>2.8.1</log4j-api.version>
+        <log4j2.version>2.8.1</log4j2.version>
 
         <nexus.staging.plugin>1.6.8</nexus.staging.plugin>
     </properties>
@@ -76,12 +76,12 @@
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-api</artifactId>
-                <version>${log4j-api.version}</version>
+                <version>${log4j2.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-core</artifactId>
-                <version>${log4j-api.version}</version>
+                <version>${log4j2.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
