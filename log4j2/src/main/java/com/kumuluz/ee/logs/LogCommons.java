@@ -5,7 +5,7 @@ package com.kumuluz.ee.logs;
 
 import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.markers.Marker;
-import com.kumuluz.ee.logs.messages.*;
+import com.kumuluz.ee.logs.messages.LogMessage;
 import com.kumuluz.ee.logs.types.LogMetrics;
 
 /**
@@ -18,9 +18,9 @@ public interface LogCommons {
     /**
      * Set the level for logging. Default is TRACE
      *
-     * @param level LogLevel object defining LogCommons
+     * @param logLevel LogLevel object defining LogCommons
      */
-    void setDefaultLevel(LogLevel level);
+    void setDefaultLevel(LogLevel logLevel);
 
     /**
      * @param logMessage object defining LogMessage
@@ -82,7 +82,7 @@ public interface LogCommons {
      *
      * @param logMessage object defining LogMessage
      */
-    void logInvokeResourceStart(LogMessage logMessage);
+    void logInvokeResourceStart(Marker marker, LogMessage logMessage);
 
 
     /**
@@ -138,7 +138,7 @@ public interface LogCommons {
      * @param logMessage object defining LogMessage
      * @param logMetrics object defining Metrics object
      */
-    void logInvokeResourceEndMetrics(LogLevel level, Marker marker,  LogMessage logMessage,
+    void logInvokeResourceEndMetrics(LogLevel level, Marker marker, LogMessage logMessage,
                                      LogMetrics logMetrics);
 
 }
