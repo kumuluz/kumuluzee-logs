@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.kumuluz.ee.logs</groupId>
+    <artifactId>kumuluzee-logs</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <modules>
+        <module>log4j2</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <name>KumuluzEE Logs</name>
+
+    <inceptionYear>2017</inceptionYear>
+    <description>
+        Logging management extensions for the lightweight Kumuluz EE framework.
+    </description>
+
+    <url>https://ee.kumuluz.com</url>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <nexus.staging.plugin>1.6.8</nexus.staging.plugin>
+    </properties>
+
+    <scm>
+        <connection>scm:git:git@github.com:kumuluz/kumuluzee-logs.git</connection>
+        <developerConnection>scm:git:git@github.com:kumuluz/kumuluzee-logs.git</developerConnection>
+        <url>git@github.com:kumuluz/kumuluzee-logs.git</url>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/kumuluz/kumuluzee-logs/issues</url>
+    </issueManagement>
+
+    <developers>
+        <developer>
+            <name>Tilen Faganel</name>
+            <id>tfaga</id>
+            <email>tilen.faganel@me.com</email>
+            <url>https://github.com/TFaga</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.5</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>deploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
