@@ -8,8 +8,11 @@ import com.kumuluz.ee.logs.markers.CommonsMarker;
 import com.kumuluz.ee.logs.markers.Marker;
 import com.kumuluz.ee.logs.messages.LogMessage;
 import com.kumuluz.ee.logs.types.LogMetrics;
-import org.apache.logging.log4j.*;
+import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
+import org.apache.logging.log4j.CloseableThreadContext;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.MarkerManager;
 
 /**
  * Kumuluz-logs logger interface
@@ -18,7 +21,7 @@ import org.apache.logging.log4j.LogManager;
  */
 public class Log4j2LogCommons implements LogCommons {
 
-    private static final Logger LOG = LogManager.getLogger("Log4j2Logger");
+    private static final Logger LOG = LogManager.getLogger(Log4j2LogUtil.LOG4J2_LOGGER_NAME);
 
     private static final String METRIC_RESPONSE_TIME = "response_time";
 
@@ -115,15 +118,14 @@ public class Log4j2LogCommons implements LogCommons {
     }
 
     /**
-     * @param level
-     * @param marker
-     * @param logMessage
+     * @param level      object defining Level
+     * @param marker     object defining Marker
+     * @param logMessage object defining LogMessage
      */
     private void log(LogLevel level, Marker marker, LogMessage logMessage) {
-        ThreadContext.putAll(logMessage.getFields());
-
-        LOG.log(Level.getLevel(level.toString()), MarkerManager.getMarker(marker.toString()), logMessage.toString());
-
-        ThreadContext.removeAll(logMessage.getFields().keySet());
+        try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(logMessage.getFields())) {
+            LOG.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString()), logMessage
+                    .toString());
+        }
     }
 }
