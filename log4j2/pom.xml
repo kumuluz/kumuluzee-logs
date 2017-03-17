@@ -14,4 +14,11 @@
 
     <artifactId>kumuluzee-logs-log4j2</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
