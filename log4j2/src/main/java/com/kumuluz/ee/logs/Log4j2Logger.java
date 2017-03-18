@@ -13,20 +13,20 @@ import org.apache.logging.log4j.LogManager;
  *
  * @author Rok Povse, Marko Skrjanec
  */
-public class Log4J2Logger implements Logger {
+public class Log4j2Logger implements Logger {
 
     private org.apache.logging.log4j.Logger logger;
 
-    public Log4J2Logger() {
+    public Log4j2Logger() {
     }
 
-    private Log4J2Logger(String logName) {
+    private Log4j2Logger(String logName) {
         logger = LogManager.getLogger(logName);
     }
 
     @Override
     public Logger getLogger(String logName) {
-        Log4J2Logger log4j2Log = new Log4J2Logger(logName);
+        Log4j2Logger log4j2Log = new Log4j2Logger(logName);
         return log4j2Log;
     }
 
