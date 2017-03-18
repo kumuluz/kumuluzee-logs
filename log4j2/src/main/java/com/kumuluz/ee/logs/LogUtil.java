@@ -86,19 +86,18 @@ public class LogUtil {
         List<LogConfigurator> logConfiguratorsConfigImpl = new ArrayList<>();
         ServiceLoader.load(LogConfigurator.class).forEach(logConfiguratorsConfigImpl::add);
 
-
-        if (loggerImpl.isEmpty() || loggerImpl.size() > 1) {
+         if (loggerImpl.isEmpty() || loggerImpl.size() > 1) {
             throw new IllegalArgumentException(
                     " Please provide exactly one implementation " +
                     " of class com.kumuluz.ee.logs.Logger");
         }
 
-        if (logCommonsImpl.isEmpty() || loggerImpl.size() > 1) {
+        if (logCommonsImpl.isEmpty() || logCommonsImpl.size() > 1) {
             throw new IllegalArgumentException( " Please provide exactly one implementation " +
                     "of class com.kumuluz.ee.logs.LogCommons");
         }
 
-        if (logConfiguratorsConfigImpl.isEmpty() || loggerImpl.size() > 1) {
+        if (logConfiguratorsConfigImpl.isEmpty() || logConfiguratorsConfigImpl.size() > 1) {
             throw new IllegalArgumentException( " Please provide exactly one implementation " +
                     "of class com.kumuluz.ee.logs.LogConfigurator");
         }
