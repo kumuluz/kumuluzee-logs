@@ -30,6 +30,9 @@ public class Log4j2LogCommons implements LogCommons {
 
     private org.apache.logging.log4j.Logger logger;
 
+    public Log4j2LogCommons() {
+
+    }
 
     private Log4j2LogCommons(String logName) {
         logger = LogManager.getLogger(logName);
