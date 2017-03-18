@@ -68,6 +68,10 @@ public class Log4j2LogCommons implements LogCommons {
 
     @Override
     public void logMethodExit(LogMethodContext logMethodContext) {
+        if (logMethodContext.isMetricsEnabled()) {
+            logMethodContext.getCallExitMessage().getFields().put(METRIC_RESPONSE_TIME, logMethodContext
+                    .getLogMetrics().getTimeElapsed().toString());
+        }
         log(logMethodContext.getLevel(), CommonsMarker.EXIT, logMethodContext.getCallExitMessage());
     }
 
@@ -91,6 +95,10 @@ public class Log4j2LogCommons implements LogCommons {
 
     @Override
     public void logResourceEnd(LogResourceContext logResourceContext) {
+        if (logResourceContext.isMetricsEnabled()) {
+            logResourceContext.getInvokeEndMessage().getFields().put(METRIC_RESPONSE_TIME, logResourceContext
+                    .getLogMetrics().getTimeElapsed().toString());
+        }
         log(logResourceContext.getLevel(), logResourceContext.getMarker(), logResourceContext.getInvokeMessage());
     }
 
