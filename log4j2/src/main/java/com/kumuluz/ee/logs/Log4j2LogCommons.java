@@ -7,7 +7,7 @@ import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.markers.CommonsMarker;
 import com.kumuluz.ee.logs.markers.Marker;
 import com.kumuluz.ee.logs.messages.LogMessage;
-import com.kumuluz.ee.logs.types.LogMetrics;
+import com.kumuluz.ee.logs.types.*;
 import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
 import org.apache.logging.log4j.CloseableThreadContext;
 import org.apache.logging.log4j.LogManager;
@@ -50,89 +50,124 @@ public class Log4j2LogCommons implements LogCommons {
     }
 
     @Override
-    public void logMethodEntry(LogMessage logMessage) {
-        logMethodEntry(DEFAULT_LOG_LEVEL, logMessage);
+    public LogMethodContext logMethodEntry(LogMethodMessage logMethodMessage) {
+        return null;
     }
 
     @Override
-    public void logMethodEntry(LogLevel level, LogMessage logMessage) {
-        log(level, CommonsMarker.ENTRY, logMessage);
+    public LogMethodContext logMethodEntry(LogLevel level, LogMethodMessage logMethodMessage) {
+        return null;
     }
 
     @Override
-    public void logMethodExit(LogMessage logMessage) {
-        logMethodExit(DEFAULT_LOG_LEVEL, logMessage);
+    public void logMethodExit(LogMethodContext logMethodContext) {
+
     }
 
     @Override
-    public void logMethodExit(LogLevel level, LogMessage logMessage) {
-        log(level, CommonsMarker.EXIT, logMessage);
+    public LogResourceContext logResourceStart(LogResourceMessage logResourceMessage) {
+        return null;
     }
 
     @Override
-    public LogMetrics logMethodEntryMetrics(LogMessage logMessage) {
-        return logMethodEntryMetrics(DEFAULT_LOG_LEVEL, logMessage);
+    public LogResourceContext logResourceStart(Marker marker, LogResourceMessage logResourceMessage) {
+        return null;
     }
 
     @Override
-    public LogMetrics logMethodEntryMetrics(LogLevel level, LogMessage logMessage) {
-        log(level, CommonsMarker.ENTRY, logMessage);
-        return new LogMetrics();
+    public LogResourceContext logResourceStart(LogLevel level, Marker marker, LogResourceMessage logResourceMessage) {
+        return null;
     }
 
     @Override
-    public void logMethodExitMetrics(LogMessage logMessage, LogMetrics logMetrics) {
-        logMethodExitMetrics(DEFAULT_LOG_LEVEL, logMessage, logMetrics);
+    public void logResourceEnd(LogResourceContext logResourceContext) {
+
     }
 
-    @Override
-    public void logMethodExitMetrics(LogLevel level, LogMessage logMessage, LogMetrics logMetrics) {
-        logMessage.getFields().put(METRIC_RESPONSE_TIME, logMetrics.getTimeElapsed().toString());
-        log(level, CommonsMarker.EXIT, logMessage);
-    }
+//    @Override
+//    public void logMethodEntry(LogMessage logMessage) {
+//        logMethodEntry(DEFAULT_LOG_LEVEL, logMessage);
+//    }
+//
+//    @Override
+//    public void logMethodEntry(LogLevel level, LogMessage logMessage) {
+//        log(level, CommonsMarker.ENTRY, logMessage);
+//    }
+//
+//    @Override
+//    public void logMethodExit(LogMessage logMessage) {
+//        logMethodExit(DEFAULT_LOG_LEVEL, logMessage);
+//    }
+//
+//    @Override
+//    public void logMethodExit(LogLevel level, LogMessage logMessage) {
+//        log(level, CommonsMarker.EXIT, logMessage);
+//    }
+//
+//    @Override
+//    public LogMetrics logMethodEntryMetrics(LogMessage logMessage) {
+//        return logMethodEntryMetrics(DEFAULT_LOG_LEVEL, logMessage);
+//    }
+//
+//    @Override
+//    public LogMetrics logMethodEntryMetrics(LogLevel level, LogMessage logMessage) {
+//        log(level, CommonsMarker.ENTRY, logMessage);
+//        return new LogMetrics();
+//    }
+//
+//    @Override
+//    public void logMethodExitMetrics(LogMessage logMessage, LogMetrics logMetrics) {
+//        logMethodExitMetrics(DEFAULT_LOG_LEVEL, logMessage, logMetrics);
+//    }
+//
+//    @Override
+//    public void logMethodExitMetrics(LogLevel level, LogMessage logMessage, LogMetrics logMetrics) {
+//        logMessage.getFields().put(METRIC_RESPONSE_TIME, logMetrics.getTimeElapsed().toString());
+//        log(level, CommonsMarker.EXIT, logMessage);
+//    }
 
-    @Override
-    public void logInvokeResourceStart(Marker marker, LogMessage logMessage) {
-        logInvokeResourceStart(DEFAULT_LOG_LEVEL, marker, logMessage);
-    }
-
-    @Override
-    public void logInvokeResourceStart(LogLevel level, Marker marker, LogMessage logMessage) {
-        log(level, marker, logMessage);
-    }
-
-    @Override
-    public void logInvokeResourceEnd(Marker marker, LogMessage logMessage) {
-        logInvokeResourceEnd(DEFAULT_LOG_LEVEL, marker, logMessage);
-    }
-
-    @Override
-    public void logInvokeResourceEnd(LogLevel level, Marker marker, LogMessage logMessage) {
-        log(level, marker, logMessage);
-    }
-
-    @Override
-    public LogMetrics logInvokeResourceStartMetrics(Marker marker, LogMessage logMessage) {
-        return logInvokeResourceStartMetrics(DEFAULT_LOG_LEVEL, marker, logMessage);
-    }
-
-    @Override
-    public LogMetrics logInvokeResourceStartMetrics(LogLevel level, Marker marker, LogMessage logMessage) {
-        log(level, marker, logMessage);
-        return new LogMetrics();
-    }
-
-    @Override
-    public void logInvokeResourceEndMetrics(Marker marker, LogMessage logMessage, LogMetrics logMetrics) {
-        logInvokeResourceEndMetrics(DEFAULT_LOG_LEVEL, marker, logMessage, logMetrics);
-    }
-
-    @Override
-    public void logInvokeResourceEndMetrics(LogLevel level, Marker marker, LogMessage logMessage, LogMetrics
-            logMetrics) {
-        logMessage.getFields().put(METRIC_RESPONSE_TIME, logMetrics.getTimeElapsed().toString());
-        log(level, marker, logMessage);
-    }
+//    @Override
+//    public void logInvokeResourceStart(Marker marker, LogMessage logMessage) {
+//        logInvokeResourceStart(DEFAULT_LOG_LEVEL, marker, logMessage);
+//    }
+//
+//    @Override
+//    public void logInvokeResourceStart(LogLevel level, Marker marker, LogMessage logMessage) {
+//        log(level, marker, logMessage);
+//    }
+//
+//    @Override
+//    public void logInvokeResourceEnd(Marker marker, LogMessage logMessage) {
+//        logInvokeResourceEnd(DEFAULT_LOG_LEVEL, marker, logMessage);
+//    }
+//
+//    @Override
+//    public void logInvokeResourceEnd(LogLevel level, Marker marker, LogMessage logMessage) {
+//        log(level, marker, logMessage);
+//    }
+//
+//    @Override
+//    public LogMetrics logInvokeResourceStartMetrics(Marker marker, LogMessage logMessage) {
+//        return logInvokeResourceStartMetrics(DEFAULT_LOG_LEVEL, marker, logMessage);
+//    }
+//
+//    @Override
+//    public LogMetrics logInvokeResourceStartMetrics(LogLevel level, Marker marker, LogMessage logMessage) {
+//        log(level, marker, logMessage);
+//        return new LogMetrics();
+//    }
+//
+//    @Override
+//    public void logInvokeResourceEndMetrics(Marker marker, LogMessage logMessage, LogMetrics logMetrics) {
+//        logInvokeResourceEndMetrics(DEFAULT_LOG_LEVEL, marker, logMessage, logMetrics);
+//    }
+//
+//    @Override
+//    public void logInvokeResourceEndMetrics(LogLevel level, Marker marker, LogMessage logMessage, LogMetrics
+//            logMetrics) {
+//        logMessage.getFields().put(METRIC_RESPONSE_TIME, logMetrics.getTimeElapsed().toString());
+//        log(level, marker, logMessage);
+//    }
 
     /**
      * @param level      object defining Level

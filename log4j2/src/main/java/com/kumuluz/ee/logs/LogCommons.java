@@ -6,7 +6,7 @@ package com.kumuluz.ee.logs;
 import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.markers.Marker;
 import com.kumuluz.ee.logs.messages.LogMessage;
-import com.kumuluz.ee.logs.types.LogMetrics;
+import com.kumuluz.ee.logs.types.*;
 
 /**
  * Kumuluz-logs logger interface
@@ -35,123 +35,137 @@ public interface LogCommons {
      */
     void setDefaultLevel(LogLevel logLevel);
 
-    /**
-     * @param logMessage object defining LogMessage
-     */
-    void logMethodEntry(LogMessage logMessage);
+    LogMethodContext logMethodEntry(LogMethodMessage logMethodMessage);
 
-    /**
-     * @param logMessage object defining LogMessage
-     */
-    void logMethodEntry(LogLevel level, LogMessage logMessage);
+    LogMethodContext logMethodEntry(LogLevel level, LogMethodMessage logMethodMessage);
 
-    /**
-     * @param logMessage object defining LogMessage
-     */
-    void logMethodExit(LogMessage logMessage);
+    void logMethodExit(LogMethodContext logMethodContext);
 
-    /**
-     * Logs method exit on TRACE level with included details.
-     *
-     * @param logMessage object defining LogMessage
-     */
-    void logMethodExit(LogLevel level, LogMessage logMessage);
+//    /**
+//     * @param logMessage object defining LogMessage
+//     */
+//    void logMethodEntry(LogMessage logMessage);
+//
+//    /**
+//     * @param logMessage object defining LogMessage
+//     */
+//    void logMethodEntry(LogLevel level, LogMessage logMessage);
 
-    /**
-     * Logs method entry
-     *
-     * @param logMessage object defining LogMessage
-     * @return LogMetrics object with details about this monitor
-     */
-    LogMetrics logMethodEntryMetrics(LogMessage logMessage);
+//    /**
+//     * @param logMessage object defining LogMessage
+//     */
+//    void logMethodExit(LogMessage logMessage);
+//
+//    /**
+//     * Logs method exit on TRACE level with included details.
+//     *
+//     * @param logMessage object defining LogMessage
+//     */
+//    void logMethodExit(LogLevel level, LogMessage logMessage);
 
-    /**
-     * Logs method entry
-     *
-     * @param logMessage object defining LogMessage
-     * @return LogMetrics object with details about this metrics
-     */
-    LogMetrics logMethodEntryMetrics(LogLevel level, LogMessage logMessage);
+//    /**
+//     * Logs method entry
+//     *
+//     * @param logMessage object defining LogMessage
+//     * @return LogMetrics object with details about this monitor
+//     */
+//    LogMetrics logMethodEntryMetrics(LogMessage logMessage);
 
-    /**
-     * Logs method exit
-     *
-     * @param logMessage object defining LogMessage
-     * @param logMetrics object defining Metrics object
-     */
-    void logMethodExitMetrics(LogMessage logMessage, LogMetrics logMetrics);
-
-
-    /**
-     * Logs method exit
-     *
-     * @param logMessage object defining LogMessage
-     * @param logMetrics object defining Metrics object
-     */
-    void logMethodExitMetrics(LogLevel level, LogMessage logMessage, LogMetrics logMetrics);
-
-    /**
-     * Logs invocation of external resource
-     *
-     * @param logMessage object defining LogMessage
-     */
-    void logInvokeResourceStart(Marker marker, LogMessage logMessage);
+//    /**
+//     * Logs method entry
+//     *
+//     * @param logMessage object defining LogMessage
+//     * @return LogMetrics object with details about this metrics
+//     */
+//    LogMetrics logMethodEntryMetrics(LogLevel level, LogMessage logMessage);
+//
+//    /**
+//     * Logs method exit
+//     *
+//     * @param logMessage object defining LogMessage
+//     * @param logMetrics object defining Metrics object
+//     */
+//    void logMethodExitMetrics(LogMessage logMessage, LogMetrics logMetrics);
 
 
-    /**
-     * Logs invocation of external resource
-     *
-     * @param logMessage object defining LogMessage
-     */
-    void logInvokeResourceStart(LogLevel level, Marker marker, LogMessage logMessage);
+//    /**
+//     * Logs method exit
+//     *
+//     * @param logMessage object defining LogMessage
+//     * @param logMetrics object defining Metrics object
+//     */
+//    void logMethodExitMetrics(LogLevel level, LogMessage logMessage, LogMetrics logMetrics);
 
-    /**
-     * Logs invocation exit of external resource
-     *
-     * @param logMessage object defining LogMessage
-     */
-    void logInvokeResourceEnd(Marker marker, LogMessage logMessage);
+    LogResourceContext logResourceStart(LogResourceMessage logResourceMessage);
 
-    /**
-     * Logs invocation exit of external resource
-     *
-     * @param logMessage object defining LogMessage
-     */
-    void logInvokeResourceEnd(LogLevel level, Marker marker, LogMessage logMessage);
+    LogResourceContext logResourceStart(Marker marker, LogResourceMessage logResourceMessage);
 
-    /**
-     * Logs invocation of external resource
-     *
-     * @param logMessage object defining LogMessage
-     * @return LogMetrics object with details about this metrics
-     */
-    LogMetrics logInvokeResourceStartMetrics(Marker marker, LogMessage logMessage);
+    LogResourceContext logResourceStart(LogLevel level, Marker marker, LogResourceMessage logResourceMessage);
 
-    /**
-     * Logs invocation of external resource on TRACE level with included details and returns object to monitor
-     * performance.
-     *
-     * @param logMessage object defining LogMessage
-     * @return LogMetrics object with details about this metrics
-     */
-    LogMetrics logInvokeResourceStartMetrics(LogLevel level, Marker marker, LogMessage logMessage);
+    void logResourceEnd(LogResourceContext logResourceContext);
 
-    /**
-     * Logs invocation exit of external resource
-     *
-     * @param logMessage object defining LogMessage
-     * @param logMetrics object defining Metrics object
-     */
-    void logInvokeResourceEndMetrics(Marker marker, LogMessage logMessage,
-                                     LogMetrics logMetrics);
+//    /**
+//     * Logs invocation of external resource
+//     *
+//     * @param logMessage object defining LogMessage
+//     */
+//    void logInvokeResourceStart(Marker marker, LogMessage logMessage);
+//
+//
+//    /**
+//     * Logs invocation of external resource
+//     *
+//     * @param logMessage object defining LogMessage
+//     */
+//    void logInvokeResourceStart(LogLevel level, Marker marker, LogMessage logMessage);
 
-    /**
-     * Logs invocation exit of external resource
-     *
-     * @param logMessage object defining LogMessage
-     * @param logMetrics object defining Metrics object
-     */
-    void logInvokeResourceEndMetrics(LogLevel level, Marker marker, LogMessage logMessage,
-                                     LogMetrics logMetrics);
+//    /**
+//     * Logs invocation exit of external resource
+//     *
+//     * @param logMessage object defining LogMessage
+//     */
+//    void logInvokeResourceEnd(Marker marker, LogMessage logMessage);
+//
+//    /**
+//     * Logs invocation exit of external resource
+//     *
+//     * @param logMessage object defining LogMessage
+//     */
+//    void logInvokeResourceEnd(LogLevel level, Marker marker, LogMessage logMessage);
+//
+//    /**
+//     * Logs invocation of external resource
+//     *
+//     * @param logMessage object defining LogMessage
+//     * @return LogMetrics object with details about this metrics
+//     */
+//    LogMetrics logInvokeResourceStartMetrics(Marker marker, LogMessage logMessage);
+//
+//    /**
+//     * Logs invocation of external resource on TRACE level with included details and returns object to monitor
+//     * performance.
+//     *
+//     * @param logMessage object defining LogMessage
+//     * @return LogMetrics object with details about this metrics
+//     */
+//    LogMetrics logInvokeResourceStartMetrics(LogLevel level, Marker marker, LogMessage logMessage);
+//
+//    /**
+//     * Logs invocation exit of external resource
+//     *
+//     * @param logMessage object defining LogMessage
+//     * @param logMetrics object defining Metrics object
+//     */
+//    void logInvokeResourceEndMetrics(Marker marker, LogMessage logMessage,
+//                                     LogMetrics logMetrics);
+//
+//    /**
+//     * Logs invocation exit of external resource
+//     *
+//     * @param logMessage object defining LogMessage
+//     * @param logMetrics object defining Metrics object
+//     */
+//    void logInvokeResourceEndMetrics(LogLevel level, Marker marker, LogMessage logMessage,
+//                                     LogMetrics logMetrics);
 
 }

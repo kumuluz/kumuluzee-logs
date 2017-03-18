@@ -5,5 +5,5 @@ package com.kumuluz.ee.logs.messages;
  *
  * @Author Rok Povše
  */
-public interface LogInvokeResourceMessage extends LogMessage {
+public interface MethodCallLogMessage extends LogMessage {
 }
