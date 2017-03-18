@@ -123,9 +123,14 @@ public class Log4j2LogCommons implements LogCommons {
      * @param logMessage object defining LogMessage
      */
     private void log(LogLevel level, Marker marker, LogMessage logMessage) {
-        try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(logMessage.getFields())) {
+        if (logMessage.getFields() != null) {
+            try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(logMessage.getFields())) {
+                LOG.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString()),
+                        logMessage.getMessage());
+            }
+        } else {
             LOG.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString()), logMessage
-                    .toString());
+                    .getMessage());
         }
     }
 }
