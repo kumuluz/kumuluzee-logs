@@ -29,7 +29,8 @@
         <cdi-api.version>1.2</cdi-api.version>
         <log4j2.version>2.8.1</log4j2.version>
 
-        <nexus.staging.plugin>1.6.8</nexus.staging.plugin>
+        <nexus.staging.plugin.version>1.6.8</nexus.staging.plugin.version>
+        <gpg.plugin.version>1.6</gpg.plugin.version>
     </properties>
 
     <scm>
@@ -91,7 +92,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.5</version>
+                <version>${nexus.staging.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
@@ -110,7 +111,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
+                        <version>${gpg.plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
