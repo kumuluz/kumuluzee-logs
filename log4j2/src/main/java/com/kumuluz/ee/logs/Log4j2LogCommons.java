@@ -21,11 +21,28 @@ import org.apache.logging.log4j.MarkerManager;
  */
 public class Log4j2LogCommons implements LogCommons {
 
-    private static final Logger LOG = LogManager.getLogger(Log4j2LogUtil.LOG4J2_LOGGER_NAME);
 
     private static final String METRIC_RESPONSE_TIME = "response_time";
 
     private static LogLevel DEFAULT_LOG_LEVEL = LogLevel.TRACE;
+
+    private org.apache.logging.log4j.Logger logger;
+
+
+    private Log4j2LogCommons(String logName) {
+        logger = LogManager.getLogger(logName);
+    }
+
+    @Override
+    public String getName() {
+        return logger.getName();
+    }
+
+    @Override
+    public Log4j2LogCommons getCommonsLogger(String logName) {
+        Log4j2LogCommons log4j2LogCommonsLogger = new Log4j2LogCommons(logName);
+        return log4j2LogCommonsLogger;
+    }
 
     @Override
     public void setDefaultLevel(LogLevel logLevel) {
@@ -125,11 +142,11 @@ public class Log4j2LogCommons implements LogCommons {
     private void log(LogLevel level, Marker marker, LogMessage logMessage) {
         if (logMessage.getFields() != null) {
             try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(logMessage.getFields())) {
-                LOG.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString()),
+                logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString()),
                         logMessage.getMessage());
             }
         } else {
-            LOG.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString()), logMessage
+            logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString()), logMessage
                     .getMessage());
         }
     }

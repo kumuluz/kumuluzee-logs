@@ -16,6 +16,19 @@ import com.kumuluz.ee.logs.types.LogMetrics;
 public interface LogCommons {
 
     /**
+     * Creates a new logger
+     * @param logName String name of the logger
+     * @return Logger instance
+     */
+    LogCommons getCommonsLogger(String logName);
+
+    /**
+     * Returns logger name
+     * @return String logger name
+     */
+    String getName();
+
+    /**
      * Set the level for logging. Default is TRACE
      *
      * @param logLevel LogLevel object defining LogCommons
