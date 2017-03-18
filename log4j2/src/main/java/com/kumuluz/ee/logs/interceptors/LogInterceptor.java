@@ -3,14 +3,16 @@
  */
 package com.kumuluz.ee.logs.interceptors;
 
+import com.kumuluz.ee.logs.LogCommons;
+import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.annotations.Log;
-import com.kumuluz.ee.logs.messages.SimpleLogMessage;
+import com.kumuluz.ee.logs.types.LogMethodContext;
+import com.kumuluz.ee.logs.types.LogMethodMessage;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
-import java.util.HashMap;
-import java.util.Map;
+
 
 /**
  * @Author Rok Povse, Marko Skrjanec
@@ -22,20 +24,14 @@ public class LogInterceptor {
     @AroundInvoke
     public Object manageTransaction(InvocationContext context) throws Exception {
 
-        // Log log = context.getMethod().getDeclaredAnnotation(Log.class);
-        // LogParams[] value = log.value();
-        // boolean methodCall = log.methodCall();
+        LogCommons logger = LogManager.getCommonsLogger(context.getTarget().getClass().getSuperclass().getName());
+        LogMethodMessage message = new LogMethodMessage();
 
-        SimpleLogMessage message = new SimpleLogMessage();
-        message.setMessage("Entering method.");
-
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("class", context.getTarget().getClass().getSuperclass().getName());
-        map.put("method", context.getMethod().getName());
-        message.setFields(map);
+        LogMethodContext logMethodContext = logger.logMethodEntry(message);
 
         Object result = context.proceed();
 
+        logger.logMethodExit(logMethodContext);
         return result;
     }
 }

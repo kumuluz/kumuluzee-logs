@@ -23,6 +23,7 @@ public class LogUtil {
 
     private LogUtil() {
         loggers = new HashMap();
+        loggersCommons = new HashMap();
         initInstances();
     }
 
