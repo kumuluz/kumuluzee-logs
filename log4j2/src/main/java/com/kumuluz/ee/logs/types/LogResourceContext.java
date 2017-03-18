@@ -26,7 +26,7 @@ public class LogResourceContext {
         this.invokeEnabled = resourceMessage.isInvokeEnabled();
         this.metricsEnabled = resourceMessage.isMetricsEnabled();
 
-        if (metricsEnabled) {
+        if (this.metricsEnabled != null && this.metricsEnabled) {
             this.logMetrics = new LogMetrics();
         }
 

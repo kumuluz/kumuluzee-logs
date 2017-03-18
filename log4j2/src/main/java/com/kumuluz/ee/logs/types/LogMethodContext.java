@@ -24,7 +24,7 @@ public class LogMethodContext {
         this.callEnabled = entryMessage.isCallEnabled();
         this.metricsEnabled = entryMessage.isMetricsEnabled();
 
-        if (metricsEnabled) {
+        if (this.metricsEnabled != null && this.metricsEnabled) {
             this.logMetrics = new LogMetrics();
         }
 
