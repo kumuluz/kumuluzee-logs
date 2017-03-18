@@ -11,9 +11,9 @@ import com.kumuluz.ee.logs.messages.LogMessage;
  *
  * @author Rok Povse, Marko Skrjanec
  */
-public interface Log {
+public interface Logger {
 
-    Log getLogger(String logName);
+    Logger getLogger(String logName);
 
     String getName();
 

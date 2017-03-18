@@ -7,63 +7,62 @@ import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.messages.LogMessage;
 import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Kumuluz-logs logger interface
  *
  * @author Rok Povse, Marko Skrjanec
  */
-public class Log4j2Log implements Log {
+public class Log4J2Logger implements Logger {
 
-    private Logger log;
+    private org.apache.logging.log4j.Logger logger;
 
-    private Log4j2Log() {
+    public Log4J2Logger() {
     }
 
-    private Log4j2Log(String logName) {
-        log = LogManager.getLogger(logName);
+    private Log4J2Logger(String logName) {
+        logger = LogManager.getLogger(logName);
     }
 
     @Override
-    public Log getLogger(String logName) {
-        Log4j2Log log4j2Log = new Log4j2Log(logName);
+    public Logger getLogger(String logName) {
+        Log4J2Logger log4j2Log = new Log4J2Logger(logName);
         return log4j2Log;
     }
 
     @Override
     public String getName() {
-        return log.getName();
+        return logger.getName();
     }
 
     @Override
     public void log(LogLevel level, String message) {
-        log.log(Log4j2LogUtil.convertToLog4j2Level(level), message);
+        logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message);
     }
 
     @Override
     public void log(LogLevel level, String message, Object... args) {
-        log.log(Log4j2LogUtil.convertToLog4j2Level(level), message, args);
+        logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message, args);
     }
 
     @Override
     public void log(LogLevel level, String message, Throwable thrown) {
-        log.log(Log4j2LogUtil.convertToLog4j2Level(level), message, thrown);
+        logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message, thrown);
     }
 
     @Override
     public void log(LogLevel level, Throwable thrown) {
-        log.log(Log4j2LogUtil.convertToLog4j2Level(level), thrown);
+        logger.log(Log4j2LogUtil.convertToLog4j2Level(level), thrown);
     }
 
     @Override
     public void log(LogLevel level, LogMessage message) {
-        log.log(Log4j2LogUtil.convertToLog4j2Level(level), message);
+        logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message);
     }
 
     @Override
     public void log(LogLevel level, LogMessage message, Throwable thrown) {
-        log.log(Log4j2LogUtil.convertToLog4j2Level(level), message, thrown);
+        logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message, thrown);
     }
 
     @Override
