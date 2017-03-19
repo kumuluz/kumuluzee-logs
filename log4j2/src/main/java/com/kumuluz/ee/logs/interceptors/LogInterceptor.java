@@ -60,6 +60,15 @@ public class LogInterceptor {
         if (methodCall) {
             msg.getFields().put("class", context.getMethod().getDeclaringClass().getName());
             msg.getFields().put("method", context.getMethod().getName());
+
+            if (context.getParameters() != null && context.getParameters().length > 0) {
+                String parameters = "[";
+                for (Object o : context.getParameters()) {
+                    parameters += o + ", ";
+                }
+                msg.getFields().put("parameters", parameters.substring(0, parameters.length() - 2) + "]");
+            }
+
         }
         message.enableCall(msg);
 
@@ -70,6 +79,7 @@ public class LogInterceptor {
 
         // set method call
         msg.setMessage("Exiting method.");
+        msg.getFields().put("result", result != null ? result.toString() : null);
         logMethodContext.setCallExitMessage(msg);
 
         // log exit
