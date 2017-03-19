@@ -7,11 +7,13 @@ import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.markers.CommonsMarker;
 import com.kumuluz.ee.logs.markers.Marker;
 import com.kumuluz.ee.logs.messages.LogMessage;
-import com.kumuluz.ee.logs.types.*;
+import com.kumuluz.ee.logs.types.LogMethodContext;
+import com.kumuluz.ee.logs.types.LogMethodMessage;
+import com.kumuluz.ee.logs.types.LogResourceContext;
+import com.kumuluz.ee.logs.types.LogResourceMessage;
 import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
 import org.apache.logging.log4j.CloseableThreadContext;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.MarkerManager;
 
 /**
@@ -22,12 +24,15 @@ import org.apache.logging.log4j.MarkerManager;
 public class Log4j2LogCommons implements LogCommons {
 
 
-    private static final String METRIC_RESPONSE_TIME = "response_time";
+    private static final String METRIC_RESPONSE_TIME = "response-time";
 
     private static LogLevel DEFAULT_LOG_LEVEL = LogLevel.TRACE;
 
     private org.apache.logging.log4j.Logger logger;
 
+    public Log4j2LogCommons() {
+
+    }
 
     private Log4j2LogCommons(String logName) {
         logger = LogManager.getLogger(logName);
@@ -51,123 +56,59 @@ public class Log4j2LogCommons implements LogCommons {
 
     @Override
     public LogMethodContext logMethodEntry(LogMethodMessage logMethodMessage) {
-        return null;
+        log(DEFAULT_LOG_LEVEL, CommonsMarker.ENTRY, logMethodMessage.getCallMessage());
+        return new LogMethodContext(logMethodMessage, DEFAULT_LOG_LEVEL);
     }
 
     @Override
     public LogMethodContext logMethodEntry(LogLevel level, LogMethodMessage logMethodMessage) {
-        return null;
+        log(level, CommonsMarker.ENTRY, logMethodMessage.getCallMessage());
+        return new LogMethodContext(logMethodMessage, level);
     }
 
     @Override
     public void logMethodExit(LogMethodContext logMethodContext) {
-
+        if (logMethodContext.isMetricsEnabled() != null && logMethodContext.isMetricsEnabled()) {
+            try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.put(METRIC_RESPONSE_TIME,
+                    logMethodContext.getLogMetrics().getTimeElapsed().toString())) {
+                log(logMethodContext.getLevel(), CommonsMarker.EXIT, logMethodContext.getCallExitMessage());
+            }
+        } else {
+            log(logMethodContext.getLevel(), CommonsMarker.EXIT, logMethodContext.getCallExitMessage());
+        }
     }
 
     @Override
     public LogResourceContext logResourceStart(LogResourceMessage logResourceMessage) {
-        return null;
+        log(DEFAULT_LOG_LEVEL, CommonsMarker.RESOURCE_START, logResourceMessage.getInvokeMessage());
+        return new LogResourceContext(logResourceMessage, DEFAULT_LOG_LEVEL, CommonsMarker.RESOURCE_START);
     }
 
     @Override
     public LogResourceContext logResourceStart(Marker marker, LogResourceMessage logResourceMessage) {
-        return null;
+        log(DEFAULT_LOG_LEVEL, marker, logResourceMessage.getInvokeMessage());
+        return new LogResourceContext(logResourceMessage, DEFAULT_LOG_LEVEL, marker);
     }
 
     @Override
     public LogResourceContext logResourceStart(LogLevel level, Marker marker, LogResourceMessage logResourceMessage) {
-        return null;
+        log(level, marker, logResourceMessage.getInvokeMessage());
+        return new LogResourceContext(logResourceMessage, level, marker);
     }
 
     @Override
     public void logResourceEnd(LogResourceContext logResourceContext) {
-
+        if (logResourceContext.isMetricsEnabled() != null && logResourceContext.isMetricsEnabled()) {
+            try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.put(METRIC_RESPONSE_TIME,
+                    logResourceContext.getLogMetrics().getTimeElapsed().toString())) {
+                log(logResourceContext.getLevel(), logResourceContext.getMarker(), logResourceContext
+                        .getInvokeEndMessage());
+            }
+        } else {
+            log(logResourceContext.getLevel(), logResourceContext.getMarker(), logResourceContext.getInvokeEndMessage
+                    ());
+        }
     }
-
-//    @Override
-//    public void logMethodEntry(LogMessage logMessage) {
-//        logMethodEntry(DEFAULT_LOG_LEVEL, logMessage);
-//    }
-//
-//    @Override
-//    public void logMethodEntry(LogLevel level, LogMessage logMessage) {
-//        log(level, CommonsMarker.ENTRY, logMessage);
-//    }
-//
-//    @Override
-//    public void logMethodExit(LogMessage logMessage) {
-//        logMethodExit(DEFAULT_LOG_LEVEL, logMessage);
-//    }
-//
-//    @Override
-//    public void logMethodExit(LogLevel level, LogMessage logMessage) {
-//        log(level, CommonsMarker.EXIT, logMessage);
-//    }
-//
-//    @Override
-//    public LogMetrics logMethodEntryMetrics(LogMessage logMessage) {
-//        return logMethodEntryMetrics(DEFAULT_LOG_LEVEL, logMessage);
-//    }
-//
-//    @Override
-//    public LogMetrics logMethodEntryMetrics(LogLevel level, LogMessage logMessage) {
-//        log(level, CommonsMarker.ENTRY, logMessage);
-//        return new LogMetrics();
-//    }
-//
-//    @Override
-//    public void logMethodExitMetrics(LogMessage logMessage, LogMetrics logMetrics) {
-//        logMethodExitMetrics(DEFAULT_LOG_LEVEL, logMessage, logMetrics);
-//    }
-//
-//    @Override
-//    public void logMethodExitMetrics(LogLevel level, LogMessage logMessage, LogMetrics logMetrics) {
-//        logMessage.getFields().put(METRIC_RESPONSE_TIME, logMetrics.getTimeElapsed().toString());
-//        log(level, CommonsMarker.EXIT, logMessage);
-//    }
-
-//    @Override
-//    public void logInvokeResourceStart(Marker marker, LogMessage logMessage) {
-//        logInvokeResourceStart(DEFAULT_LOG_LEVEL, marker, logMessage);
-//    }
-//
-//    @Override
-//    public void logInvokeResourceStart(LogLevel level, Marker marker, LogMessage logMessage) {
-//        log(level, marker, logMessage);
-//    }
-//
-//    @Override
-//    public void logInvokeResourceEnd(Marker marker, LogMessage logMessage) {
-//        logInvokeResourceEnd(DEFAULT_LOG_LEVEL, marker, logMessage);
-//    }
-//
-//    @Override
-//    public void logInvokeResourceEnd(LogLevel level, Marker marker, LogMessage logMessage) {
-//        log(level, marker, logMessage);
-//    }
-//
-//    @Override
-//    public LogMetrics logInvokeResourceStartMetrics(Marker marker, LogMessage logMessage) {
-//        return logInvokeResourceStartMetrics(DEFAULT_LOG_LEVEL, marker, logMessage);
-//    }
-//
-//    @Override
-//    public LogMetrics logInvokeResourceStartMetrics(LogLevel level, Marker marker, LogMessage logMessage) {
-//        log(level, marker, logMessage);
-//        return new LogMetrics();
-//    }
-//
-//    @Override
-//    public void logInvokeResourceEndMetrics(Marker marker, LogMessage logMessage, LogMetrics logMetrics) {
-//        logInvokeResourceEndMetrics(DEFAULT_LOG_LEVEL, marker, logMessage, logMetrics);
-//    }
-//
-//    @Override
-//    public void logInvokeResourceEndMetrics(LogLevel level, Marker marker, LogMessage logMessage, LogMetrics
-//            logMetrics) {
-//        logMessage.getFields().put(METRIC_RESPONSE_TIME, logMetrics.getTimeElapsed().toString());
-//        log(level, marker, logMessage);
-//    }
 
     /**
      * @param level      object defining Level
@@ -175,14 +116,16 @@ public class Log4j2LogCommons implements LogCommons {
      * @param logMessage object defining LogMessage
      */
     private void log(LogLevel level, Marker marker, LogMessage logMessage) {
-        if (logMessage.getFields() != null) {
+        if (logMessage == null) {
+            logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString()));
+        } else if (logMessage.getFields() == null) {
+            logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString()), logMessage
+                    .getMessage());
+        } else {
             try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(logMessage.getFields())) {
                 logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString()),
                         logMessage.getMessage());
             }
-        } else {
-            logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString()), logMessage
-                    .getMessage());
         }
     }
 }

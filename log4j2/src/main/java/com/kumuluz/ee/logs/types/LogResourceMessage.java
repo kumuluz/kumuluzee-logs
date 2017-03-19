@@ -1,6 +1,7 @@
 package com.kumuluz.ee.logs.types;
 
-import com.kumuluz.ee.logs.messages.ResourceInvokeEndLogMessage;
+
+import com.kumuluz.ee.logs.messages.ResourceInvokeLogMessage;
 
 /**
  * @author Tilen Faganel
@@ -10,9 +11,9 @@ public class LogResourceMessage {
     private Boolean invokeEnabled;
     private Boolean metricsEnabled;
 
-    private ResourceInvokeEndLogMessage invokeMessage;
+    private ResourceInvokeLogMessage invokeMessage;
 
-    public LogResourceMessage enableInvoke(ResourceInvokeEndLogMessage invokeMessage) {
+    public LogResourceMessage enableInvoke(ResourceInvokeLogMessage invokeMessage) {
         this.invokeMessage = invokeMessage;
         this.invokeEnabled = true;
 
@@ -33,7 +34,7 @@ public class LogResourceMessage {
         return metricsEnabled;
     }
 
-    public ResourceInvokeEndLogMessage getInvokeMessage() {
+    public ResourceInvokeLogMessage getInvokeMessage() {
         return invokeMessage;
     }
 }

@@ -1,8 +1,8 @@
 package com.kumuluz.ee.logs.types;
 
 import com.kumuluz.ee.logs.enums.LogLevel;
-import com.kumuluz.ee.logs.messages.MethodCallLogMessage;
 import com.kumuluz.ee.logs.messages.MethodCallExitLogMessage;
+import com.kumuluz.ee.logs.messages.MethodCallLogMessage;
 
 /**
  * @author Tilen Faganel
@@ -14,6 +14,8 @@ public class LogMethodContext {
     private Boolean callEnabled;
     private Boolean metricsEnabled;
 
+    private LogMetrics logMetrics;
+
     private MethodCallLogMessage callMessage;
 
     private MethodCallExitLogMessage callExitMessage;
@@ -21,6 +23,10 @@ public class LogMethodContext {
     public LogMethodContext(LogMethodMessage entryMessage, LogLevel level) {
         this.callEnabled = entryMessage.isCallEnabled();
         this.metricsEnabled = entryMessage.isMetricsEnabled();
+
+        if (this.metricsEnabled != null && this.metricsEnabled) {
+            this.logMetrics = new LogMetrics();
+        }
 
         this.callMessage = entryMessage.getCallMessage();
 
@@ -49,5 +55,9 @@ public class LogMethodContext {
 
     public LogLevel getLevel() {
         return level;
+    }
+
+    public LogMetrics getLogMetrics() {
+        return logMetrics;
     }
 }

@@ -5,6 +5,7 @@ package com.kumuluz.ee.logs.annotations;
 
 import com.kumuluz.ee.logs.annotations.enums.LogParams;
 
+import javax.enterprise.util.Nonbinding;
 import javax.interceptor.InterceptorBinding;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -23,6 +24,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface Log {
-    LogParams[] value() default {};
-    boolean methodCall() default true;
+    @Nonbinding LogParams[] value() default {};
+    @Nonbinding boolean methodCall() default true;
 }

@@ -10,7 +10,8 @@ import java.util.Map;
  *
  * @Author Rok Povse, Marko Skrjanec
  */
-public class SimpleLogMessage implements LogMessage {
+public class SimpleLogMessage implements MethodCallLogMessage, MethodCallExitLogMessage, ResourceInvokeLogMessage,
+        ResourceInvokeEndLogMessage {
 
     private String message;
 

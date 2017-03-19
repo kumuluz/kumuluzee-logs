@@ -9,7 +9,7 @@ package com.kumuluz.ee.logs.markers;
  * @author Rok Povse, Marko Skrjanec
  */
 public enum CommonsMarker implements Marker {
-    ENTRY("ENTRY"), EXIT("EXIT");
+    ENTRY("ENTRY"), EXIT("EXIT"), RESOURCE_START("RESOURCE_START"), RESOURCE_END("RESOURCE_END");
 
     private String marker;
 
