@@ -13,7 +13,7 @@ jdk:
 before_install:
 - openssl aes-256-cbc -K $encrypted_f32d9b726118_key -iv $encrypted_f32d9b726118_iv
   -in gpg.tar.gz.enc -out gpg.tar.gz -d
-- tar zxvf gpg.tar
+- tar zxvf gpg.tar.gz
 
 install: mvn clean install -DskipTests=true -V
 
