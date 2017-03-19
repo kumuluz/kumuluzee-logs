@@ -1,5 +1,5 @@
 language: java
-dist: trusty
+#dist: trusty
 
 env:
   global:
@@ -8,7 +8,7 @@ env:
   - secure: nTY/NfKoUU0l+72pYkG7dAvhtBNSZ6DdKUoe4lLDzBsenEpIic1SAueUpA9zi6Plf0lQrqAjKcRu9k26lPF6Kj52LpyvnAS1o+rOhPOHFzi69hPAYHVfbH4Zyjm0B9BSrpAqULrjNm20nGCAzTKVZWVNZgTJ/DVbO4qpN40XZulzLoQWq+sIk9cbpcF00hw11AyP9DLyKx0OLisxcQXH0ytDu3DUxe8RUbWF7iOTJzwB+p2TLknUUZfTzGn7MmI2gb2G1LTQpa65r+svHgmpUjLE2QqSAxL8jumXmpHsUwKRZijMa/wc9HD7PHlroPaOi8Tm3nyCy/L7lZL5xIHSakce4t0hNRdvAWsu6FcPRtTo3jsYp0fhECudVZqwb78mHjSEhWSSc8GC2RPGA0P2K75EMJ2Tp4Z0JmA4s+gPRm2aB8juxSZIezmUGMAcakauDsxENTINjaoGiROgLyc9o7bvG2An3DVymiK1vt2DQHhHKQjsH4v0dMQ+W+OMRn3CiEUAuI1aq28KUCtATcjNlfzngvJeTxs+FvYwv3sP0tpBF5maCsvbKrbPh5yjNiBNHBiqeVzXZD72wLM+TPu1ngOkecBqa8pWQP654hTnvmDs/3wk0NOOCm7kDFzNvDH0QiChx3zDlSq6gUcpLTSyAB/2Rl1ufxFB4noEw/Kfh34=
 
 jdk:
-- openjdk8
+- oraclejdk8
 
 before_install:
 - openssl aes-256-cbc -K $encrypted_f32d9b726118_key -iv $encrypted_f32d9b726118_iv
