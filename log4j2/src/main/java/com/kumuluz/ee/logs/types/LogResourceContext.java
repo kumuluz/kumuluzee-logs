@@ -18,9 +18,9 @@ public class LogResourceContext {
 
     private LogMetrics logMetrics;
 
-    private ResourceInvokeEndLogMessage invokeMessage;
+    private ResourceInvokeLogMessage invokeMessage;
 
-    private ResourceInvokeLogMessage invokeEndMessage;
+    private ResourceInvokeEndLogMessage invokeEndMessage;
 
     public LogResourceContext(LogResourceMessage resourceMessage, LogLevel level, Marker marker) {
         this.invokeEnabled = resourceMessage.isInvokeEnabled();
@@ -44,15 +44,15 @@ public class LogResourceContext {
         return metricsEnabled;
     }
 
-    public ResourceInvokeEndLogMessage getInvokeMessage() {
+    public ResourceInvokeLogMessage getInvokeMessage() {
         return invokeMessage;
     }
 
-    public ResourceInvokeLogMessage getInvokeEndMessage() {
+    public ResourceInvokeEndLogMessage getInvokeEndMessage() {
         return invokeEndMessage;
     }
 
-    public void setInvokeEndMessage(ResourceInvokeLogMessage invokeEndMessage) {
+    public void setInvokeEndMessage(ResourceInvokeEndLogMessage invokeEndMessage) {
         this.invokeEndMessage = invokeEndMessage;
     }
 
