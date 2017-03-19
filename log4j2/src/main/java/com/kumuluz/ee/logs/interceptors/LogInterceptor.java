@@ -15,6 +15,7 @@ import javax.annotation.Priority;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
+import java.util.Arrays;
 import java.util.HashMap;
 
 
@@ -62,11 +63,7 @@ public class LogInterceptor {
             msg.getFields().put("method", context.getMethod().getName());
 
             if (context.getParameters() != null && context.getParameters().length > 0) {
-                String parameters = "[";
-                for (Object o : context.getParameters()) {
-                    parameters += o + ", ";
-                }
-                msg.getFields().put("parameters", parameters.substring(0, parameters.length() - 2) + "]");
+                msg.getFields().put("parameters", Arrays.toString(context.getParameters()));
             }
 
         }
