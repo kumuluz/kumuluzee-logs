@@ -68,12 +68,14 @@ public class Log4j2LogCommons implements LogCommons {
 
     @Override
     public void logMethodExit(LogMethodContext logMethodContext) {
-        if (logMethodContext.isMetricsEnabled() != null && logMethodContext.isMetricsEnabled() && logMethodContext
-                .getCallExitMessage() != null && logMethodContext.getCallExitMessage().getFields() != null) {
-            logMethodContext.getCallExitMessage().getFields().put(METRIC_RESPONSE_TIME, logMethodContext
-                    .getLogMetrics().getTimeElapsed().toString());
+        if (logMethodContext.isMetricsEnabled() != null && logMethodContext.isMetricsEnabled()) {
+            try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.put(METRIC_RESPONSE_TIME,
+                    logMethodContext.getLogMetrics().getTimeElapsed().toString())) {
+                log(logMethodContext.getLevel(), CommonsMarker.EXIT, logMethodContext.getCallExitMessage());
+            }
+        } else {
+            log(logMethodContext.getLevel(), CommonsMarker.EXIT, logMethodContext.getCallExitMessage());
         }
-        log(logMethodContext.getLevel(), CommonsMarker.EXIT, logMethodContext.getCallExitMessage());
     }
 
     @Override
@@ -96,12 +98,16 @@ public class Log4j2LogCommons implements LogCommons {
 
     @Override
     public void logResourceEnd(LogResourceContext logResourceContext) {
-        if (logResourceContext.isMetricsEnabled() != null && logResourceContext.isMetricsEnabled() && logResourceContext
-                .getInvokeEndMessage() != null && logResourceContext.getInvokeEndMessage().getFields() != null) {
-            logResourceContext.getInvokeEndMessage().getFields().put(METRIC_RESPONSE_TIME, logResourceContext
-                    .getLogMetrics().getTimeElapsed().toString());
+        if (logResourceContext.isMetricsEnabled() != null && logResourceContext.isMetricsEnabled()) {
+            try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.put(METRIC_RESPONSE_TIME,
+                    logResourceContext.getLogMetrics().getTimeElapsed().toString())) {
+                log(logResourceContext.getLevel(), logResourceContext.getMarker(), logResourceContext
+                        .getInvokeEndMessage());
+            }
+        } else {
+            log(logResourceContext.getLevel(), logResourceContext.getMarker(), logResourceContext.getInvokeEndMessage
+                    ());
         }
-        log(logResourceContext.getLevel(), logResourceContext.getMarker(), logResourceContext.getInvokeEndMessage());
     }
 
     /**
