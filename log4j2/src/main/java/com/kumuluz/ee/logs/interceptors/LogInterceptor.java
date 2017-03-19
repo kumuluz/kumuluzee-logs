@@ -11,6 +11,7 @@ import com.kumuluz.ee.logs.messages.SimpleLogMessage;
 import com.kumuluz.ee.logs.types.LogMethodContext;
 import com.kumuluz.ee.logs.types.LogMethodMessage;
 
+import javax.annotation.Priority;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
@@ -22,6 +23,7 @@ import java.util.HashMap;
  */
 @Log
 @Interceptor
+@Priority(Interceptor.Priority.APPLICATION)
 public class LogInterceptor {
 
     @AroundInvoke

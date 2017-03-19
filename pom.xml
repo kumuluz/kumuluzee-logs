@@ -27,6 +27,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <cdi-api.version>1.2</cdi-api.version>
+        <javax.annotation-api.version>1.3</javax.annotation-api.version>
         <log4j2.version>2.8.1</log4j2.version>
 
         <nexus.staging.plugin.version>1.6.8</nexus.staging.plugin.version>
@@ -73,6 +74,11 @@
                 <groupId>javax.enterprise</groupId>
                 <artifactId>cdi-api</artifactId>
                 <version>${cdi-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>javax.annotation-api</artifactId>
+                <version>${javax.annotation-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
