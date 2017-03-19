@@ -6,6 +6,7 @@ package com.kumuluz.ee.logs;
 import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.messages.LogMessage;
 import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
+import org.apache.logging.log4j.CloseableThreadContext;
 import org.apache.logging.log4j.LogManager;
 
 /**
@@ -57,12 +58,20 @@ public class Log4j2Logger implements Logger {
 
     @Override
     public void log(LogLevel level, LogMessage message) {
-        logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message);
+        log(level, message, null);
     }
 
     @Override
     public void log(LogLevel level, LogMessage message, Throwable thrown) {
-        logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message, thrown);
+        if (message == null) {
+            logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message, thrown);
+        } else if (message.getFields() == null) {
+            logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message.getMessage(), thrown);
+        } else {
+            try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(message.getFields())) {
+                logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message.getMessage(), thrown);
+            }
+        }
     }
 
     @Override
