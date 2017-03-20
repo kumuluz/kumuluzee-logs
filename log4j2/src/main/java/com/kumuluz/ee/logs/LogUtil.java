@@ -6,8 +6,6 @@ package com.kumuluz.ee.logs;
 import java.util.*;
 
 /**
- * Created by Rok on 14. 03. 2017.
- *
  * @Author Rok Povse, Marko Skrjanec
  */
 public class LogUtil {
@@ -18,8 +16,8 @@ public class LogUtil {
     private LogCommons logCommonsInstance;
     private LogConfigurator logConfigurator;
 
-    private Map<String,Logger> loggers;
-    private Map<String,LogCommons> loggersCommons;
+    private Map<String, Logger> loggers;
+    private Map<String, LogCommons> loggersCommons;
 
     private LogUtil() {
         loggers = new HashMap();
@@ -29,6 +27,7 @@ public class LogUtil {
 
     /**
      * Returns a singleton LogUtil instance
+     *
      * @return LogUtil instance
      */
     public static LogUtil getInstance() {
@@ -42,7 +41,8 @@ public class LogUtil {
     /**
      * Returns Logger Instance if it exists for this name
      * If not, it first creates it.
-     * @param loggerName  String name of the logger
+     *
+     * @param loggerName String name of the logger
      * @return Log insntace
      */
     public Logger getLogInstance(String loggerName) {
@@ -55,6 +55,7 @@ public class LogUtil {
     /**
      * Returns LogCommons Instance if it exists for this name
      * If not, it first creates it.
+     *
      * @param loggerName String name of the logger
      * @return LogCommons insntace
      */
@@ -87,19 +88,19 @@ public class LogUtil {
         List<LogConfigurator> logConfiguratorsConfigImpl = new ArrayList<>();
         ServiceLoader.load(LogConfigurator.class).forEach(logConfiguratorsConfigImpl::add);
 
-         if (loggerImpl.isEmpty() || loggerImpl.size() > 1) {
+        if (loggerImpl.isEmpty() || loggerImpl.size() > 1) {
             throw new IllegalArgumentException(
                     " Please provide exactly one implementation " +
-                    " of class com.kumuluz.ee.logs.Logger");
+                            " of class com.kumuluz.ee.logs.Logger");
         }
 
         if (logCommonsImpl.isEmpty() || logCommonsImpl.size() > 1) {
-            throw new IllegalArgumentException( " Please provide exactly one implementation " +
+            throw new IllegalArgumentException(" Please provide exactly one implementation " +
                     "of class com.kumuluz.ee.logs.LogCommons");
         }
 
         if (logConfiguratorsConfigImpl.isEmpty() || logConfiguratorsConfigImpl.size() > 1) {
-            throw new IllegalArgumentException( " Please provide exactly one implementation " +
+            throw new IllegalArgumentException(" Please provide exactly one implementation " +
                     "of class com.kumuluz.ee.logs.LogConfigurator");
         }
 

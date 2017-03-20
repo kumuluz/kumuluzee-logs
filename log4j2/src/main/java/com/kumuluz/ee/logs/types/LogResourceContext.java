@@ -1,3 +1,6 @@
+/**
+ * Copyright (c) Sunesis d.o.o.
+ */
 package com.kumuluz.ee.logs.types;
 
 import com.kumuluz.ee.logs.enums.LogLevel;

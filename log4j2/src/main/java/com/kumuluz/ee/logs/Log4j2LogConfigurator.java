@@ -1,17 +1,15 @@
+/**
+ * Copyright (c) Sunesis d.o.o.
+ */
 package com.kumuluz.ee.logs;
-
 
 import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
-import org.apache.logging.log4j.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
 
-
 /**
- * Created by Rok on 17. 03. 2017.
- *
- * @Author Rok Povše
+ * @Author Rok Povse, Marko Skrjanec
  */
 public class Log4j2LogConfigurator implements LogConfigurator {
 
