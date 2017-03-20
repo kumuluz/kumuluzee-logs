@@ -6,12 +6,12 @@ package com.kumuluz.ee.logs.markers;
 /**
  * @author Rok Povse, Marko Skrjanec
  */
-public enum CommonsMarker implements Marker {
-    METHOD("METHOD"), RESOURCE("RESOURCE");
+public enum StatusMarker implements Marker {
+    ENTRY("ENTRY"), EXIT("EXIT"), INVOKE("INVOKE"), RESPOND("RESPOND");
 
     private String marker;
 
-    private CommonsMarker(String marker) {
+    private StatusMarker(String marker) {
         this.marker = marker;
     }
 
