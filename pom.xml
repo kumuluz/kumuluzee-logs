@@ -28,7 +28,7 @@
 
         <cdi-api.version>1.2</cdi-api.version>
         <javax.annotation-api.version>1.3</javax.annotation-api.version>
-        <log4j2.version>2.8.1</log4j2.version>
+
         <kumuluz-core.version>2.1.0-SNAPSHOT</kumuluz-core.version>
         <nexus.staging.plugin.version>1.6.8</nexus.staging.plugin.version>
         <gpg.plugin.version>1.6</gpg.plugin.version>
@@ -79,16 +79,6 @@
                 <groupId>javax.annotation</groupId>
                 <artifactId>javax.annotation-api</artifactId>
                 <version>${javax.annotation-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-api</artifactId>
-                <version>${log4j2.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-                <version>${log4j2.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.kumuluz.ee</groupId>
