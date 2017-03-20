@@ -7,8 +7,6 @@ import com.kumuluz.ee.logs.enums.LogLevel;
 import org.apache.logging.log4j.Level;
 
 /**
- * Kumuluz-logs logger interface
- *
  * @author Rok Povse, Marko Skrjanec
  */
 public class Log4j2LogUtil {

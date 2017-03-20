@@ -10,8 +10,6 @@ import org.apache.logging.log4j.CloseableThreadContext;
 import org.apache.logging.log4j.LogManager;
 
 /**
- * Kumuluz-logs logger interface
- *
  * @author Rok Povse, Marko Skrjanec
  */
 public class Log4j2Logger implements Logger {
