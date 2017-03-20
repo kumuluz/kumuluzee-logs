@@ -129,9 +129,9 @@ public class Log4j2LogCommons implements LogCommons {
      * @param logMessage   object defining LogMessage
      */
     private void log(LogLevel level, Marker marker, Marker parentMarker, LogMessage logMessage) {
-        if (logMessage == null) {
+        if (logMessage == null || logMessage.getMessage() == null) {
             logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString())
-                    .setParents(MarkerManager.getMarker(parentMarker.toString())));
+                    .setParents(MarkerManager.getMarker(parentMarker.toString())), "");
 
         } else if (logMessage.getFields() == null) {
             logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString())
