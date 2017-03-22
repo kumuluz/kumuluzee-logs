@@ -17,6 +17,8 @@ import org.apache.logging.log4j.CloseableThreadContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.MarkerManager;
 
+import java.util.Map;
+
 /**
  * Kumuluz-logs logger interface
  *
@@ -129,18 +131,23 @@ public class Log4j2LogCommons implements LogCommons {
      * @param logMessage   object defining LogMessage
      */
     private void log(LogLevel level, Marker marker, Marker parentMarker, LogMessage logMessage) {
-        if (logMessage == null || logMessage.getMessage() == null) {
-            logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString())
-                    .setParents(MarkerManager.getMarker(parentMarker.toString())), "");
 
-        } else if (logMessage.getFields() == null) {
-            logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString())
-                    .setParents(MarkerManager.getMarker(parentMarker.toString())), logMessage.getMessage());
-        } else {
+        String message;
+        if (logMessage == null || logMessage.getMessage() == null) {
+            message = "";
+        }
+        else {
+            message = logMessage.getMessage();
+        }
+
+        if (logMessage != null && logMessage.getFields() != null) {
             try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(logMessage.getFields())) {
                 logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString())
-                        .setParents(MarkerManager.getMarker(parentMarker.toString())), logMessage.getMessage());
+                        .setParents(MarkerManager.getMarker(parentMarker.toString())), message);
             }
+        } else {
+            logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString())
+                    .setParents(MarkerManager.getMarker(parentMarker.toString())), message);
         }
     }
 }
