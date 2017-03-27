@@ -59,13 +59,23 @@ public class Log4j2LogCommons implements LogCommons {
 
     @Override
     public LogMethodContext logMethodEntry(LogMethodMessage logMethodMessage) {
-        return logMethodEntry(DEFAULT_LOG_LEVEL, logMethodMessage);
+        return logMethodEntry(DEFAULT_LOG_LEVEL, CommonsMarker.METHOD, logMethodMessage);
     }
 
     @Override
     public LogMethodContext logMethodEntry(LogLevel level, LogMethodMessage logMethodMessage) {
-        log(level, StatusMarker.ENTRY, CommonsMarker.METHOD, logMethodMessage.getCallMessage());
-        return new LogMethodContext(logMethodMessage, level);
+        return logMethodEntry(level, CommonsMarker.METHOD, logMethodMessage);
+    }
+
+    @Override
+    public LogMethodContext logMethodEntry(Marker marker, LogMethodMessage logMethodMessage) {
+        return logMethodEntry(DEFAULT_LOG_LEVEL, marker, logMethodMessage);
+    }
+
+    @Override
+    public LogMethodContext logMethodEntry(LogLevel logLevel, Marker marker, LogMethodMessage logMethodMessage) {
+        log(logLevel, StatusMarker.ENTRY, marker, logMethodMessage.getCallMessage());
+        return new LogMethodContext(logMethodMessage, logLevel, marker);
     }
 
     @Override
@@ -83,6 +93,11 @@ public class Log4j2LogCommons implements LogCommons {
     @Override
     public LogResourceContext logResourceStart(LogResourceMessage logResourceMessage) {
         return logResourceStart(CommonsMarker.RESOURCE, logResourceMessage);
+    }
+
+    @Override
+    public LogResourceContext logResourceStart(LogLevel logLevel, LogResourceMessage logResourceMessage) {
+        return logResourceStart(logLevel, CommonsMarker.RESOURCE, logResourceMessage);
     }
 
     @Override
@@ -112,8 +127,14 @@ public class Log4j2LogCommons implements LogCommons {
      * @param logMethodContext object defining LogMethodContext
      */
     private void logExit(LogMethodContext logMethodContext) {
-        log(logMethodContext.getLevel(), StatusMarker.EXIT, CommonsMarker.METHOD, logMethodContext
-                .getCallExitMessage());
+        if (logMethodContext.getMarker()!=null) {
+            log(logMethodContext.getLevel(), StatusMarker.EXIT, logMethodContext.getMarker(), logMethodContext
+                    .getCallExitMessage());
+        }
+        else {
+            log(logMethodContext.getLevel(), StatusMarker.EXIT, CommonsMarker.METHOD, logMethodContext
+                    .getCallExitMessage());
+        }
     }
 
     /**
