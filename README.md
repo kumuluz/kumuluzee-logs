@@ -1,4 +1,5 @@
 # KumuluzEE Logs
+[![Build Status](https://img.shields.io/travis/kumuluz/kumuluzee-logs/master.svg?style=flat)](https://travis-ci.org/kumuluz/kumuluzee-logs)
 
 > Logging management extensions for the lightweight Kumuluz EE framework.
 
