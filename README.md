@@ -59,6 +59,37 @@ You can define additional attributes in `@Log` annotation for monitoring method 
 @Log(value = LogParams.METRICS, methodCall = false)
 ```
 
+**Resource invocation logging**
+
+Additional functionality of `LogCommons` implementation is the ability to log and monitor invocations of external resources, for example databases and services. Resource monitoring allows you to log resource parameters and performance metrics. This functionality is available only through manual invocation of `LogCommons` methods.
+
+Sample code of resource invocation monitoring:
+
+```java
+LogResourceContext context = logCommons.logResourceStart(
+    LogLevel.TRACE,
+    Marker.DATABASE,
+    new LogResourceMessage().enableInvoke(invokeMessage).enableMetrics());
+
+//...Read resource by id
+
+logCommons.logResourceEnd(context);
+```
+
+In the sample above we invoke `logResourceStart` method, with parameters:
+* LogLevel, which specifies different log levels (TRACE, ERROR, DEBUG...).
+* Marker, which is an enum, implementing interface `com.kumuluz.ee.logs.markers.Marker`. You should implement Markers according to your needs.
+* New `LogResourceMessage` instance, where we set the invocation message (see below) and enable metrics monitoring.
+
+`logResourceStart` method returns `LogResourceContext` instance, which passes relavant information for logging end of resource invocation.
+
+`InvokeMessage` variable is an instsance of `com.kumuluz.ee.logs.messages.ResourceInvokeLogMessage` interface and therefore must implement a method which returns a Map (`Map<String, String>`) of parameters. For example, the sample of InvocationMessage could be used to populate the Map the in the following way:
+
+```java
+InvocationMessage invokeMessage = new InvocationMessage("Invocation of database resource").
+    addName("User").addParameter("id",id);
+```
+
 **Add log4j2 logging configuration**
 
 The configuration for Log4j2 library must be available for the application to load it. Please refer to Log4j2 documentation for rules regarding how the configuration is loaded. Sample configuration, which should be in a file named `log4j2.xml` and located in `src/main/resources`:
