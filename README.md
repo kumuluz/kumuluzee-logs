@@ -1,7 +1,11 @@
 # KumuluzEE Logs
 [![Build Status](https://img.shields.io/travis/kumuluz/kumuluzee-logs/master.svg?style=flat)](https://travis-ci.org/kumuluz/kumuluzee-logs)
 
-> Logging management extensions for the lightweight Kumuluz EE framework.
+> Lightweight open-source logging framework for microservice framework KumuluzEE
+
+KumuluzEE Logs is an open-source logging framework with the functionality for logging in microservices. 
+The library enables common logging functionalities, such as logging entries and exits from methods as well as logging external resources invocation. When this method are used, invocation parameters and performance monitoring can be automatically performed. Furthermore, custom logging methods for developers are available as well.
+KumuluzEE Logs methods are defined with interfaces and can support multiple implementation of logging frameworks. Currently, Log4J2 implementation for KumuluzEE Logs is available allowing customization of logging collection and storage, for example, centralized logging with ELK stack, storing logs in database, sending logs through Apache Kafka, etc.
 
 ## Usage
 KumuluzEE defines interfaces for common logging features. Therefore, to use the logging you need to include a dependency to implementation library. Currently, Log4j2 is supported and you add the dependency:
@@ -73,30 +77,24 @@ The configuration for Log4j2 library must be available for the application to lo
 </Configuration>
 ```
 
+**Build the microservice**
+
+Ensure you have JDK 8 (or newer), Maven 3.2.1 (or newer) and Git installed.
+    
+Build the logs library with command:
+
+```bash
+    mvn install
+```
+    
+Build archives are located in the modules respected folder `target` and local repository `.m2`.
+
 **Run the microservice**
 
 Use the following command to run the sample from Windows CMD:
 ```
 java -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager -cp target/classes;target/dependency/* com.kumuluz.ee.EeApplication 
 ```
-
-## Building
-
-Ensure you have JDK 8 (or newer), Maven 3.2.1 (or newer) and Git installed
-
-```bash
-    java -version
-    mvn -version
-    git --version
-```
-    
-To build Petrol logs run:
-
-```bash
-    mvn install
-```
-    
-Once completed you will find the build archives in the modules respected `target` folder and local `.m2` repository.
 
 ## Changelog
 
