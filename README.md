@@ -3,9 +3,11 @@
 
 > Lightweight open-source logging framework for microservice framework KumuluzEE
 
-KumuluzEE Logs is an open-source logging framework with the functionality for logging in microservices. 
-The library enables common logging functionalities, such as logging entries and exits from methods as well as logging external resources invocation. When this method are used, invocation parameters and performance monitoring can be automatically performed. Furthermore, custom logging methods for developers are available as well.
-KumuluzEE Logs methods are defined with interfaces and can support multiple implementation of logging frameworks. Currently, Log4J2 implementation for KumuluzEE Logs is available allowing customization of logging collection and storage, for example, centralized logging with ELK stack, storing logs in database, sending logs through Apache Kafka, etc.
+KumuluzEE Logs is a lightweight open-source logging framework providing functionalities for enhanced logging in microservices developed with KumuluzEE.
+
+The library enables common logging functionalities, such as logging entries and exits from methods, as well as logging external resources invocation. When this method are used, invocation parameters and performance metrics can be automatically logged. Furthermore, custom logging methods for developers are available as well.
+
+KumuluzEE Logs methods are defined with interfaces and can support multiple implementation of logging frameworks. Currently, Log4J2 implementation for KumuluzEE Logs is available. It allows customization of logging collection and storage, for example, centralized logging with ELK stack, storing logs in database, sending logs through Apache Kafka, etc.
 
 ## Usage
 KumuluzEE defines interfaces for common logging features. Therefore, to use the logging you need to include a dependency to implementation library. Currently, Log4j2 is supported and you add the dependency:
