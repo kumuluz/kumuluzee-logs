@@ -118,6 +118,30 @@ The configuration for Log4j2 library must be available for the application to lo
 </Configuration>
 ```
 
+**Logging additional service information**
+
+Additional information (service-name, version and environment) can be logged automatically when defined in KumuluzEE configuration (config.yaml):
+
+```yaml
+kumuluzee:
+  service-name: customer-service
+  version: 1.0.0
+  env: dev
+  ...
+```
+
+**Logging Jetty logs over Log4J2**
+
+When additional Jetty logs are needed they can be obtained and logged through Log4J2 library by providing Log4J2 as the default implementation for SLF4J. This can be done by providing the folowing Maven dependency.
+
+```xml
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-slf4j-impl</artifactId>
+    <version>2.8.2</version>
+</dependency>
+```
+
 **Build the microservice**
 
 Ensure you have JDK 8 (or newer), Maven 3.2.1 (or newer) and Git installed.
