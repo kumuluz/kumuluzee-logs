@@ -132,13 +132,13 @@ kumuluzee:
 
 **Logging Jetty logs over Log4J2**
 
-When additional Jetty logs are needed they can be obtained and logged through Log4J2 library by providing Log4J2 as the default implementation for SLF4J. This can be done by providing the folowing Maven dependency.
+When additional Jetty logs are needed, they can be obtained and logged through the Log4J2 library by providing Log4J2 as the default implementation for SLF4J. This can be done by providing the following Maven dependency.
 
 ```xml
 <dependency>
     <groupId>org.apache.logging.log4j</groupId>
     <artifactId>log4j-slf4j-impl</artifactId>
-    <version>2.8.2</version>
+    <version>2.8.1</version>
 </dependency>
 ```
 
