@@ -124,9 +124,10 @@ Additional information (service-name, version and environment) can be logged aut
 
 ```yaml
 kumuluzee:
-  service-name: customer-service
+  name: customer-service
   version: 1.0.0
-  env: dev
+  env:
+    name: development
   ...
 ```
 

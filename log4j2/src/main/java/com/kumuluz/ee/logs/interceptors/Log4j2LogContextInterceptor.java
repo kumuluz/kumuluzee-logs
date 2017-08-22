@@ -20,7 +20,7 @@
 */
 package com.kumuluz.ee.logs.interceptors;
 
-import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
+import com.kumuluz.ee.common.config.EeConfig;
 import com.kumuluz.ee.logs.cdi.Log;
 import com.kumuluz.ee.logs.messages.SimpleLogMessage;
 import org.apache.logging.log4j.CloseableThreadContext;
@@ -47,19 +47,14 @@ public class Log4j2LogContextInterceptor {
         SimpleLogMessage msg = new SimpleLogMessage();
         msg.setFields(new HashMap<String, String>());
 
-        // set service-name
-        if (ConfigurationUtil.getInstance().get("kumuluzee.service-name").isPresent()) {
-            msg.getFields().put("service-name", ConfigurationUtil.getInstance().get("kumuluzee.service-name").get());
+        if (EeConfig.getInstance().getName() != null) {
+            msg.getFields().put("name", EeConfig.getInstance().getName());
         }
-
-        // set version
-        if (ConfigurationUtil.getInstance().get("kumuluzee.version").isPresent()) {
-            msg.getFields().put("version", ConfigurationUtil.getInstance().get("kumuluzee.version").get());
+        if (EeConfig.getInstance().getVersion() != null) {
+            msg.getFields().put("version", EeConfig.getInstance().getVersion());
         }
-
-        // set environment
-        if (ConfigurationUtil.getInstance().get("kumuluzee.env").isPresent()) {
-            msg.getFields().put("env", ConfigurationUtil.getInstance().get("kumuluzee.env").get());
+        if (EeConfig.getInstance().getEnv().getName() != null) {
+            msg.getFields().put("env-name", EeConfig.getInstance().getEnv().getName());
         }
 
         try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(msg.getFields())) {
