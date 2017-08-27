@@ -34,10 +34,7 @@ import java.util.logging.Logger;
  * @author Jan Meznarič
  */
 @EeExtensionDef(name = "log4j2", type = EeExtensionType.LOGS)
-@EeComponentDependencies({
-        @EeComponentDependency(EeComponentType.SERVLET),
-        @EeComponentDependency(EeComponentType.CDI)
-})
+@EeComponentDependency(EeComponentType.SERVLET)
 public class Log4j2LogExtension implements Extension {
 
     private static final Logger log = Logger.getLogger(Log4j2LogExtension.class.getName());
