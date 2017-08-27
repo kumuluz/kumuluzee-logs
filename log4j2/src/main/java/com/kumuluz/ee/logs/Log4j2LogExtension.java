@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  *
  * @author Jan Meznarič
  */
-@EeExtensionDef(name = "log4j2", type = EeExtensionType.LOGS)
+@EeExtensionDef(name = "log4j2", group = EeExtensionGroup.LOGS)
 @EeComponentDependency(EeComponentType.SERVLET)
 public class Log4j2LogExtension implements Extension {
 
