@@ -21,31 +21,43 @@
 
 package com.kumuluz.ee.logs;
 
-import com.kumuluz.ee.common.Extension;
+import com.kumuluz.ee.common.LogsExtension;
 import com.kumuluz.ee.common.config.EeConfig;
 import com.kumuluz.ee.common.dependencies.*;
 import com.kumuluz.ee.common.wrapper.KumuluzServerWrapper;
 
-import java.util.logging.Logger;
+import java.util.Optional;
+import java.util.logging.Handler;
+import java.util.logging.LogManager;
 
 /**
  * KumuluzEE framework extension for log4j2-based logging
  *
  * @author Jan Meznarič
+ * @since 1.2.0
  */
 @EeExtensionDef(name = "log4j2", group = EeExtensionGroup.LOGS)
 @EeComponentDependency(EeComponentType.SERVLET)
-public class Log4j2LogExtension implements Extension {
+public class Log4j2LogExtension implements LogsExtension {
 
-    private static final Logger log = Logger.getLogger(Log4j2LogExtension.class.getName());
-
-    @Override
-    public void init(KumuluzServerWrapper kumuluzServerWrapper, EeConfig eeConfig) {
-        log.info("Initialising logging implemented by log4j2.");
-    }
+//    private static final Logger log = Logger.getLogger(Log4j2LogExtension.class.getName());
 
     @Override
     public void load() {
+    }
 
+    @Override
+    public void init(KumuluzServerWrapper kumuluzServerWrapper, EeConfig eeConfig) {
+//        log.info("Initialising logging implemented by log4j2.");
+    }
+
+    @Override
+    public Optional<Class<? extends LogManager>> getJavaUtilLogManagerClass() {
+        return Optional.of(org.apache.logging.log4j.jul.LogManager.class);
+    }
+
+    @Override
+    public Optional<Handler> getJavaUtilLogHandlerClass() {
+        return Optional.empty();
     }
 }

@@ -18,28 +18,46 @@
  *  software. See the License for the specific language governing permissions and
  *  limitations under the License.
 */
+/**
+ * Copyright (c) Sunesis d.o.o.
+ */
+package com.kumuluz.ee.logs.types;
 
-package com.kumuluz.ee.logs.utils;
 
-import com.kumuluz.ee.logs.enums.LogLevel;
-import org.apache.logging.log4j.Level;
+import com.kumuluz.ee.logs.messages.ResourceInvokeLogMessage;
 
 /**
- * @author Rok Povse, Marko Skrjanec
+ * @author Tilen Faganel
  */
-public class Log4j2LogUtil {
+public class LogResourceMessage {
 
-    public static final String LOG4J2_LOGGER_NAME = "Log4j2Logger";
+    private Boolean invokeEnabled;
+    private Boolean metricsEnabled;
 
-    public static Level convertToLog4j2Level(String logLevel) {
-        return Level.getLevel(logLevel);
+    private ResourceInvokeLogMessage invokeMessage;
+
+    public LogResourceMessage enableInvoke(ResourceInvokeLogMessage invokeMessage) {
+        this.invokeMessage = invokeMessage;
+        this.invokeEnabled = true;
+
+        return this;
     }
 
-    public static Level convertToLog4j2Level(LogLevel logLevel) {
-        return Level.getLevel(logLevel.toString());
+    public LogResourceMessage enableMetrics() {
+        this.metricsEnabled = true;
+
+        return this;
     }
 
-    public static LogLevel convertToLogLevel(Level level) {
-        return LogLevel.valueOf(level.name());
+    public Boolean isInvokeEnabled() {
+        return invokeEnabled;
+    }
+
+    public Boolean isMetricsEnabled() {
+        return metricsEnabled;
+    }
+
+    public ResourceInvokeLogMessage getInvokeMessage() {
+        return invokeMessage;
     }
 }

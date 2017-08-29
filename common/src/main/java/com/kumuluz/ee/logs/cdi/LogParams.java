@@ -18,28 +18,16 @@
  *  software. See the License for the specific language governing permissions and
  *  limitations under the License.
 */
-
-package com.kumuluz.ee.logs.utils;
-
-import com.kumuluz.ee.logs.enums.LogLevel;
-import org.apache.logging.log4j.Level;
+/**
+ * Copyright (c) Sunesis d.o.o.
+ */
+package com.kumuluz.ee.logs.cdi;
 
 /**
- * @author Rok Povse, Marko Skrjanec
+ * @author Rok Povse
+ * @author Marko Skrjanec
  */
-public class Log4j2LogUtil {
+public enum LogParams {
 
-    public static final String LOG4J2_LOGGER_NAME = "Log4j2Logger";
-
-    public static Level convertToLog4j2Level(String logLevel) {
-        return Level.getLevel(logLevel);
-    }
-
-    public static Level convertToLog4j2Level(LogLevel logLevel) {
-        return Level.getLevel(logLevel.toString());
-    }
-
-    public static LogLevel convertToLogLevel(Level level) {
-        return LogLevel.valueOf(level.name());
-    }
+    METRICS
 }

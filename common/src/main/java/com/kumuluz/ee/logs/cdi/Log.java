@@ -18,28 +18,29 @@
  *  software. See the License for the specific language governing permissions and
  *  limitations under the License.
 */
+/**
+ * Copyright (c) Sunesis d.o.o.
+ */
+package com.kumuluz.ee.logs.cdi;
 
-package com.kumuluz.ee.logs.utils;
+import javax.enterprise.util.Nonbinding;
+import javax.interceptor.InterceptorBinding;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-import com.kumuluz.ee.logs.enums.LogLevel;
-import org.apache.logging.log4j.Level;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * @author Rok Povse, Marko Skrjanec
+ * @author Rok Povse
+ * @author Marko Skrjanec
  */
-public class Log4j2LogUtil {
-
-    public static final String LOG4J2_LOGGER_NAME = "Log4j2Logger";
-
-    public static Level convertToLog4j2Level(String logLevel) {
-        return Level.getLevel(logLevel);
-    }
-
-    public static Level convertToLog4j2Level(LogLevel logLevel) {
-        return Level.getLevel(logLevel.toString());
-    }
-
-    public static LogLevel convertToLogLevel(Level level) {
-        return LogLevel.valueOf(level.name());
-    }
+@Inherited
+@InterceptorBinding
+@Retention(RUNTIME)
+@Target({ElementType.TYPE, ElementType.METHOD})
+public @interface Log {
+    @Nonbinding LogParams[] value() default {};
+    @Nonbinding boolean methodCall() default true;
 }

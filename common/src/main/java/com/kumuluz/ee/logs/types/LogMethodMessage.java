@@ -18,28 +18,42 @@
  *  software. See the License for the specific language governing permissions and
  *  limitations under the License.
 */
+package com.kumuluz.ee.logs.types;
 
-package com.kumuluz.ee.logs.utils;
-
-import com.kumuluz.ee.logs.enums.LogLevel;
-import org.apache.logging.log4j.Level;
+import com.kumuluz.ee.logs.messages.MethodCallLogMessage;
 
 /**
- * @author Rok Povse, Marko Skrjanec
+ * @author Tilen Faganel
  */
-public class Log4j2LogUtil {
+public class LogMethodMessage {
 
-    public static final String LOG4J2_LOGGER_NAME = "Log4j2Logger";
+    private Boolean callEnabled;
+    private Boolean metricsEnabled;
 
-    public static Level convertToLog4j2Level(String logLevel) {
-        return Level.getLevel(logLevel);
+    private MethodCallLogMessage callMessage;
+
+    public LogMethodMessage enableCall(MethodCallLogMessage callMessage) {
+        this.callMessage = callMessage;
+        this.callEnabled = true;
+
+        return this;
     }
 
-    public static Level convertToLog4j2Level(LogLevel logLevel) {
-        return Level.getLevel(logLevel.toString());
+    public LogMethodMessage enableMetrics() {
+        this.metricsEnabled = true;
+
+        return this;
     }
 
-    public static LogLevel convertToLogLevel(Level level) {
-        return LogLevel.valueOf(level.name());
+    public Boolean isCallEnabled() {
+        return callEnabled;
+    }
+
+    public Boolean isMetricsEnabled() {
+        return metricsEnabled;
+    }
+
+    public MethodCallLogMessage getCallMessage() {
+        return callMessage;
     }
 }

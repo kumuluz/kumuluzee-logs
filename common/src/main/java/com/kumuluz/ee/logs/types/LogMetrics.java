@@ -18,28 +18,26 @@
  *  software. See the License for the specific language governing permissions and
  *  limitations under the License.
 */
-
-package com.kumuluz.ee.logs.utils;
-
-import com.kumuluz.ee.logs.enums.LogLevel;
-import org.apache.logging.log4j.Level;
+/**
+ * Copyright (c) Sunesis d.o.o.
+ */
+package com.kumuluz.ee.logs.types;
 
 /**
- * @author Rok Povse, Marko Skrjanec
+ * Kumuluz-logs logger interface
+ *
+ * @author Rok Povse
+ * @author Marko Skrjanec
  */
-public class Log4j2LogUtil {
+public class LogMetrics {
 
-    public static final String LOG4J2_LOGGER_NAME = "Log4j2Logger";
+    private Long timerStart;
 
-    public static Level convertToLog4j2Level(String logLevel) {
-        return Level.getLevel(logLevel);
+    public LogMetrics() {
+        this.timerStart = System.currentTimeMillis();
     }
 
-    public static Level convertToLog4j2Level(LogLevel logLevel) {
-        return Level.getLevel(logLevel.toString());
-    }
-
-    public static LogLevel convertToLogLevel(Level level) {
-        return LogLevel.valueOf(level.name());
+    public Long getTimeElapsed() {
+        return System.currentTimeMillis()-this.timerStart;
     }
 }

@@ -23,12 +23,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-core</artifactId>
+            <groupId>com.kumuluz.ee.logs</groupId>
+            <artifactId>kumuluzee-logs-common</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-cdi-weld</artifactId>
+            <artifactId>kumuluzee-core</artifactId>
         </dependency>
 
         <dependency>

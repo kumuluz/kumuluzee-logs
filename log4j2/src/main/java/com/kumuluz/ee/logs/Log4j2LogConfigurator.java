@@ -21,10 +21,11 @@
 
 package com.kumuluz.ee.logs;
 
-import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
+
+import java.io.InputStream;
 
 /**
  * @Author Rok Povse, Marko Skrjanec
@@ -32,17 +33,22 @@ import org.apache.logging.log4j.core.config.Configurator;
 public class Log4j2LogConfigurator implements LogConfigurator {
 
     @Override
-    public void init() {
-
-    }
-
-    @Override
-    public void setLevel(String logName, LogLevel logLevel) {
+    public void setLevel(String logName, String logLevel) {
         Configurator.setLevel(logName, Log4j2LogUtil.convertToLog4j2Level(logLevel));
     }
 
     @Override
-    public LogLevel getLevel(String logName) {
-        return Log4j2LogUtil.convertFromLog4j2Level(LogManager.getLogger(logName).getLevel());
+    public String getLevel(String logName) {
+        return LogManager.getLogger(logName).getLevel().name();
+    }
+
+    @Override
+    public void configure(String config) {
+
+    }
+
+    @Override
+    public void configure(InputStream config) {
+
     }
 }
