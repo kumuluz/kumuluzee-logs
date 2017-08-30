@@ -40,15 +40,12 @@ import java.util.logging.LogManager;
 @EeComponentDependency(EeComponentType.SERVLET)
 public class Log4j2LogExtension implements LogsExtension {
 
-//    private static final Logger log = Logger.getLogger(Log4j2LogExtension.class.getName());
-
     @Override
     public void load() {
     }
 
     @Override
     public void init(KumuluzServerWrapper kumuluzServerWrapper, EeConfig eeConfig) {
-//        log.info("Initialising logging implemented by log4j2.");
     }
 
     @Override

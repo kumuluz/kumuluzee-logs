@@ -36,10 +36,36 @@ public class Log4j2LogUtil {
     }
 
     public static Level convertToLog4j2Level(LogLevel logLevel) {
-        return Level.getLevel(logLevel.toString());
+        switch (logLevel) {
+            case ERROR:
+                return Level.ERROR;
+            case WARN:
+                return Level.WARN;
+            case INFO:
+                return Level.INFO;
+            case DEBUG:
+                return Level.DEBUG;
+            case TRACE:
+            case FINEST:
+                return Level.TRACE;
+            default:
+                return null;
+        }
     }
 
     public static LogLevel convertToLogLevel(Level level) {
-        return LogLevel.valueOf(level.name());
+        if (Level.ERROR.equals(level)) {
+            return LogLevel.ERROR;
+        } else if (Level.WARN.equals(level)) {
+            return LogLevel.WARN;
+        } else if (Level.INFO.equals(level)) {
+            return LogLevel.INFO;
+        } else if (Level.DEBUG.equals(level)) {
+            return LogLevel.DEBUG;
+        } else if (Level.TRACE.equals(level)) {
+            return LogLevel.TRACE;
+        } else {
+            return null;
+        }
     }
 }

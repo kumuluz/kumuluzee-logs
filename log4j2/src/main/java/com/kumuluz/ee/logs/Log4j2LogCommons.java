@@ -35,15 +35,12 @@ import org.apache.logging.log4j.CloseableThreadContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.MarkerManager;
 
-import java.util.Map;
-
 /**
  * Kumuluz-logs logger interface
  *
  * @author Rok Povse, Marko Skrjanec
  */
 public class Log4j2LogCommons implements LogCommons {
-
 
     private static final String METRIC_RESPONSE_TIME = "response-time";
 
@@ -145,11 +142,10 @@ public class Log4j2LogCommons implements LogCommons {
      * @param logMethodContext object defining LogMethodContext
      */
     private void logExit(LogMethodContext logMethodContext) {
-        if (logMethodContext.getMarker()!=null) {
+        if (logMethodContext.getMarker() != null) {
             log(logMethodContext.getLevel(), StatusMarker.EXIT, logMethodContext.getMarker(), logMethodContext
                     .getCallExitMessage());
-        }
-        else {
+        } else {
             log(logMethodContext.getLevel(), StatusMarker.EXIT, CommonsMarker.METHOD, logMethodContext
                     .getCallExitMessage());
         }
@@ -174,8 +170,7 @@ public class Log4j2LogCommons implements LogCommons {
         String message;
         if (logMessage == null || logMessage.getMessage() == null) {
             message = "";
-        }
-        else {
+        } else {
             message = logMessage.getMessage();
         }
 
