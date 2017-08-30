@@ -23,14 +23,19 @@ package com.kumuluz.ee.logs;
 
 import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.xml.XmlConfiguration;
 
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * @Author Rok Povse, Marko Skrjanec
  */
 public class Log4j2LogConfigurator implements LogConfigurator {
+
+    private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(Log4j2LogConfigurator.class.getName());
 
     @Override
     public void setLevel(String logName, String logLevel) {
@@ -44,11 +49,26 @@ public class Log4j2LogConfigurator implements LogConfigurator {
 
     @Override
     public void configure(String config) {
-
+        configure(new ByteArrayInputStream(config.getBytes()));
     }
 
     @Override
-    public void configure(InputStream config) {
+    public void configure(File file) {
+        try {
+            configure(new FileInputStream(file));
+        } catch (FileNotFoundException exception) {
+            LOG.error("An error occurred when trying to read configuration file.", exception);
+        }
+    }
 
+    @Override
+    public void configure(InputStream inputStream) {
+        try {
+            ConfigurationSource source = new ConfigurationSource(inputStream);
+            XmlConfiguration config = new XmlConfiguration(Configurator.initialize(null, source), source);
+            LoggerContext.getContext(false).start(config);
+        } catch (IOException exception) {
+            LOG.error("An error occurred when trying to read Log4j2 configuration.", exception);
+        }
     }
 }
