@@ -25,6 +25,7 @@ import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.utils.JavaUtilLogUtil;
 
 import java.io.*;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
@@ -33,9 +34,8 @@ import java.util.logging.LogManager;
  */
 public class JavaUtilLogConfigurator implements LogConfigurator {
 
-    private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(JavaUtilLogConfigurator.class.getSimpleName());
-
-    private static String rootLevel;
+    private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(JavaUtilLogConfigurator.class
+            .getSimpleName());
 
     @Override
     public void setLevel(String logName, String logLevel) {
@@ -60,17 +60,15 @@ public class JavaUtilLogConfigurator implements LogConfigurator {
     @Override
     public void setDebug(boolean debug) {
         if (debug) {
-            if (rootLevel == null) {
-                rootLevel = getLevel("");
-                setLevel("", JavaUtilLogUtil.convertToJULLevel(LogLevel.DEBUG).toString());
+            Level level = JavaUtilLogUtil.convertToJULLevel(LogLevel.DEBUG);
+            java.util.logging.Logger rootLogger = LogManager.getLogManager().getLogger("");
+            rootLogger.setLevel(level);
+            for (Handler handler : rootLogger.getHandlers()) {
+                handler.setLevel(level);
             }
         } else {
-            if (rootLevel != null) {
-                setLevel("", rootLevel);
-                rootLevel = null;
-            }
+            LogInitializationUtil.initConfiguration();
         }
-
     }
 
     @Override
