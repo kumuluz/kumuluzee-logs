@@ -23,6 +23,7 @@ package com.kumuluz.ee.logs;
 
 import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
@@ -43,8 +44,14 @@ public class Log4j2LogConfigurator implements LogConfigurator {
     @Override
     public void setLevel(String logName, String logLevel) {
         try {
-            Configurator.setLevel(logName, Log4j2LogUtil.convertToLog4j2Level(logLevel));
-        } catch(Exception exception){
+            Level level = Log4j2LogUtil.convertToLog4j2Level(logLevel);
+            if (level != null) {
+                Configurator.setLevel(logName, level);
+            } else {
+                LOG.error("Log4j2 logger level with value={} not defined", logLevel);
+            }
+
+        } catch (Exception exception) {
             LOG.error("An error occurred when trying to set logger level.", exception);
         }
     }
