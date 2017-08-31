@@ -82,11 +82,7 @@ public class LogInitializationUtil {
 
         ConfigurationUtil.getInstance().subscribe(DEBUG_PATH, (String key, String value) -> {
             if (DEBUG_PATH.equals(key)) {
-                if ("true".equals(value)) {
-                    logConfigurator.setDebug(true);
-                } else if ("false".equals(value)) {
-                    logConfigurator.setDebug(false);
-                }
+                logConfigurator.setDebug(EeConfig.getInstance().getDebug());
             }
         });
     }

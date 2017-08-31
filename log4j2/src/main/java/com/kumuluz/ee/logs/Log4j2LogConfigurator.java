@@ -38,6 +38,8 @@ public class Log4j2LogConfigurator implements LogConfigurator {
 
     private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(Log4j2LogConfigurator.class.getName());
 
+    private static String rootLevel;
+
     @Override
     public void setLevel(String logName, String logLevel) {
         Configurator.setLevel(logName, Log4j2LogUtil.convertToLog4j2Level(logLevel));
@@ -50,7 +52,18 @@ public class Log4j2LogConfigurator implements LogConfigurator {
 
     @Override
     public void setDebug(boolean debug) {
-        setLevel("", Log4j2LogUtil.convertToLog4j2Level(LogLevel.DEBUG).toString());
+        if (debug) {
+            if (rootLevel == null) {
+                rootLevel = Log4j2LogUtil.convertToLog4j2Level(LogLevel.DEBUG).toString();
+                setLevel("", rootLevel);
+            }
+        } else {
+            if (rootLevel != null) {
+                setLevel("", rootLevel);
+                rootLevel = null;
+            }
+        }
+
     }
 
     @Override
