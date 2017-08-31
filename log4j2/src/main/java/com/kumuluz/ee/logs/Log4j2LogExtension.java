@@ -29,7 +29,6 @@ import com.kumuluz.ee.common.dependencies.EeExtensionDef;
 import com.kumuluz.ee.common.dependencies.EeExtensionGroup;
 import com.kumuluz.ee.common.wrapper.KumuluzServerWrapper;
 import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
-import com.kumuluz.ee.logs.enums.LogLevel;
 
 import java.io.File;
 import java.util.Optional;
@@ -92,7 +91,7 @@ public class Log4j2LogExtension implements LogsExtension {
         }
 
         if (EeConfig.getInstance().getDebug()) {
-            LogUtil.getInstance().getLogConfigurator().setLevel("", LogLevel.DEBUG.toString());
+            LogUtil.getInstance().getLogConfigurator().enableDebug();
         }
     }
 
@@ -130,7 +129,7 @@ public class Log4j2LogExtension implements LogsExtension {
             if (debug.equals(key)) {
                 System.out.println(debug + ": " + value);
                 if ("true".equals(value)) {
-                    LogUtil.getInstance().getLogConfigurator().setLevel("", LogLevel.DEBUG.toString());
+                    LogUtil.getInstance().getLogConfigurator().enableDebug();
                 } else if ("false".equals(value)) {
                     initConfiguration();
                 }

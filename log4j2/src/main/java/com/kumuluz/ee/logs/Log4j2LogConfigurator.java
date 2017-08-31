@@ -21,6 +21,7 @@
 
 package com.kumuluz.ee.logs;
 
+import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -49,7 +50,7 @@ public class Log4j2LogConfigurator implements LogConfigurator {
 
     @Override
     public void enableDebug() {
-
+        setLevel("", Log4j2LogUtil.convertToLog4j2Level(LogLevel.DEBUG).toString());
     }
 
     @Override
