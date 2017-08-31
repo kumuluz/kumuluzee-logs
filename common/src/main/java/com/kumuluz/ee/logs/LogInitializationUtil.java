@@ -52,6 +52,9 @@ public class LogInitializationUtil {
             String location = configurationUtil.get(CONFIG_FILE_LOCATION_PATH).get();
             logConfigurator.configure(new File(location));
             LOG.trace("Initializing logs from configuration file: " + location);
+        } else {
+            logConfigurator.configure();
+            LOG.trace("Initializing default logs configuration");
         }
 
         if (configurationUtil.getListSize(LOGGERS_PATH).isPresent()) {
