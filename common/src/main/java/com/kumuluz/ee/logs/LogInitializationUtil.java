@@ -29,6 +29,8 @@ import java.io.File;
  */
 public class LogInitializationUtil {
 
+    private static final Logger LOG = LogManager.getLogger(LogInitializationUtil.class.getName());
+
     private static final String CONFIG_FILE_PATH = "kumuluzee.logs.config-file";
     private static final String CONFIG_FILE_LOCATION_PATH = "kumuluzee.logs.config-file-location";
     private static final String LOGGERS_PATH = "kumuluzee.logs.loggers";
@@ -43,9 +45,13 @@ public class LogInitializationUtil {
      */
     public static void initConfiguration() {
         if (configurationUtil.get(CONFIG_FILE_PATH).isPresent()) {
-            logConfigurator.configure(configurationUtil.get(CONFIG_FILE_PATH).get());
+            String file = configurationUtil.get(CONFIG_FILE_PATH).get();
+            LOG.trace("Initializing Log4j2 with configuration file: " + file);
+            logConfigurator.configure(file);
         } else if (configurationUtil.get(CONFIG_FILE_LOCATION_PATH).isPresent()) {
-            logConfigurator.configure(new File(configurationUtil.get(CONFIG_FILE_LOCATION_PATH).get()));
+            String location = configurationUtil.get(CONFIG_FILE_LOCATION_PATH).get();
+            LOG.trace("Initializing Log4j2 from configuration file: " + location);
+            logConfigurator.configure(new File(location));
         }
 
         if (configurationUtil.getListSize(LOGGERS_PATH).isPresent()) {
@@ -53,6 +59,7 @@ public class LogInitializationUtil {
         }
 
         if (configurationUtil.getBoolean(DEBUG_PATH).isPresent() && configurationUtil.getBoolean(DEBUG_PATH).get()) {
+            LOG.trace("Initializing Log4j2 root logger in DEBUG mode");
             logConfigurator.setDebug(true);
         }
     }
@@ -63,12 +70,14 @@ public class LogInitializationUtil {
     public static void initWatchers() {
         ConfigurationUtil.getInstance().subscribe(CONFIG_FILE_PATH, (String key, String value) -> {
             if (CONFIG_FILE_PATH.equals(key)) {
+                LOG.trace("Initializing Log4j2 with configuration file: " + value);
                 logConfigurator.configure(value);
             }
         });
 
         ConfigurationUtil.getInstance().subscribe(CONFIG_FILE_LOCATION_PATH, (String key, String value) -> {
             if (CONFIG_FILE_LOCATION_PATH.equals(key)) {
+                LOG.trace("Initializing Log4j2 from configuration file: " + value);
                 logConfigurator.configure(new File(value));
             }
         });
@@ -82,8 +91,10 @@ public class LogInitializationUtil {
         ConfigurationUtil.getInstance().subscribe(DEBUG_PATH, (String key, String value) -> {
             if (DEBUG_PATH.equals(key)) {
                 if ("true".equals(value.toLowerCase())) {
+                    LOG.trace("Initializing Log4j2 root logger in DEBUG mode");
                     logConfigurator.setDebug(true);
                 } else if ("false".equals(value.toLowerCase())) {
+                    LOG.trace("Resetting Log4j2 root logger back from DEBUG mode");
                     logConfigurator.setDebug(false);
                 }
             }
@@ -94,6 +105,7 @@ public class LogInitializationUtil {
      * Helper method for initiating loggers.
      */
     private static void initLoggers() {
+        LOG.trace("Initializing Log4j2 loggers");
         int length = configurationUtil.getListSize(LOGGERS_PATH).get();
 
         for (int i = 0; i < length; i++) {
