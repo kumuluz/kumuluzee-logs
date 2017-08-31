@@ -28,9 +28,7 @@ import com.kumuluz.ee.common.dependencies.EeComponentType;
 import com.kumuluz.ee.common.dependencies.EeExtensionDef;
 import com.kumuluz.ee.common.dependencies.EeExtensionGroup;
 import com.kumuluz.ee.common.wrapper.KumuluzServerWrapper;
-import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
 
-import java.io.File;
 import java.util.Optional;
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
@@ -51,8 +49,8 @@ public class Log4j2LogExtension implements LogsExtension {
 
     @Override
     public void init(KumuluzServerWrapper kumuluzServerWrapper, EeConfig eeConfig) {
-        initConfiguration();
-        initWatchers();
+        LogInitialization.initConfiguration();
+        LogInitialization.initWatchers();
     }
 
     @Override
@@ -65,97 +63,4 @@ public class Log4j2LogExtension implements LogsExtension {
         return Optional.empty();
     }
 
-    /**
-     * Helper method for initiating configuration.
-     */
-    private void initConfiguration() {
-        ConfigurationUtil configurationUtil = ConfigurationUtil.getInstance();
-
-        // Init configuration
-        if (configurationUtil.get("kumuluzee.logs.config-file").isPresent()) {
-            System.out.println("kumuluzee.logs.config-file: " + configurationUtil.get("kumuluzee.logs.config-file")
-                    .get());
-            LogUtil.getInstance().getLogConfigurator()
-                    .configure(configurationUtil.get("kumuluzee.logs.config-file").get());
-        } else if (configurationUtil.get("kumuluzee.logs.config-file-location").isPresent()) {
-            System.out.println("kumuluzee.logs.config-file-location: " + configurationUtil.get("kumuluzee.logs" +
-                    ".config-file-location").get());
-            LogUtil.getInstance().getLogConfigurator()
-                    .configure(new File(configurationUtil.get("kumuluzee.logs.config-file-location").get()));
-        }
-
-        final String loggers = "kumuluzee.logs.loggers";
-        if (configurationUtil.getListSize(loggers).isPresent()) {
-            System.out.println(loggers);
-            initLoggers(loggers);
-        }
-
-        if (EeConfig.getInstance().getDebug()) {
-            LogUtil.getInstance().getLogConfigurator().enableDebug();
-        }
-    }
-
-    /**
-     * Helper method for initiating watchers.
-     */
-    private void initWatchers() {
-        ConfigurationUtil configurationUtil = ConfigurationUtil.getInstance();
-
-        final String configFile = "kumuluzee.logs.config-file";
-        ConfigurationUtil.getInstance().subscribe(configFile, (String key, String value) -> {
-            if (configFile.equals(key)) {
-                System.out.println(configFile + ": " + value);
-                LogUtil.getInstance().getLogConfigurator().configure(value);
-            }
-        });
-
-        final String configFileLocation = "kumuluzee.logs.config-file-location";
-        ConfigurationUtil.getInstance().subscribe(configFileLocation, (String key, String value) -> {
-            if (configFileLocation.equals(key)) {
-                System.out.println(configFileLocation + ": " + value);
-                LogUtil.getInstance().getLogConfigurator().configure(new File(value));
-            }
-        });
-
-        final String loggers = "kumuluzee.logs.loggers";
-        ConfigurationUtil.getInstance().subscribe(loggers, (String key, String value) -> {
-            if (key != null && key.startsWith(loggers)) {
-                initLoggers(loggers);
-            }
-        });
-
-        final String debug = "kumuluzee.debug";
-        ConfigurationUtil.getInstance().subscribe(debug, (String key, String value) -> {
-            if (debug.equals(key)) {
-                System.out.println(debug + ": " + value);
-                if ("true".equals(value)) {
-                    LogUtil.getInstance().getLogConfigurator().enableDebug();
-                } else if ("false".equals(value)) {
-                    initConfiguration();
-                }
-            }
-        });
-    }
-
-    /**
-     * Helper method for initiating loggers.
-     */
-    private void initLoggers(String loggers) {
-        ConfigurationUtil configurationUtil = ConfigurationUtil.getInstance();
-
-        int length = configurationUtil.getListSize(loggers).get();
-
-        for (int i = 0; i < length; i++) {
-            if (ConfigurationUtil.getInstance().get(loggers + "[" + i + "].name").isPresent() &&
-                    ConfigurationUtil.getInstance().get(loggers + "[" + i + "].level").isPresent()) {
-
-                System.out.println(ConfigurationUtil.getInstance().get(loggers + "[" + i + "].name").get() + ":"
-                        + ConfigurationUtil.getInstance().get(loggers + "[" + i + "].level").get());
-
-                LogUtil.getInstance().getLogConfigurator().setLevel(
-                        ConfigurationUtil.getInstance().get(loggers + "[" + i + "].name").get(),
-                        ConfigurationUtil.getInstance().get(loggers + "[" + i + "].level").get());
-            }
-        }
-    }
 }
