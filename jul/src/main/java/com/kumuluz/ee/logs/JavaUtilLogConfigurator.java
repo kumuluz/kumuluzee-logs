@@ -72,6 +72,15 @@ public class JavaUtilLogConfigurator implements LogConfigurator {
     }
 
     @Override
+    public void configure() {
+        try {
+            LogManager.getLogManager().readConfiguration();
+        } catch (Exception e) {
+            LOG.error("An error occurred when trying to read default configuration file.");
+        }
+    }
+
+    @Override
     public void configure(String config) {
         configure(new ByteArrayInputStream(config.getBytes()));
     }
