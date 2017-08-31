@@ -29,7 +29,7 @@ import java.io.File;
  */
 public class LogInitializationUtil {
 
-    private static final Logger LOG = LogManager.getLogger(LogInitializationUtil.class.getName());
+    private static final Logger LOG = LogManager.getLogger(LogInitializationUtil.class.getSimpleName());
 
     private static final String CONFIG_FILE_PATH = "kumuluzee.logs.config-file";
     private static final String CONFIG_FILE_LOCATION_PATH = "kumuluzee.logs.config-file-location";

@@ -37,7 +37,7 @@ import java.io.*;
  */
 public class Log4j2LogConfigurator implements LogConfigurator {
 
-    private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(Log4j2LogConfigurator.class.getName());
+    private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(Log4j2LogConfigurator.class.getSimpleName());
 
     private static String rootLevel;
 
