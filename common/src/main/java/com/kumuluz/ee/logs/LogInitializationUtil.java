@@ -103,7 +103,7 @@ public class LogInitializationUtil {
 
                 LogUtil.getInstance().getLogConfigurator().setLevel(
                         configurationUtil.get(LOGGERS_PATH + "[" + i + "].name").get(),
-                        configurationUtil.get(LOGGERS_PATH + "[" + i + "].level").get());
+                        configurationUtil.get(LOGGERS_PATH + "[" + i + "].level").get().toUpperCase());
             }
         }
     }
