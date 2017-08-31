@@ -28,7 +28,7 @@ import java.io.File;
 /**
  * @author Marko Skrjanec
  */
-public class LogInitialization {
+public class LogInitializationUtil {
 
     private static final String CONFIG_FILE_PATH = "kumuluzee.logs.config-file";
     private static final String CONFIG_FILE_LOCATION_PATH = "kumuluzee.logs.config-file-location";

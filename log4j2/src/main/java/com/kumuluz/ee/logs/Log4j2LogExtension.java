@@ -49,8 +49,8 @@ public class Log4j2LogExtension implements LogsExtension {
 
     @Override
     public void init(KumuluzServerWrapper kumuluzServerWrapper, EeConfig eeConfig) {
-        LogInitialization.initConfiguration();
-        LogInitialization.initWatchers();
+        LogInitializationUtil.initConfiguration();
+        LogInitializationUtil.initWatchers();
     }
 
     @Override
