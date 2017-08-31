@@ -20,7 +20,6 @@
 */
 package com.kumuluz.ee.logs;
 
-import com.kumuluz.ee.common.config.EeConfig;
 import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
 
 import java.io.File;
@@ -53,7 +52,7 @@ public class LogInitializationUtil {
             initLoggers();
         }
 
-        if (EeConfig.getInstance().getDebug()) {
+        if (configurationUtil.getBoolean(DEBUG_PATH).isPresent() && configurationUtil.getBoolean(DEBUG_PATH).get()) {
             logConfigurator.setDebug(true);
         }
     }
@@ -82,7 +81,11 @@ public class LogInitializationUtil {
 
         ConfigurationUtil.getInstance().subscribe(DEBUG_PATH, (String key, String value) -> {
             if (DEBUG_PATH.equals(key)) {
-                logConfigurator.setDebug(EeConfig.getInstance().getDebug());
+                if ("true".equals(value.toLowerCase())) {
+                    logConfigurator.setDebug(true);
+                } else if ("false".equals(value.toLowerCase())) {
+                    logConfigurator.setDebug(false);
+                }
             }
         });
     }

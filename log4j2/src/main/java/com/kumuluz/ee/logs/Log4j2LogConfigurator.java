@@ -54,8 +54,8 @@ public class Log4j2LogConfigurator implements LogConfigurator {
     public void setDebug(boolean debug) {
         if (debug) {
             if (rootLevel == null) {
-                rootLevel = Log4j2LogUtil.convertToLog4j2Level(LogLevel.DEBUG).toString();
-                setLevel("", rootLevel);
+                rootLevel = getLevel("");
+                setLevel("", Log4j2LogUtil.convertToLog4j2Level(LogLevel.DEBUG).toString());
             }
         } else {
             if (rootLevel != null) {
