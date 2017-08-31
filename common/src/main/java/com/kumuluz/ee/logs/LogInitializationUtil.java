@@ -54,7 +54,7 @@ public class LogInitializationUtil {
         }
 
         if (EeConfig.getInstance().getDebug()) {
-            logConfigurator.enableDebug();
+            logConfigurator.setDebug(true);
         }
     }
 
@@ -83,9 +83,9 @@ public class LogInitializationUtil {
         ConfigurationUtil.getInstance().subscribe(DEBUG_PATH, (String key, String value) -> {
             if (DEBUG_PATH.equals(key)) {
                 if ("true".equals(value)) {
-                    logConfigurator.enableDebug();
+                    logConfigurator.setDebug(true);
                 } else if ("false".equals(value)) {
-                    initConfiguration();
+                    logConfigurator.setDebug(false);
                 }
             }
         });

@@ -49,7 +49,7 @@ public class Log4j2LogConfigurator implements LogConfigurator {
     }
 
     @Override
-    public void enableDebug() {
+    public void setDebug(boolean debug) {
         setLevel("", Log4j2LogUtil.convertToLog4j2Level(LogLevel.DEBUG).toString());
     }
 
