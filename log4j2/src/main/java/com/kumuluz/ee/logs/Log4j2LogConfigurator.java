@@ -42,7 +42,11 @@ public class Log4j2LogConfigurator implements LogConfigurator {
 
     @Override
     public void setLevel(String logName, String logLevel) {
-        Configurator.setLevel(logName, Log4j2LogUtil.convertToLog4j2Level(logLevel));
+        try {
+            Configurator.setLevel(logName, Log4j2LogUtil.convertToLog4j2Level(logLevel));
+        } catch(Exception exception){
+            LOG.error("An error occurred when trying to set logger level.", exception);
+        }
     }
 
     @Override
