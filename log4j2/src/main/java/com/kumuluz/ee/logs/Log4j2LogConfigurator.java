@@ -25,6 +25,7 @@ import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
 
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -43,7 +44,17 @@ public class Log4j2LogConfigurator implements LogConfigurator {
     }
 
     @Override
+    public void enableDebug() {
+        
+    }
+
+    @Override
     public void configure(String config) {
+
+    }
+
+    @Override
+    public void configure(File config) {
 
     }
 
