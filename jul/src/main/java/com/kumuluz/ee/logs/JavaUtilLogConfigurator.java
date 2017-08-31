@@ -33,7 +33,7 @@ import java.util.logging.LogManager;
  */
 public class JavaUtilLogConfigurator implements LogConfigurator {
 
-    private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(JavaUtilLogConfigurator.class.getName());
+    private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(JavaUtilLogConfigurator.class.getSimpleName());
 
     private static String rootLevel;
 
