@@ -79,7 +79,7 @@ public class Log4j2LogConfigurator implements LogConfigurator {
 
     @Override
     public void configure() {
-        
+        Configurator.initialize(null);
     }
 
     @Override
