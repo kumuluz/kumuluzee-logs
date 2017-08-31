@@ -97,7 +97,7 @@ public class Log4j2LogConfigurator implements LogConfigurator {
             ConfigurationSource source = new ConfigurationSource(inputStream);
             XmlConfiguration config = new XmlConfiguration(Configurator.initialize(null, source), source);
             LoggerContext.getContext(false).start(config);
-        } catch (IOException exception) {
+        } catch (Exception exception) {
             LOG.error("An error occurred when trying to read Log4j2 configuration.", exception);
         }
     }
