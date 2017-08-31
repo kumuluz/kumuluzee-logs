@@ -112,9 +112,10 @@ public class LogInitializationUtil {
             if (configurationUtil.get(LOGGERS_PATH + "[" + i + "].name").isPresent() &&
                     configurationUtil.get(LOGGERS_PATH + "[" + i + "].level").isPresent()) {
 
-                LogUtil.getInstance().getLogConfigurator().setLevel(
-                        configurationUtil.get(LOGGERS_PATH + "[" + i + "].name").get(),
-                        configurationUtil.get(LOGGERS_PATH + "[" + i + "].level").get().toUpperCase());
+                String name = configurationUtil.get(LOGGERS_PATH + "[" + i + "].name").get();
+                String level = configurationUtil.get(LOGGERS_PATH + "[" + i + "].level").get().toUpperCase();
+                LOG.trace("Initializing Log4j2 logger {} with level {}", name, level);
+                LogUtil.getInstance().getLogConfigurator().setLevel(name, level);
             }
         }
     }
