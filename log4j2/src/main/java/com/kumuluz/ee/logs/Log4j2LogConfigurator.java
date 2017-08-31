@@ -78,6 +78,11 @@ public class Log4j2LogConfigurator implements LogConfigurator {
     }
 
     @Override
+    public void configure() {
+        
+    }
+
+    @Override
     public void configure(String config) {
         configure(new ByteArrayInputStream(config.getBytes()));
     }
