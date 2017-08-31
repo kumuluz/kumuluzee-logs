@@ -23,7 +23,10 @@ package com.kumuluz.ee.logs;
 
 import com.kumuluz.ee.common.LogsExtension;
 import com.kumuluz.ee.common.config.EeConfig;
-import com.kumuluz.ee.common.dependencies.*;
+import com.kumuluz.ee.common.dependencies.EeComponentDependency;
+import com.kumuluz.ee.common.dependencies.EeComponentType;
+import com.kumuluz.ee.common.dependencies.EeExtensionDef;
+import com.kumuluz.ee.common.dependencies.EeExtensionGroup;
 import com.kumuluz.ee.common.wrapper.KumuluzServerWrapper;
 
 import java.util.Optional;
@@ -46,6 +49,8 @@ public class Log4j2LogExtension implements LogsExtension {
 
     @Override
     public void init(KumuluzServerWrapper kumuluzServerWrapper, EeConfig eeConfig) {
+        LogInitializationUtil.initConfiguration();
+        LogInitializationUtil.initWatchers();
     }
 
     @Override
@@ -57,4 +62,5 @@ public class Log4j2LogExtension implements LogsExtension {
     public Optional<Handler> getJavaUtilLogHandlerClass() {
         return Optional.empty();
     }
+
 }

@@ -21,6 +21,7 @@
 
 package com.kumuluz.ee.logs;
 
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -33,7 +34,26 @@ public interface LogConfigurator {
 
     String getLevel(String logName);
 
+    void setDebug(boolean debug);
+
+    /**
+     * Method for providing config file in string.
+     *
+     * @param config
+     */
     void configure(String config);
 
+    /**
+     * Method for providing config file.
+     *
+     * @param config
+     */
+    void configure(File config);
+
+    /**
+     * Method for providing config file input stream.
+     *
+     * @param config
+     */
     void configure(InputStream config);
 }
