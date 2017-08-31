@@ -46,12 +46,12 @@ public class LogInitializationUtil {
     public static void initConfiguration() {
         if (configurationUtil.get(CONFIG_FILE_PATH).isPresent()) {
             String file = configurationUtil.get(CONFIG_FILE_PATH).get();
-            LOG.trace("Initializing logs with configuration file: " + file);
             logConfigurator.configure(file);
+            LOG.trace("Initializing logs with configuration file: " + file);
         } else if (configurationUtil.get(CONFIG_FILE_LOCATION_PATH).isPresent()) {
             String location = configurationUtil.get(CONFIG_FILE_LOCATION_PATH).get();
-            LOG.trace("Initializing logs from configuration file: " + location);
             logConfigurator.configure(new File(location));
+            LOG.trace("Initializing logs from configuration file: " + location);
         }
 
         if (configurationUtil.getListSize(LOGGERS_PATH).isPresent()) {
