@@ -37,7 +37,7 @@ import java.util.logging.LogManager;
  * KumuluzEE framework extension for jul-based logging
  *
  * @author Marko Skrjanec
- * @since 1.3.0
+ * @since 1.4.0
  */
 @EeExtensionDef(name = "jul", group = EeExtensionGroup.LOGS)
 @EeComponentDependency(EeComponentType.SERVLET)
@@ -49,6 +49,8 @@ public class JavaUtilLogExtension implements LogsExtension {
 
     @Override
     public void init(KumuluzServerWrapper kumuluzServerWrapper, EeConfig eeConfig) {
+        LogInitializationUtil.initConfiguration();
+        LogInitializationUtil.initWatchers();
     }
 
     @Override

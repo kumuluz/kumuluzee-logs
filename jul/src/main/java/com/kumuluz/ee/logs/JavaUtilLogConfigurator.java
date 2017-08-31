@@ -21,9 +21,11 @@
 
 package com.kumuluz.ee.logs;
 
+import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.utils.JavaUtilLogUtil;
 
-import java.io.InputStream;
+import java.io.*;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 
 /**
@@ -31,9 +33,23 @@ import java.util.logging.LogManager;
  */
 public class JavaUtilLogConfigurator implements LogConfigurator {
 
+    private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(JavaUtilLogConfigurator.class.getName());
+
+    private static String rootLevel;
+
     @Override
     public void setLevel(String logName, String logLevel) {
-        LogManager.getLogManager().getLogger(logName).setLevel(JavaUtilLogUtil.convertToJULLevel(logLevel));
+        try {
+            Level level = JavaUtilLogUtil.convertToJULLevel(logLevel);
+            if (level != null) {
+                LogManager.getLogManager().getLogger(logName).setLevel(level);
+            } else {
+                LOG.error("JUL logger level with value={} not defined", logLevel);
+            }
+
+        } catch (Exception exception) {
+            LOG.error("An error occurred when trying to set logger level.", exception);
+        }
     }
 
     @Override
@@ -42,12 +58,41 @@ public class JavaUtilLogConfigurator implements LogConfigurator {
     }
 
     @Override
-    public void configure(String config) {
+    public void setDebug(boolean debug) {
+        if (debug) {
+            if (rootLevel == null) {
+                rootLevel = getLevel("");
+                setLevel("", JavaUtilLogUtil.convertToJULLevel(LogLevel.DEBUG).toString());
+            }
+        } else {
+            if (rootLevel != null) {
+                setLevel("", rootLevel);
+                rootLevel = null;
+            }
+        }
 
     }
 
     @Override
-    public void configure(InputStream config) {
+    public void configure(String config) {
+        configure(new ByteArrayInputStream(config.getBytes()));
+    }
 
+    @Override
+    public void configure(File file) {
+        try {
+            configure(new FileInputStream(file));
+        } catch (FileNotFoundException exception) {
+            LOG.error("An error occurred when trying to read configuration file.", exception);
+        }
+    }
+
+    @Override
+    public void configure(InputStream inputStream) {
+        try {
+            LogManager.getLogManager().readConfiguration(inputStream);
+        } catch (Exception exception) {
+            LOG.error("An error occurred when trying to read Log4j2 configuration.", exception);
+        }
     }
 }
