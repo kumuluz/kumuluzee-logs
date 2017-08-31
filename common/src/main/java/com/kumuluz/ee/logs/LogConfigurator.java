@@ -37,6 +37,11 @@ public interface LogConfigurator {
     void setDebug(boolean debug);
 
     /**
+     * Method for configuring the default configuration.
+     */
+    void configure();
+
+    /**
      * Method for providing config file in string.
      *
      * @param config
