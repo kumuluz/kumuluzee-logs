@@ -44,8 +44,8 @@ public class Log4j2LogConfigurator implements LogConfigurator {
     }
 
     @Override
-    public void enableDebug() {
-        
+    public void setDebug(boolean debug) {
+
     }
 
     @Override

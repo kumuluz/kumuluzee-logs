@@ -34,7 +34,7 @@ public interface LogConfigurator {
 
     String getLevel(String logName);
 
-    void enableDebug();
+    void setDebug(boolean debug);
 
     /**
      * Method for providing config file in string.
