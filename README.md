@@ -154,14 +154,18 @@ The options can be enabled:
 * in runtime with Consul or ETCD
 
 ***DEBUG mode***
+
 Debug mode can be enabled by providing the `kumuluzee.debug` property:
+
 ```yaml
 kumuluzee:
   debug: true
 ```
 
 ***Config file***
+
 Config file can be provided by providing the `kumuluzee.logs.config-file` property:
+
 ```yaml
 kumuluzee:
   logs:
@@ -182,7 +186,9 @@ kumuluzee:
 ```
 
 ***Config file location***
+
 Config file location can be provided by providing the `kumuluzee.logs.config-file-location` property:
+
 ```yaml
 kumuluzee:
   logs:
@@ -190,7 +196,9 @@ kumuluzee:
 ```
 
 ***Loggers***
+
 Logger levels can be configured by providing the `kumuluzee.logs.loggers` property:
+
 ```yaml
 kumuluzee:
   logs:
