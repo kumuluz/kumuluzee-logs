@@ -169,7 +169,7 @@ Config file can be provided by providing the `kumuluzee.logs.config-file` proper
 ```yaml
 kumuluzee:
   logs:
-	config-file: '<?xml version="1.0" encoding="UTF-8"?>
+    config-file: '<?xml version="1.0" encoding="UTF-8"?>
                   <Configuration name="customers">
                       <Appenders>
                           <Console name="console" target="SYSTEM_OUT">
@@ -192,7 +192,7 @@ Config file location can be provided by providing the `kumuluzee.logs.config-fil
 ```yaml
 kumuluzee:
   logs:
-	config-file-location: /home/kumuluz/kumuluzee-samples/kumuluzee-logs-log4j2/src/main/resources/log4j2.xml
+    config-file-location: /home/kumuluz/kumuluzee-samples/kumuluzee-logs-log4j2/src/main/resources/log4j2.xml
 ```
 
 ***Loggers***
@@ -202,11 +202,11 @@ Logger levels can be configured by providing the `kumuluzee.logs.loggers` proper
 ```yaml
 kumuluzee:
   logs:
-	loggers:
+    loggers:
       - name: com.kumuluz.ee.samples.kumuluzee_logs.CustomerResource
-	    level: TRACE
-	  - name: ''
-	    level: INFO
+        level: TRACE
+      - name: ''
+        level: INFO
 
 ```
 
