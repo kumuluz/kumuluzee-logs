@@ -44,7 +44,7 @@ public class JavaUtilLogConfigurator implements LogConfigurator {
             if (level != null) {
                 LogManager.getLogManager().getLogger(logName).setLevel(level);
             } else {
-                LOG.error("JUL logger level with value={} not defined", logLevel);
+                LOG.error("JUL logger level with value=" + logLevel + " not defined");
             }
 
         } catch (Exception exception) {
