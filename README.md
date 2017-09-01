@@ -195,6 +195,8 @@ kumuluzee:
     config-file-location: /home/kumuluz/kumuluzee-samples/kumuluzee-logs-log4j2/src/main/resources/log4j2.xml
 ```
 
+At startup if both `kumuluzee.logs.config-file` and `kumuluzee.logs.config-file-location` are provided the `kumuluzee.logs.config-file` will assume priority. When configuring with Consul this is not the case since the last sent value will assume priority.
+
 ***Loggers***
 
 Logger levels can be configured by providing the `kumuluzee.logs.loggers` property:
