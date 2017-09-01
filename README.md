@@ -13,12 +13,12 @@ In addition, KumuluzEE Logs also support logging with explicit commands. It prov
 
 KumuluzEE Logs acts as a façade and provides a simple, common interface with the objective to abstract the underlying logging framework. This makes the logging process easier for the developer, standardizes how the logging is performed, and makes the code independent of the underlying logging framework. 
 
-KumuluzEE Logs is designed to support different logging frameworks. Currently, KumuluzEE Logs provides support for Log4J2. In the future, other logging frameworks will be supported too (contributions are welcome).
+KumuluzEE Logs is designed to support different logging frameworks. Currently, KumuluzEE Logs provides support for Log4J2 and java.util.logging (JUL). In the future, other logging frameworks will be supported too (contributions are welcome).
 
 To address the needs specific to logging microservices, KumuluzEE Logs can be easily configured to collect distributed logs into a centralized log management system, such as ELK (Elasticsearch, Logstash, Kibana) stack, Graylog, Splunk, etc. Furthermore, KumuluzEE Logs provides support for Apache Kafka and other approaches. 
 
 ## Usage
-KumuluzEE defines interfaces for common logging features. Therefore, to use the logging you need to include a dependency to implementation library. Currently, Log4j2 is supported and you add the dependency:
+KumuluzEE defines interfaces for common logging features. Therefore, to use the logging you need to include a dependency to implementation library. Currently, Log4j2 and JUL are supported and you add the dependency:
 
 ```xml
 <dependency>
@@ -28,6 +28,13 @@ KumuluzEE defines interfaces for common logging features. Therefore, to use the 
 </dependency>
 ```
 
+```xml
+<dependency>
+   <artifactId>kumuluzee-logs-jul</artifactId>
+   <groupId>com.kumuluz.ee.logs</groupId>
+   <version>${kumuluzee-logs.version}</version>
+</dependency>
+```
 **Developer logging**
 
 To use the developer logging functionality get a new `Logger` instance by using `LogManager`:
@@ -116,6 +123,22 @@ The configuration for Log4j2 library must be available for the application to lo
         </Root>
     </Loggers>
 </Configuration>
+```
+
+**Add JUL logging configuration**
+
+The configuration for JUL library will be loaded from the JRE logging.properties file. You can however provide your own logging.properties configuration file and enabling it by providing `-Djava.util.logging.config.file` system property. Sample configuration, which should be in a file named `logging.properties` and located in `src/main/resources`:
+
+```
+# Default global logging level
+.level=FINER
+
+# ConsoleHandler definition
+handlers=java.util.logging.ConsoleHandler
+
+# ConsoleHandler configuration settings
+java.util.logging.ConsoleHandler.level=FINER
+java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
 ```
 
 **Build the microservice**
