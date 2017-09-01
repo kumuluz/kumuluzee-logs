@@ -39,10 +39,11 @@ public class JavaUtilLogConfigurator implements LogConfigurator {
 
     @Override
     public void setLevel(String logName, String logLevel) {
+        logLevel = logLevel.trim().toUpperCase();
         try {
             Level level = JavaUtilLogUtil.convertToJULLevel(logLevel);
             if (level != null) {
-                LogManager.getLogManager().getLogger(logName).setLevel(level);
+                LogManager.getLogManager().getLogger(logName.trim()).setLevel(level);
             } else {
                 LOG.error("JUL logger level with value=" + logLevel + " not defined");
             }
@@ -54,7 +55,7 @@ public class JavaUtilLogConfigurator implements LogConfigurator {
 
     @Override
     public String getLevel(String logName) {
-        return LogManager.getLogManager().getLogger(logName).getLevel().getName();
+        return LogManager.getLogManager().getLogger(logName.trim()).getLevel().getName();
     }
 
     @Override
