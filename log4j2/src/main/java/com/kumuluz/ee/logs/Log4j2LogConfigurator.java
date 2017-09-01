@@ -44,10 +44,11 @@ public class Log4j2LogConfigurator implements LogConfigurator {
 
     @Override
     public void setLevel(String logName, String logLevel) {
+        logLevel = logLevel.trim().toUpperCase();
         try {
             Level level = Log4j2LogUtil.convertToLog4j2Level(logLevel);
             if (level != null) {
-                Configurator.setLevel(logName, level);
+                Configurator.setLevel(logName.trim(), level);
             } else {
                 LOG.error("Log4j2 logger level with value" + logLevel + " not defined");
             }
@@ -59,7 +60,7 @@ public class Log4j2LogConfigurator implements LogConfigurator {
 
     @Override
     public String getLevel(String logName) {
-        return LogManager.getLogger(logName).getLevel().name();
+        return LogManager.getLogger(logName.trim()).getLevel().name();
     }
 
     @Override
