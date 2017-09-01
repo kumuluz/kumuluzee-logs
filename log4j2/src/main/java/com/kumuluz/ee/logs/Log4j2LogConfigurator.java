@@ -37,7 +37,8 @@ import java.io.*;
  */
 public class Log4j2LogConfigurator implements LogConfigurator {
 
-    private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(Log4j2LogConfigurator.class.getSimpleName());
+    private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(Log4j2LogConfigurator.class
+            .getSimpleName());
 
     private static String rootLevel;
 
@@ -48,7 +49,7 @@ public class Log4j2LogConfigurator implements LogConfigurator {
             if (level != null) {
                 Configurator.setLevel(logName, level);
             } else {
-                LOG.error("Log4j2 logger level with value={} not defined", logLevel);
+                LOG.error("Log4j2 logger level with value" + logLevel + " not defined");
             }
 
         } catch (Exception exception) {
