@@ -25,23 +25,29 @@ import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.utils.JavaUtilLogUtil;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
 /**
- * @Author Marko Skrjanec
+ * @author Marko Skrjanec
+ * @since 1.3.0
  */
 public class JavaUtilLogConfigurator implements LogConfigurator {
 
     private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(JavaUtilLogConfigurator.class
-            .getSimpleName());
+            .getName());
 
     @Override
     public void setLevel(String logName, String logLevel) {
+
         logLevel = logLevel.trim().toUpperCase();
+
         try {
             Level level = JavaUtilLogUtil.convertToJULLevel(logLevel);
+
             if (level != null) {
                 LogManager.getLogManager().getLogger(logName.trim()).setLevel(level);
             } else {
@@ -59,24 +65,6 @@ public class JavaUtilLogConfigurator implements LogConfigurator {
     }
 
     @Override
-    public void setDebug(boolean debug) {
-
-        if (debug) {
-
-            Level level = JavaUtilLogUtil.convertToJULLevel(LogLevel.DEBUG);
-
-            java.util.logging.Logger rootLogger = LogManager.getLogManager().getLogger("");
-            rootLogger.setLevel(level);
-
-            for (Handler handler : rootLogger.getHandlers()) {
-                handler.setLevel(level);
-            }
-        } else {
-            LogInitializationUtil.initConfiguration();
-        }
-    }
-
-    @Override
     public void configure() {
         try {
             LogManager.getLogManager().readConfiguration();
@@ -91,10 +79,11 @@ public class JavaUtilLogConfigurator implements LogConfigurator {
     }
 
     @Override
-    public void configure(File file) {
+    public void configure(Path file) {
+
         try {
-            configure(new FileInputStream(file));
-        } catch (FileNotFoundException exception) {
+            configure(Files.newInputStream(file));
+        } catch (IOException exception) {
             LOG.error("An error occurred when trying to read configuration file.", exception);
         }
     }

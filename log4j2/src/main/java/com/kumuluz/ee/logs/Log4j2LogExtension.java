@@ -43,13 +43,22 @@ import java.util.logging.LogManager;
 @EeComponentDependency(EeComponentType.SERVLET)
 public class Log4j2LogExtension implements LogsExtension {
 
+    private LogDeferrer<Logger> logDeferrer;
+
     @Override
     public void load() {
+
+        logDeferrer = new LogDeferrer<>();
+
+        LogInitializationUtil.loadConfiguration(logDeferrer);
     }
 
     @Override
     public void init(KumuluzServerWrapper kumuluzServerWrapper, EeConfig eeConfig) {
-        LogInitializationUtil.initConfiguration();
+
+        logDeferrer.execute();
+        logDeferrer = null;
+
         LogInitializationUtil.initWatchers();
     }
 

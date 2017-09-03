@@ -29,13 +29,12 @@ import org.apache.logging.log4j.Level;
  */
 public class Log4j2LogUtil {
 
-    public static final String LOG4J2_LOGGER_NAME = "Log4j2Logger";
-
     public static Level convertToLog4j2Level(String logLevel) {
         return Level.getLevel(logLevel);
     }
 
     public static Level convertToLog4j2Level(LogLevel logLevel) {
+
         switch (logLevel) {
             case ERROR:
                 return Level.ERROR;
@@ -54,6 +53,7 @@ public class Log4j2LogUtil {
     }
 
     public static LogLevel convertToLogLevel(Level level) {
+
         if (Level.ERROR.equals(level)) {
             return LogLevel.ERROR;
         } else if (Level.WARN.equals(level)) {

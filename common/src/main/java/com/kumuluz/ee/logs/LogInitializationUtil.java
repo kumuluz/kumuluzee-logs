@@ -20,12 +20,15 @@
 */
 package com.kumuluz.ee.logs;
 
+import com.kumuluz.ee.common.config.EeConfig;
 import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
 
-import java.io.File;
+import java.nio.file.Paths;
+import java.util.Optional;
 
 /**
  * @author Marko Skrjanec
+ * @since 1.3.0
  */
 public class LogInitializationUtil {
 
@@ -34,7 +37,6 @@ public class LogInitializationUtil {
     private static final String CONFIG_FILE_PATH = "kumuluzee.logs.config-file";
     private static final String CONFIG_FILE_LOCATION_PATH = "kumuluzee.logs.config-file-location";
     private static final String LOGGERS_PATH = "kumuluzee.logs.loggers";
-    private static final String DEBUG_PATH = "kumuluzee.debug";
 
     private static final ConfigurationUtil configurationUtil = ConfigurationUtil.getInstance();
 
@@ -43,33 +45,36 @@ public class LogInitializationUtil {
     /**
      * Helper method for initiating configuration.
      */
-    public static void initConfiguration() {
+    public static void loadConfiguration(LogDeferrer<Logger> logDeferrer) {
+
+        logDeferrer.init(() -> LOG);
 
         if (configurationUtil.get(CONFIG_FILE_PATH).isPresent()) {
 
             String file = configurationUtil.get(CONFIG_FILE_PATH).get();
+
             logConfigurator.configure(file);
-            LOG.trace("Initializing logs with configuration file: " + file);
+
+            logDeferrer.defer(l -> l.trace("Initializing logs with configuration file: " + file));
         } else if (configurationUtil.get(CONFIG_FILE_LOCATION_PATH).isPresent()) {
 
             String location = configurationUtil.get(CONFIG_FILE_LOCATION_PATH).get();
-            logConfigurator.configure(new File(location));
-            LOG.trace("Initializing logs from configuration file: " + location);
+
+            logConfigurator.configure(Paths.get(location));
+
+            logDeferrer.defer(l -> l.trace("Initializing logs from configuration file: " + location));
         } else {
 
             logConfigurator.configure();
-            LOG.trace("Initializing default logs configuration");
+
+            logDeferrer.defer(l -> l.trace("Initializing default logs configuration"));
         }
 
         if (configurationUtil.getListSize(LOGGERS_PATH).isPresent()) {
 
+            logDeferrer.defer(l -> l.trace("Initializing loggers"));
+
             initLoggers();
-        }
-
-        if (configurationUtil.getBoolean(DEBUG_PATH).isPresent() && configurationUtil.getBoolean(DEBUG_PATH).get()) {
-
-            LOG.trace("Initializing root logger in DEBUG mode");
-            logConfigurator.setDebug(true);
         }
     }
 
@@ -79,34 +84,28 @@ public class LogInitializationUtil {
     public static void initWatchers() {
 
         ConfigurationUtil.getInstance().subscribe(CONFIG_FILE_PATH, (String key, String value) -> {
+
             if (CONFIG_FILE_PATH.equals(key)) {
+
                 LOG.trace("Initializing logs with configuration file: " + value);
                 logConfigurator.configure(value);
             }
         });
 
         ConfigurationUtil.getInstance().subscribe(CONFIG_FILE_LOCATION_PATH, (String key, String value) -> {
+
             if (CONFIG_FILE_LOCATION_PATH.equals(key)) {
+
                 LOG.trace("Initializing logs from configuration file: " + value);
-                logConfigurator.configure(new File(value));
+                logConfigurator.configure(Paths.get(value));
             }
         });
 
         ConfigurationUtil.getInstance().subscribe(LOGGERS_PATH, (String key, String value) -> {
-            if (key != null && key.startsWith(LOGGERS_PATH)) {
-                initLoggers();
-            }
-        });
 
-        ConfigurationUtil.getInstance().subscribe(DEBUG_PATH, (String key, String value) -> {
-            if (DEBUG_PATH.equals(key)) {
-                if ("true".equals(value.toLowerCase())) {
-                    LOG.trace("Initializing root logger in DEBUG mode");
-                    logConfigurator.setDebug(true);
-                } else if ("false".equals(value.toLowerCase())) {
-                    LOG.trace("Resetting root logger back from DEBUG mode");
-                    logConfigurator.setDebug(false);
-                }
+            if (key != null && key.startsWith(LOGGERS_PATH)) {
+
+                initLoggers();
             }
         });
     }
@@ -116,17 +115,19 @@ public class LogInitializationUtil {
      */
     private static void initLoggers() {
 
-        LOG.trace("Initializing loggers");
-        int length = configurationUtil.getListSize(LOGGERS_PATH).get();
+        Optional<Integer> length = configurationUtil.getListSize(LOGGERS_PATH);
 
-        for (int i = 0; i < length; i++) {
-            if (configurationUtil.get(LOGGERS_PATH + "[" + i + "].name").isPresent() &&
-                    configurationUtil.get(LOGGERS_PATH + "[" + i + "].level").isPresent()) {
+        if (length.isPresent()) {
 
-                String name = configurationUtil.get(LOGGERS_PATH + "[" + i + "].name").get();
-                String level = configurationUtil.get(LOGGERS_PATH + "[" + i + "].level").get();
-                LOG.trace("Initializing logger " + name + " with level " + level);
-                LogUtil.getInstance().getLogConfigurator().setLevel(name, level);
+            for (int i = 0; i < length.get(); i++) {
+
+                Optional<String> name = configurationUtil.get(LOGGERS_PATH + "[" + i + "].name");
+                Optional<String> level = configurationUtil.get(LOGGERS_PATH + "[" + i + "].level");
+
+                if (name.isPresent() && level.isPresent()) {
+
+                    LogUtil.getInstance().getLogConfigurator().setLevel(name.get(), level.get());
+                }
             }
         }
     }

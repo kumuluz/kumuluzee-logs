@@ -49,7 +49,6 @@ public class Log4j2LogCommons implements LogCommons {
     private org.apache.logging.log4j.Logger logger;
 
     public Log4j2LogCommons() {
-
     }
 
     private Log4j2LogCommons(String logName) {
@@ -63,13 +62,13 @@ public class Log4j2LogCommons implements LogCommons {
 
     @Override
     public Log4j2LogCommons getCommonsLogger(String logName) {
-        Log4j2LogCommons log4j2LogCommonsLogger = new Log4j2LogCommons(logName);
-        return log4j2LogCommonsLogger;
+
+        return new Log4j2LogCommons(logName);
     }
 
     @Override
     public void setDefaultLevel(LogLevel logLevel) {
-        this.DEFAULT_LOG_LEVEL = logLevel;
+        DEFAULT_LOG_LEVEL = logLevel;
     }
 
     @Override

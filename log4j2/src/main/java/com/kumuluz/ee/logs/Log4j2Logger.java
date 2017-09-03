@@ -79,7 +79,8 @@ public class Log4j2Logger implements Logger {
 
     @Override
     public void log(LogLevel level, LogMessage message, Throwable thrown) {
-        if (message == null) {
+
+        if (message.getMessage() == null) {
             logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message, thrown);
         } else if (message.getFields() == null) {
             logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message.getMessage(), thrown);
