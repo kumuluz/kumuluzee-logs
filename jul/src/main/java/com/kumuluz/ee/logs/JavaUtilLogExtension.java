@@ -34,14 +34,14 @@ import java.util.logging.Handler;
 import java.util.logging.LogManager;
 
 /**
- * KumuluzEE framework extension for log4j2-based logging
+ * KumuluzEE framework extension for jul-based logging
  *
- * @author Jan Meznarič
- * @since 1.2.0
+ * @author Marko Skrjanec
+ * @since 1.4.0
  */
-@EeExtensionDef(name = "log4j2", group = EeExtensionGroup.LOGS)
+@EeExtensionDef(name = "jul", group = EeExtensionGroup.LOGS)
 @EeComponentDependency(EeComponentType.SERVLET)
-public class Log4j2LogExtension implements LogsExtension {
+public class JavaUtilLogExtension implements LogsExtension {
 
     private LogDeferrer<Logger> logDeferrer;
 
@@ -64,12 +64,11 @@ public class Log4j2LogExtension implements LogsExtension {
 
     @Override
     public Optional<Class<? extends LogManager>> getJavaUtilLogManagerClass() {
-        return Optional.of(org.apache.logging.log4j.jul.LogManager.class);
+        return Optional.empty();
     }
 
     @Override
     public Optional<Handler> getJavaUtilLogHandler() {
         return Optional.empty();
     }
-
 }

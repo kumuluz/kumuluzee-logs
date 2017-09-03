@@ -9,20 +9,31 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>KumuluzEE Logs common</name>
-    <description>Common artifacts for KumuluzEE Logs extensions</description>
+    <name>KumuluzEE Logs JUL</name>
+    <description>KumuluzEE Logs component implemented by log4j2</description>
 
-    <artifactId>kumuluzee-logs-common</artifactId>
+    <artifactId>kumuluzee-logs-jul</artifactId>
+
+    <properties>
+        <slf4j.version>1.7.25</slf4j.version>
+    </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.kumuluz.ee.logs</groupId>
+            <artifactId>kumuluzee-logs-common</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-cdi-weld</artifactId>
-        </dependency>
-    </dependencies>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+    </dependencies>
 </project>

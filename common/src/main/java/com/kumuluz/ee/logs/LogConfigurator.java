@@ -21,8 +21,8 @@
 
 package com.kumuluz.ee.logs;
 
-import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Path;
 
 /**
  * @author Rok Povse
@@ -33,8 +33,6 @@ public interface LogConfigurator {
     void setLevel(String logName, String logLevel);
 
     String getLevel(String logName);
-
-    void setDebug(boolean debug);
 
     /**
      * Method for configuring the default configuration.
@@ -53,7 +51,7 @@ public interface LogConfigurator {
      *
      * @param config
      */
-    void configure(File config);
+    void configure(Path config);
 
     /**
      * Method for providing config file input stream.

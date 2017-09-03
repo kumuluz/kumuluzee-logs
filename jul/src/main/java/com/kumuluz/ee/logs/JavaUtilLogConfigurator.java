@@ -22,27 +22,24 @@
 package com.kumuluz.ee.logs;
 
 import com.kumuluz.ee.logs.enums.LogLevel;
-import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.xml.XmlConfiguration;
+import com.kumuluz.ee.logs.impl.JavaUtilDefaultLogConfigurator;
+import com.kumuluz.ee.logs.utils.JavaUtilLogUtil;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
 
 /**
- * @Author Rok Povse, Marko Skrjanec
+ * @author Marko Skrjanec
+ * @since 1.3.0
  */
-public class Log4j2LogConfigurator implements LogConfigurator {
+public class JavaUtilLogConfigurator implements LogConfigurator {
 
-    private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(Log4j2LogConfigurator.class
-            .getSimpleName());
+    private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(JavaUtilLogConfigurator.class
+            .getName());
 
     @Override
     public void setLevel(String logName, String logLevel) {
@@ -50,13 +47,14 @@ public class Log4j2LogConfigurator implements LogConfigurator {
         logLevel = logLevel.trim().toUpperCase();
 
         try {
-            Level level = Log4j2LogUtil.convertToLog4j2Level(logLevel);
+            Level level = JavaUtilLogUtil.convertToJULLevel(logLevel);
 
             if (level != null) {
-                Configurator.setLevel(logName.trim(), level);
+                LogManager.getLogManager().getLogger(logName.trim()).setLevel(level);
             } else {
-                LOG.error("Log4j2 logger level with value" + logLevel + " not defined");
+                LOG.error("JUL logger level with value=" + logLevel + " not defined");
             }
+
         } catch (Exception exception) {
             LOG.error("An error occurred when trying to set logger level.", exception);
         }
@@ -64,12 +62,17 @@ public class Log4j2LogConfigurator implements LogConfigurator {
 
     @Override
     public String getLevel(String logName) {
-        return LogManager.getLogger(logName.trim()).getLevel().name();
+        return LogManager.getLogManager().getLogger(logName.trim()).getLevel().getName();
     }
 
     @Override
     public void configure() {
-        Configurator.initialize(null);
+
+        try {
+            JavaUtilDefaultLogConfigurator.init();
+        } catch (Exception e) {
+            LOG.error("An error occurred when trying to read default configuration file.");
+        }
     }
 
     @Override
@@ -89,11 +92,8 @@ public class Log4j2LogConfigurator implements LogConfigurator {
 
     @Override
     public void configure(InputStream inputStream) {
-
         try {
-            ConfigurationSource source = new ConfigurationSource(inputStream);
-            XmlConfiguration config = new XmlConfiguration(Configurator.initialize(null, source), source);
-            LoggerContext.getContext(false).start(config);
+            LogManager.getLogManager().readConfiguration(inputStream);
         } catch (Exception exception) {
             LOG.error("An error occurred when trying to read Log4j2 configuration.", exception);
         }

@@ -39,8 +39,10 @@ public class LogUtil {
     private Map<String, LogCommons> loggersCommons;
 
     private LogUtil() {
+
         loggers = new HashMap<>();
         loggersCommons = new HashMap<>();
+
         initInstances();
     }
 
@@ -50,6 +52,7 @@ public class LogUtil {
      * @return LogUtil instance
      */
     public static LogUtil getInstance() {
+
         if (logUtil == null) {
             logUtil = new LogUtil();
         }
@@ -65,6 +68,7 @@ public class LogUtil {
      * @return Log insntace
      */
     public Logger getLogInstance(String loggerName) {
+
         if (!loggers.containsKey(loggerName)) {
             loggers.put(loggerName, loggerInstance.getLogger(loggerName));
         }

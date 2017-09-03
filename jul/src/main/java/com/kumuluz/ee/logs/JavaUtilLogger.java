@@ -23,28 +23,26 @@ package com.kumuluz.ee.logs;
 
 import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.messages.LogMessage;
-import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
-import org.apache.logging.log4j.CloseableThreadContext;
-import org.apache.logging.log4j.LogManager;
+import com.kumuluz.ee.logs.utils.JavaUtilLogUtil;
 
 /**
- * @author Rok Povse, Marko Skrjanec
+ * @author Marko Skrjanec
  */
-public class Log4j2Logger implements Logger {
+public class JavaUtilLogger implements Logger {
 
-    private org.apache.logging.log4j.Logger logger;
+    private java.util.logging.Logger logger;
 
-    public Log4j2Logger() {
+    public JavaUtilLogger() {
     }
 
-    private Log4j2Logger(String logName) {
-        logger = LogManager.getLogger(logName);
+    private JavaUtilLogger(String logName) {
+        logger = java.util.logging.Logger.getLogger(logName);
     }
 
     @Override
     public Logger getLogger(String logName) {
 
-        return new Log4j2Logger(logName);
+        return new JavaUtilLogger(logName);
     }
 
     @Override
@@ -54,22 +52,22 @@ public class Log4j2Logger implements Logger {
 
     @Override
     public void log(LogLevel level, String message) {
-        logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message);
+        logger.log(JavaUtilLogUtil.convertToJULLevel(level), message);
     }
 
     @Override
     public void log(LogLevel level, String message, Object... args) {
-        logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message, args);
+        logger.log(JavaUtilLogUtil.convertToJULLevel(level), message, args);
     }
 
     @Override
     public void log(LogLevel level, String message, Throwable thrown) {
-        logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message, thrown);
+        logger.log(JavaUtilLogUtil.convertToJULLevel(level), message, thrown);
     }
 
     @Override
     public void log(LogLevel level, Throwable thrown) {
-        logger.log(Log4j2LogUtil.convertToLog4j2Level(level), thrown);
+        logger.log(JavaUtilLogUtil.convertToJULLevel(level), thrown.getMessage(), thrown.getCause());
     }
 
     @Override
@@ -81,13 +79,12 @@ public class Log4j2Logger implements Logger {
     public void log(LogLevel level, LogMessage message, Throwable thrown) {
 
         if (message.getMessage() == null) {
-            logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message, thrown);
+            logger.log(JavaUtilLogUtil.convertToJULLevel(level), message.toString(), thrown);
         } else if (message.getFields() == null) {
-            logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message.getMessage(), thrown);
+            logger.log(JavaUtilLogUtil.convertToJULLevel(level), message.getMessage(), thrown);
         } else {
-            try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(message.getFields())) {
-                logger.log(Log4j2LogUtil.convertToLog4j2Level(level), message.getMessage(), thrown);
-            }
+            logger.log(JavaUtilLogUtil.convertToJULLevel(level),
+                    message.getMessage() + " " + message.getFields().toString(), thrown);
         }
     }
 

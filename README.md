@@ -13,12 +13,12 @@ In addition, KumuluzEE Logs also support logging with explicit commands. It prov
 
 KumuluzEE Logs acts as a façade and provides a simple, common interface with the objective to abstract the underlying logging framework. This makes the logging process easier for the developer, standardizes how the logging is performed, and makes the code independent of the underlying logging framework. 
 
-KumuluzEE Logs is designed to support different logging frameworks. Currently, KumuluzEE Logs provides support for Log4J2. In the future, other logging frameworks will be supported too (contributions are welcome).
+KumuluzEE Logs is designed to support different logging frameworks. Currently, KumuluzEE Logs provides support for Log4J2 and java.util.logging (JUL). In the future, other logging frameworks will be supported too (contributions are welcome).
 
 To address the needs specific to logging microservices, KumuluzEE Logs can be easily configured to collect distributed logs into a centralized log management system, such as ELK (Elasticsearch, Logstash, Kibana) stack, Graylog, Splunk, etc. Furthermore, KumuluzEE Logs provides support for Apache Kafka and other approaches. 
 
 ## Usage
-KumuluzEE defines interfaces for common logging features. Therefore, to use the logging you need to include a dependency to implementation library. Currently, Log4j2 is supported and you add the dependency:
+KumuluzEE defines interfaces for common logging features. Therefore, to use the logging you need to include a dependency to implementation library. Currently, Log4j2 and JUL are supported and you add the dependency:
 
 ```xml
 <dependency>
@@ -28,6 +28,13 @@ KumuluzEE defines interfaces for common logging features. Therefore, to use the 
 </dependency>
 ```
 
+```xml
+<dependency>
+   <artifactId>kumuluzee-logs-jul</artifactId>
+   <groupId>com.kumuluz.ee.logs</groupId>
+   <version>${kumuluzee-logs.version}</version>
+</dependency>
+```
 **Developer logging**
 
 To use the developer logging functionality get a new `Logger` instance by using `LogManager`:
@@ -117,6 +124,95 @@ The configuration for Log4j2 library must be available for the application to lo
     </Loggers>
 </Configuration>
 ```
+
+**Add JUL logging configuration**
+
+The configuration for JUL library will be loaded from the JRE logging.properties file. You can however provide your own logging.properties configuration file and enabling it by providing `-Djava.util.logging.config.file` system property. Sample configuration, which should be in a file named `logging.properties` and located in `src/main/resources`:
+
+```
+# Default global logging level
+.level=FINER
+
+# ConsoleHandler definition
+handlers=java.util.logging.ConsoleHandler
+
+# ConsoleHandler configuration settings
+java.util.logging.ConsoleHandler.level=FINER
+java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
+```
+
+**Configuring Kumuluzee-logs extension with config (Consul or ETCD)**
+
+Kumuluzee-logs in combination with Kumuluzee-config offers plenty of configuration options which can be specified at startup or when the microservice is already running. The following options are available:
+* DEBUG mode
+* Config file
+* Config file location
+* Loggers with names and levels
+
+The options can be enabled:
+* at startup in file, Consul or ETCD
+* in runtime with Consul or ETCD
+
+***DEBUG mode***
+
+Debug mode can be enabled by providing the `kumuluzee.debug` property:
+
+```yaml
+kumuluzee:
+  debug: true
+```
+
+***Config file***
+
+Config file can be provided by providing the `kumuluzee.logs.config-file` property:
+
+```yaml
+kumuluzee:
+  logs:
+    config-file: '<?xml version="1.0" encoding="UTF-8"?>
+                  <Configuration name="customers">
+                      <Appenders>
+                          <Console name="console" target="SYSTEM_OUT">
+                              <PatternLayout pattern="%d %p %marker %m %X %ex %n"/>
+                          </Console>
+                      </Appenders>
+                      <Loggers>                 
+                          <!-- Default logger -->
+                          <Root level="info">
+                              <AppenderRef ref="console"/>
+                          </Root>
+                      </Loggers>
+                  </Configuration>'
+```
+
+***Config file location***
+
+Config file location can be provided by providing the `kumuluzee.logs.config-file-location` property:
+
+```yaml
+kumuluzee:
+  logs:
+    config-file-location: /home/kumuluz/kumuluzee-samples/kumuluzee-logs-log4j2/src/main/resources/log4j2.xml
+```
+
+At startup if both `kumuluzee.logs.config-file` and `kumuluzee.logs.config-file-location` are provided the `kumuluzee.logs.config-file` will assume priority. When configuring with Consul this is not the case since the last sent value will assume priority.
+
+***Loggers***
+
+Logger levels can be configured by providing the `kumuluzee.logs.loggers` property:
+
+```yaml
+kumuluzee:
+  logs:
+    loggers:
+      - name: com.kumuluz.ee.samples.kumuluzee_logs.CustomerResource
+        level: TRACE
+      - name: ''
+        level: INFO
+
+```
+
+Here the root logger can be referenced by providing an empty string or a combination of whitespaces which will be trimmed to an empty string.
 
 **Build the microservice**
 

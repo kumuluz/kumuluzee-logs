@@ -26,33 +26,34 @@ import com.kumuluz.ee.logs.markers.CommonsMarker;
 import com.kumuluz.ee.logs.markers.Marker;
 import com.kumuluz.ee.logs.markers.StatusMarker;
 import com.kumuluz.ee.logs.messages.LogMessage;
+import com.kumuluz.ee.logs.messages.SimpleLogMessage;
 import com.kumuluz.ee.logs.types.LogMethodContext;
 import com.kumuluz.ee.logs.types.LogMethodMessage;
 import com.kumuluz.ee.logs.types.LogResourceContext;
 import com.kumuluz.ee.logs.types.LogResourceMessage;
-import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
-import org.apache.logging.log4j.CloseableThreadContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.MarkerManager;
+import com.kumuluz.ee.logs.utils.JavaUtilLogUtil;
+
+import java.util.HashMap;
 
 /**
- * Kumuluz-logs logger interface
+ * LogCommons implementation with JUL.
  *
- * @author Rok Povse, Marko Skrjanec
+ * @author Marko Skrjanec
  */
-public class Log4j2LogCommons implements LogCommons {
+public class JavaUtilLogCommons implements LogCommons {
 
     private static final String METRIC_RESPONSE_TIME = "response-time";
 
     private static LogLevel DEFAULT_LOG_LEVEL = LogLevel.TRACE;
 
-    private org.apache.logging.log4j.Logger logger;
+    private java.util.logging.Logger logger;
 
-    public Log4j2LogCommons() {
+    public JavaUtilLogCommons() {
+
     }
 
-    private Log4j2LogCommons(String logName) {
-        logger = LogManager.getLogger(logName);
+    private JavaUtilLogCommons(String logName) {
+        logger = java.util.logging.Logger.getLogger(logName);
     }
 
     @Override
@@ -61,9 +62,9 @@ public class Log4j2LogCommons implements LogCommons {
     }
 
     @Override
-    public Log4j2LogCommons getCommonsLogger(String logName) {
+    public JavaUtilLogCommons getCommonsLogger(String logName) {
 
-        return new Log4j2LogCommons(logName);
+        return new JavaUtilLogCommons(logName);
     }
 
     @Override
@@ -95,10 +96,13 @@ public class Log4j2LogCommons implements LogCommons {
     @Override
     public void logMethodExit(LogMethodContext logMethodContext) {
         if (logMethodContext.isMetricsEnabled() != null && logMethodContext.isMetricsEnabled()) {
-            try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.put(METRIC_RESPONSE_TIME,
-                    logMethodContext.getLogMetrics().getTimeElapsed().toString())) {
-                logExit(logMethodContext);
+            if (logMethodContext.getCallExitMessage() == null) {
+                logMethodContext.setCallExitMessage(new SimpleLogMessage());
             }
+            logMethodContext.getCallExitMessage().getFields().put(METRIC_RESPONSE_TIME,
+                    logMethodContext.getLogMetrics().getTimeElapsed().toString());
+
+            logExit(logMethodContext);
         } else {
             logExit(logMethodContext);
         }
@@ -128,10 +132,16 @@ public class Log4j2LogCommons implements LogCommons {
     @Override
     public void logResourceEnd(LogResourceContext logResourceContext) {
         if (logResourceContext.isMetricsEnabled() != null && logResourceContext.isMetricsEnabled()) {
-            try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.put(METRIC_RESPONSE_TIME,
-                    logResourceContext.getLogMetrics().getTimeElapsed().toString())) {
-                logEnd(logResourceContext);
+            if (logResourceContext.getInvokeEndMessage() == null) {
+                SimpleLogMessage message = new SimpleLogMessage();
+                message.setFields(new HashMap<>());
+                logResourceContext.setInvokeEndMessage(message);
             }
+
+            logResourceContext.getInvokeEndMessage().getFields().put(METRIC_RESPONSE_TIME,
+                    logResourceContext.getLogMetrics().getTimeElapsed().toString());
+
+            logEnd(logResourceContext);
         } else {
             logEnd(logResourceContext);
         }
@@ -165,7 +175,6 @@ public class Log4j2LogCommons implements LogCommons {
      * @param logMessage   object defining LogMessage
      */
     private void log(LogLevel level, Marker marker, Marker parentMarker, LogMessage logMessage) {
-
         String message;
         if (logMessage == null || logMessage.getMessage() == null) {
             message = "";
@@ -173,14 +182,14 @@ public class Log4j2LogCommons implements LogCommons {
             message = logMessage.getMessage();
         }
 
+        String markerString = parentMarker == null ? marker.toString() : marker + "[ " + parentMarker + " ]";
+
         if (logMessage != null && logMessage.getFields() != null) {
-            try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(logMessage.getFields())) {
-                logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString())
-                        .setParents(MarkerManager.getMarker(parentMarker.toString())), message);
-            }
+            logger.log(JavaUtilLogUtil.convertToJULLevel(level), markerString + " " + message + " " +
+                    logMessage.getFields());
         } else {
-            logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString())
-                    .setParents(MarkerManager.getMarker(parentMarker.toString())), message);
+            logger.log(JavaUtilLogUtil.convertToJULLevel(level), markerString + " " + message);
         }
     }
 }
+

@@ -22,48 +22,50 @@
 package com.kumuluz.ee.logs.utils;
 
 import com.kumuluz.ee.logs.enums.LogLevel;
-import org.apache.logging.log4j.Level;
+
+import java.util.logging.Level;
 
 /**
- * @author Rok Povse, Marko Skrjanec
+ * @author Marko Skrjanec
  */
-public class Log4j2LogUtil {
+public class JavaUtilLogUtil {
 
-    public static Level convertToLog4j2Level(String logLevel) {
-        return Level.getLevel(logLevel);
+    public static Level convertToJULLevel(String logLevel) {
+        return Level.parse(logLevel);
     }
 
-    public static Level convertToLog4j2Level(LogLevel logLevel) {
-
+    public static Level convertToJULLevel(LogLevel logLevel) {
         switch (logLevel) {
             case ERROR:
-                return Level.ERROR;
+                return Level.SEVERE;
             case WARN:
-                return Level.WARN;
+                return Level.WARNING;
             case INFO:
                 return Level.INFO;
             case DEBUG:
-                return Level.DEBUG;
+                return Level.FINE;
             case TRACE:
+                return Level.FINER;
             case FINEST:
-                return Level.TRACE;
+                return Level.FINEST;
             default:
                 return null;
         }
     }
 
-    public static LogLevel convertToLogLevel(Level level) {
-
-        if (Level.ERROR.equals(level)) {
+    public static LogLevel convertFromJULLevel(Level level) {
+        if (Level.SEVERE.equals(level)) {
             return LogLevel.ERROR;
-        } else if (Level.WARN.equals(level)) {
+        } else if (Level.WARNING.equals(level)) {
             return LogLevel.WARN;
         } else if (Level.INFO.equals(level)) {
             return LogLevel.INFO;
-        } else if (Level.DEBUG.equals(level)) {
+        } else if (Level.FINE.equals(level)) {
             return LogLevel.DEBUG;
-        } else if (Level.TRACE.equals(level)) {
+        } else if (Level.FINER.equals(level)) {
             return LogLevel.TRACE;
+        } else if (Level.FINEST.equals(level)) {
+            return LogLevel.FINEST;
         } else {
             return null;
         }
