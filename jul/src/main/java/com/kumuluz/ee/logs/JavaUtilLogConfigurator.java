@@ -22,6 +22,7 @@
 package com.kumuluz.ee.logs;
 
 import com.kumuluz.ee.logs.enums.LogLevel;
+import com.kumuluz.ee.logs.impl.JavaUtilDefaultLogConfigurator;
 import com.kumuluz.ee.logs.utils.JavaUtilLogUtil;
 
 import java.io.*;
@@ -66,8 +67,9 @@ public class JavaUtilLogConfigurator implements LogConfigurator {
 
     @Override
     public void configure() {
+
         try {
-            LogManager.getLogManager().readConfiguration();
+            JavaUtilDefaultLogConfigurator.init();
         } catch (Exception e) {
             LOG.error("An error occurred when trying to read default configuration file.");
         }
