@@ -43,8 +43,8 @@ public class Log4j2Logger implements Logger {
 
     @Override
     public Logger getLogger(String logName) {
-        Log4j2Logger log4j2Log = new Log4j2Logger(logName);
-        return log4j2Log;
+
+        return new Log4j2Logger(logName);
     }
 
     @Override

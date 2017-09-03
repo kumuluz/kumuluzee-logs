@@ -63,13 +63,13 @@ public class JavaUtilLogCommons implements LogCommons {
 
     @Override
     public JavaUtilLogCommons getCommonsLogger(String logName) {
-        JavaUtilLogCommons julLogCommons = new JavaUtilLogCommons(logName);
-        return julLogCommons;
+
+        return new JavaUtilLogCommons(logName);
     }
 
     @Override
     public void setDefaultLevel(LogLevel logLevel) {
-        this.DEFAULT_LOG_LEVEL = logLevel;
+        DEFAULT_LOG_LEVEL = logLevel;
     }
 
     @Override

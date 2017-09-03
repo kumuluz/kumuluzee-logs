@@ -55,11 +55,11 @@ public class JavaUtilLogExtension implements LogsExtension {
 
     @Override
     public Optional<Class<? extends LogManager>> getJavaUtilLogManagerClass() {
-        return Optional.of(LogManager.class);
+        return Optional.empty();
     }
 
     @Override
-    public Optional<Handler> getJavaUtilLogHandlerClass() {
+    public Optional<Handler> getJavaUtilLogHandler() {
         return Optional.empty();
     }
 }

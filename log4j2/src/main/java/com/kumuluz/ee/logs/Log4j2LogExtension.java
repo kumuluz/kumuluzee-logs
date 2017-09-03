@@ -59,7 +59,7 @@ public class Log4j2LogExtension implements LogsExtension {
     }
 
     @Override
-    public Optional<Handler> getJavaUtilLogHandlerClass() {
+    public Optional<Handler> getJavaUtilLogHandler() {
         return Optional.empty();
     }
 

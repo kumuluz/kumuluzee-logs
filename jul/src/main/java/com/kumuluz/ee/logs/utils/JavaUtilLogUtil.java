@@ -30,8 +30,6 @@ import java.util.logging.Level;
  */
 public class JavaUtilLogUtil {
 
-    public static final String JUL_LOGGER_NAME = "JULLogger";
-
     public static Level convertToJULLevel(String logLevel) {
         return Level.parse(logLevel);
     }

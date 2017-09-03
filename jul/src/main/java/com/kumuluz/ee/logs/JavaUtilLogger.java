@@ -41,8 +41,8 @@ public class JavaUtilLogger implements Logger {
 
     @Override
     public Logger getLogger(String logName) {
-        JavaUtilLogger julLogger = new JavaUtilLogger(logName);
-        return julLogger;
+
+        return new JavaUtilLogger(logName);
     }
 
     @Override
@@ -77,7 +77,8 @@ public class JavaUtilLogger implements Logger {
 
     @Override
     public void log(LogLevel level, LogMessage message, Throwable thrown) {
-        if (message == null) {
+
+        if (message.getMessage() == null) {
             logger.log(JavaUtilLogUtil.convertToJULLevel(level), message.toString(), thrown);
         } else if (message.getFields() == null) {
             logger.log(JavaUtilLogUtil.convertToJULLevel(level), message.getMessage(), thrown);

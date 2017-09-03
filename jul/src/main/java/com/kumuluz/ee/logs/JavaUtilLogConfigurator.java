@@ -60,10 +60,14 @@ public class JavaUtilLogConfigurator implements LogConfigurator {
 
     @Override
     public void setDebug(boolean debug) {
+
         if (debug) {
+
             Level level = JavaUtilLogUtil.convertToJULLevel(LogLevel.DEBUG);
+
             java.util.logging.Logger rootLogger = LogManager.getLogManager().getLogger("");
             rootLogger.setLevel(level);
+
             for (Handler handler : rootLogger.getHandlers()) {
                 handler.setLevel(level);
             }
