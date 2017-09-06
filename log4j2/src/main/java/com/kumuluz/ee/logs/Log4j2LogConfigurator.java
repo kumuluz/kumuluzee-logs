@@ -26,8 +26,10 @@ import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.apache.logging.log4j.core.config.xml.XmlConfiguration;
 
 import java.io.ByteArrayInputStream;
@@ -43,6 +45,8 @@ public class Log4j2LogConfigurator implements LogConfigurator {
 
     private static final Logger LOG = com.kumuluz.ee.logs.LogManager.getLogger(Log4j2LogConfigurator.class
             .getSimpleName());
+
+    private static final String DEFAULT_CONFIG = "META-INF/kumuluzee/log4j2-default.xml";
 
     @Override
     public void setLevel(String logName, String logLevel) {
@@ -69,7 +73,15 @@ public class Log4j2LogConfigurator implements LogConfigurator {
 
     @Override
     public void configure() {
-        Configurator.initialize(null);
+
+        Configuration configuration = LoggerContext.getContext().getConfiguration();
+
+        if (configuration instanceof DefaultConfiguration) {
+
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(DEFAULT_CONFIG);
+
+            configure(inputStream);
+        }
     }
 
     @Override
