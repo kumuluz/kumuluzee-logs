@@ -28,7 +28,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <kumuluz.version>2.4.0-SNAPSHOT</kumuluz.version>
+        <kumuluz.version>2.4.0</kumuluz.version>
 
         <nexus.staging.plugin.version>1.6.8</nexus.staging.plugin.version>
         <gpg.plugin.version>1.6</gpg.plugin.version>
