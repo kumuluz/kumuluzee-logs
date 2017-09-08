@@ -43,7 +43,7 @@ To use KumuluzEE Logs with JUL, use the following dependency:
 You can use one dependency only. You cannot use both dependencies at the same time.
 
 
-**Developer Logging**
+## Developer Logging
 
 To use the developer logging functionality get a new `Logger` instance by using `LogManager`:
 
@@ -60,7 +60,7 @@ LOG.error("Error with exception log", exception);
 LOG.error(exception); //exception only
 ```
 
-**Common Logging**
+## Common Logging
 
 Additional common logging is available through `LogCommons` interface, method entry and method exit logging can be used by using `@Log` annotation used at class level or method level or by invoking the methods manually. Resource logging can be used only by manual method invocation.
 
@@ -82,7 +82,7 @@ You can define additional attributes in `@Log` annotation for monitoring method 
 @Log(value = LogParams.METRICS, methodCall = false)
 ```
 
-**JAX-RS method entry and exit logging**
+## JAX-RS method entry and exit Logging
 
 Additional common logging is available through `LogCommons` interface, method entry and method exit logging can be used by using `@Log` annotation used at class level or method level or by invoking the methods manually. Resource logging can be used only by manual method invocation.
 
@@ -105,7 +105,7 @@ You can define additional attributes in `@Log` annotation for monitoring method 
 ```
 
 
-**Resource invocation logging**
+## Resource invocation logging
 
 Additional functionality of `LogCommons` implementation is the ability to log and monitor invocations of external resources, for example databases and services. Resource monitoring allows you to log resource parameters and performance metrics. This functionality is available only through manual invocation of `LogCommons` methods.
 
@@ -137,7 +137,7 @@ InvocationMessage invokeMessage = new InvocationMessage("Invocation of database 
 ```
 
 
-**Configuring KumuluzEE Logs with KumuluzEE Config**
+## Configuring KumuluzEE Logs with KumuluzEE Config
 
 KumuluzEE Logs use the KumuluzEE Config framework to provide configuration of the logging framework. The following options are available:
 * Debug mode
@@ -147,7 +147,7 @@ KumuluzEE Logs use the KumuluzEE Config framework to provide configuration of th
 
 Configuration can be provided at startup or runtime. For runtime configuration, you have to use the KumuluzEE Config extensions for config servers (etcd or Consul).
 
-***Debug mode***
+### Debug mode
 
 Debug mode can be enabled by providing the `kumuluzee.debug` property. When the debug mode is enabled (true), loggig automatically uses the DEBUG level:
 
@@ -157,7 +157,7 @@ kumuluzee:
 ```
 
 
-***Loggers***
+### Loggers
 
 Logger levels can be configured individually using the `kumuluzee.logs.loggers` config property:
 
@@ -174,7 +174,7 @@ kumuluzee:
 
 The root logger can be referenced by providing an empty string ('') or a combination of whitespaces (useful for Consul), which will be trimmed to an empty string.
 
-***Config file content***
+### Config file content
 
 Instead of using the config file in the file system, which might be inappropriate for microservices, the content of the config file can be provided within the `kumuluzee.logs.config-file` config property, as shown below for Log4j2. You can provide config properties for JUL in the same way.
 
@@ -197,7 +197,7 @@ kumuluzee:
                   </Configuration>'
 ```
 
-***Config file location***
+### Config file location
 
 If you prefer to use the config file in the file system, you can specify the config file location using the `kumuluzee.logs.config-file-location` config property:
 
@@ -209,7 +209,7 @@ kumuluzee:
 
 At startup, if both `kumuluzee.logs.config-file` and `kumuluzee.logs.config-file-location` are provided the `kumuluzee.logs.config-file` will have priority. When configuring with Consul this is not the the case since the last sent value will have priority.
 
-***Config file for Log4j2***
+## Config file for Log4j2
 
 The configuration for the Log4j2 library must be available for the application to load it. Please refer to Log4j2 documentation for rules regarding how the configuration is loaded. Configuration should be in the file named `log4j2.xml`, which is located by default in `src/main/resources`:
 
@@ -229,7 +229,7 @@ The configuration for the Log4j2 library must be available for the application t
 </Configuration>
 ```
 
-***Config file for JUL***
+## Config file for JUL
 
 The configuration for JUL library will be loaded from the JRE logging.properties file. You can however provide your own logging.properties configuration file and enabling it by providing `-Djava.util.logging.config.file` system property. Sample configuration, which should be in a file named `logging.properties` and located in `src/main/resources`:
 
