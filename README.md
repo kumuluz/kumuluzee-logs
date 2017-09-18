@@ -140,22 +140,11 @@ InvocationMessage invokeMessage = new InvocationMessage("Invocation of database 
 ## Configuring KumuluzEE Logs with KumuluzEE Config
 
 KumuluzEE Logs use the KumuluzEE Config framework to provide configuration of the logging framework. The following options are available:
-* Debug mode
 * Loggers with names and levels
 * Config file content
 * Config file location
 
 Configuration can be provided at startup or runtime. For runtime configuration, you have to use the KumuluzEE Config extensions for config servers (etcd or Consul).
-
-### Debug mode
-
-Debug mode can be enabled by providing the `kumuluzee.debug` property. When the debug mode is enabled (true), loggig automatically uses the DEBUG level:
-
-```yaml
-kumuluzee:
-  debug: true
-```
-
 
 ### Loggers
 
