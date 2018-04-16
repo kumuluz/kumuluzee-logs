@@ -144,7 +144,7 @@ KumuluzEE Logs use the KumuluzEE Config framework to provide configuration of th
 * Config file content
 * Config file location
 
-Configuration can be provided at startup or runtime. For runtime configuration, you have to use the KumuluzEE Config extensions for config servers (etcd or Consul).
+Configuration can be provided at startup or runtime. For runtime configuration, you have to use the KumuluzEE Config project for config servers (etcd or Consul).
 
 ### Loggers
 
