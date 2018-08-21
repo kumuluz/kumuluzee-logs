@@ -15,7 +15,7 @@ KumuluzEE Logs acts as a façade and provides a simple, common interface with th
 
 KumuluzEE Logs is designed to support different logging frameworks. Currently, KumuluzEE Logs provides support for Log4J2 and java.util.logging (JUL). In the future, other logging frameworks will be supported too (contributions are welcome).
 
-To address the needs specific to logging microservices, KumuluzEE Logs can be easily configured to collect distributed logs into a centralized log management system, such as ELK (Elasticsearch, Logstash, Kibana) stack, Graylog, Splunk, etc. Furthermore, KumuluzEE Logs provides support for Apache Kafka and other approaches. 
+To address the needs specific to logging microservices, KumuluzEE Logs can be easily configured to collect distributed logs into a centralized log management system, such as Elastic Stack, Graylog, Splunk, etc. Furthermore, KumuluzEE Logs provides support for Apache Kafka and other approaches. 
 
 ## Usage
 KumuluzEE defines interfaces for common logging features. Therefore, to use the logging you need to include a dependency to implementation library. Currently, Log4j2 and JUL are supported. Log4j2 is more appropriate for complex and enterprise grade logging scenarios, while JUL is adequate for simpler logging.
