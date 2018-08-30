@@ -237,7 +237,7 @@ java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
 
 ## Changelog
 
-Recent changes can be viewed on Github on the [Releases Page](https://github.com/TFaga/KumuluzEE/releases)
+Recent changes can be viewed on Github on the [Releases Page](https://github.com/kumuluz/kumuluzee-logs/releases)
 
 ## Contribute
 
