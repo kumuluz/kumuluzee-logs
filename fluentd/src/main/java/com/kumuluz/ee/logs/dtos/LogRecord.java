@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014-2017 Kumuluz and/or its affiliates
+ *  Copyright (c) 2014-2019 Kumuluz and/or its affiliates
  *  and other contributors as indicated by the @author tags and
  *  the contributor list.
  *
@@ -17,20 +17,39 @@
  *  out of or in connection with the software or the use or other dealings in the
  *  software. See the License for the specific language governing permissions and
  *  limitations under the License.
-*/
+ */
 
-package com.kumuluz.ee.logs.enums;
+package com.kumuluz.ee.logs.dtos;
+
+import org.fluentd.logger.FluentLogger;
+
+import java.util.HashMap;
 
 /**
- * @author Rok Povse
- * @author Marko Skrjanec
+ * @author Domen Gašperlin
+ * @since 1.4.0
  */
-public enum LogLevel {
-    FINEST,
-    TRACE,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR,
-    FATAL
+public class LogRecord {
+
+    private HashMap<String, Object> record;
+    private Long timestamp;
+    private FluentLogger logger;
+
+    public LogRecord(HashMap<String, Object> record, Long timestamp, FluentLogger logger) {
+        this.record = record;
+        this.timestamp = timestamp;
+        this.logger = logger;
+    }
+
+    public HashMap<String, Object> getRecord() {
+        return record;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public FluentLogger getLogger() {
+        return logger;
+    }
 }

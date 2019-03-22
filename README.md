@@ -13,12 +13,12 @@ In addition, KumuluzEE Logs also support logging with explicit commands. It prov
 
 KumuluzEE Logs acts as a façade and provides a simple, common interface with the objective to abstract the underlying logging framework. This makes the logging process easier for the developer, standardizes how the logging is performed, and makes the code independent of the underlying logging framework. 
 
-KumuluzEE Logs is designed to support different logging frameworks. Currently, KumuluzEE Logs provides support for Log4J2 and java.util.logging (JUL). In the future, other logging frameworks will be supported too (contributions are welcome).
+KumuluzEE Logs is designed to support different logging frameworks. Currently, KumuluzEE Logs provides support for Log4J2, java.util.logging (JUL) and Fluentd. In the future, other logging frameworks will be supported too (contributions are welcome).
 
 To address the needs specific to logging microservices, KumuluzEE Logs can be easily configured to collect distributed logs into a centralized log management system, such as Elastic Stack, Graylog, Splunk, etc. Furthermore, KumuluzEE Logs provides support for Apache Kafka and other approaches. 
 
 ## Usage
-KumuluzEE defines interfaces for common logging features. Therefore, to use the logging you need to include a dependency to implementation library. Currently, Log4j2 and JUL are supported. Log4j2 is more appropriate for complex and enterprise grade logging scenarios, while JUL is adequate for simpler logging.
+KumuluzEE defines interfaces for common logging features. Therefore, to use the logging you need to include a dependency to implementation library. Currently, Log4j2, JUL and Fluentd are supported. Log4j2 is more appropriate for complex and enterprise grade logging scenarios, while JUL is adequate for simpler logging. Fluentd enables you to unify data collection and consumption for a better use and understanding of data.
 
 To use KumuluzEE Logs with Log4j2, use the following dependency:
 
@@ -35,6 +35,16 @@ To use KumuluzEE Logs with JUL, use the following dependency:
 ```xml
 <dependency>
    <artifactId>kumuluzee-logs-jul</artifactId>
+   <groupId>com.kumuluz.ee.logs</groupId>
+   <version>${kumuluzee-logs.version}</version>
+</dependency>
+```
+
+To use KumuluzEE Logs with Fluentd, use the following dependency:
+
+```xml
+<dependency>
+   <artifactId>kumuluzee-logs-fluentd</artifactId>
    <groupId>com.kumuluz.ee.logs</groupId>
    <version>${kumuluzee-logs.version}</version>
 </dependency>
@@ -233,6 +243,23 @@ handlers=java.util.logging.ConsoleHandler
 java.util.logging.ConsoleHandler.level=FINER
 java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
 ```
+
+## Config file for Fluentd
+
+The configuration for Fluentd will be loaded from `config.yaml`. Configuration for fluentd daemon is configured through the daemon. By providing properties such as name and env the method context is saved. We recommend you to check the [kumuluzee-logs-fluentd-sample](https://github.com/kumuluz/kumuluzee-samples/tree/master/kumuluzee-logs-fluentd).
+
+```yaml
+kumuluzee:
+  name: fluentd-sample
+  env:
+    name: dev
+  version: 1.0.0
+  logs:
+    fluentd:
+      hostname: localhost
+      port: 24224
+```
+
 
 
 ## Changelog

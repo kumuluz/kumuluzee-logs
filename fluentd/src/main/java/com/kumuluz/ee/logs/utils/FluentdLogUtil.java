@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014-2017 Kumuluz and/or its affiliates
+ *  Copyright (c) 2014-2018 Kumuluz and/or its affiliates
  *  and other contributors as indicated by the @author tags and
  *  the contributor list.
  *
@@ -17,20 +17,39 @@
  *  out of or in connection with the software or the use or other dealings in the
  *  software. See the License for the specific language governing permissions and
  *  limitations under the License.
-*/
+ */
 
-package com.kumuluz.ee.logs.enums;
+package com.kumuluz.ee.logs.utils;
+
+import com.kumuluz.ee.logs.dtos.Level;
+import com.kumuluz.ee.logs.enums.LogLevel;
+
 
 /**
- * @author Rok Povse
- * @author Marko Skrjanec
+ * @author Domen Gašperlin
+ * @since 1.4.0
  */
-public enum LogLevel {
-    FINEST,
-    TRACE,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR,
-    FATAL
+public class FluentdLogUtil {
+
+    public static Level convertToFluentdLevel(LogLevel logLevel) {
+
+        switch (logLevel) {
+            case FATAL:
+                return Level.FATAL;
+            case ERROR:
+                return Level.ERROR;
+            case WARN:
+                return Level.WARN;
+            case INFO:
+                return Level.INFO;
+            case DEBUG:
+                return Level.DEBUG;
+            case TRACE:
+            case FINEST:
+                return Level.TRACE;
+            default:
+                return null;
+        }
+    }
+
 }
