@@ -26,12 +26,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.fluentd</groupId>
             <artifactId>fluent-logger</artifactId>
             <version>${logger.version}</version>
