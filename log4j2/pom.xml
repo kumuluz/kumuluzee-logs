@@ -15,8 +15,8 @@
     <artifactId>kumuluzee-logs-log4j2</artifactId>
 
     <properties>
-        <log4j2.version>2.8.2</log4j2.version>
-        <disruptor.version>3.3.6</disruptor.version>
+        <log4j2.version>2.11.2</log4j2.version>
+        <disruptor.version>3.4.2</disruptor.version>
     </properties>
 
     <dependencies>
@@ -28,6 +28,7 @@
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-core</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
