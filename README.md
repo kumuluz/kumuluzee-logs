@@ -248,7 +248,7 @@ java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
 
 The configuration for Fluentd will be loaded from the `config.yaml` configuration file or other specified 
 configuration source. Configuration for fluentd daemon is configured through the daemon configuration file. By 
-providing properties such as name and env the method context is saved. We recommend you to check the 
+providing properties such as kumuluzee.name, kumuluzee.env.name and kumuluzee.version the method context is saved. We recommend you to check the 
 [kumuluzee-logs-fluentd-sample](https://github.com/kumuluz/kumuluzee-samples/tree/master/kumuluzee-logs-fluentd).
 
 ```yaml

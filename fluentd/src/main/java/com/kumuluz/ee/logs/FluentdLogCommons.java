@@ -208,6 +208,7 @@ public class FluentdLogCommons implements LogCommons {
             bufferMessageQueue.addBuffer(context, System.currentTimeMillis(), logger);
         } else {
             bufferMessageQueue.flushBuffer(context);
+            System.out.println(logger.getName() + " "+ context.toString());
             logger.log(logger.getName(), context);
         }
 

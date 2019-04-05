@@ -333,6 +333,7 @@ public class FluentdLogger implements Logger {
             data.put("args", args);
         }
 
+        System.out.println(logger.getName() + " " + data.toString());
         logger.log(logger.getName(), data);
 
     }
