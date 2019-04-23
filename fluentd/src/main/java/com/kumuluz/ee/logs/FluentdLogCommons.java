@@ -50,7 +50,12 @@ public class FluentdLogCommons implements LogCommons {
     private org.fluentd.logger.FluentLogger logger;
 
     private FluentdLogCommons(String logName) {
-        logger = org.fluentd.logger.FluentLogger.getLogger(logName);
+
+        FluentdConfig fluentdConfig = FluentdConfig.getInstance();
+        logger = org.fluentd.logger.FluentLogger.getLogger(
+                logName,
+                fluentdConfig.getHostname(),
+                fluentdConfig.getPort());
     }
 
     public FluentdLogCommons() {
@@ -208,7 +213,7 @@ public class FluentdLogCommons implements LogCommons {
             bufferMessageQueue.addBuffer(context, System.currentTimeMillis(), logger);
         } else {
             bufferMessageQueue.flushBuffer(context);
-            System.out.println(logger.getName() + " "+ context.toString());
+            System.out.println(logger.getName() + " " + context.toString());
             logger.log(logger.getName(), context);
         }
 
