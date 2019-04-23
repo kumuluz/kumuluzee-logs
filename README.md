@@ -248,7 +248,8 @@ java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
 
 The configuration for Fluentd is loaded from the `config.yaml` configuration file or other specified 
 configuration source. Configuration for Fluentd daemon is configured through the daemon configuration file. Each log 
-message is automatically enriched with the context data, if the following configuration values are set: kumuluzee.name, 
+message is automatically enriched with the contextual data, if the following configuration values are set: kumuluzee
+.name, 
 kumuluzee.env.name and kumuluzee.version. Sample configuration: 
 
 ```yaml
