@@ -29,7 +29,9 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <kumuluzee.version>3.2.0</kumuluzee.version>
+
+        <kumuluzee.version>3.3.0</kumuluzee.version>
+        <jaxb-api.version>2.3.1</jaxb-api.version>
 
         <nexus.staging.plugin.version>1.6.8</nexus.staging.plugin.version>
         <gpg.plugin.version>1.6</gpg.plugin.version>
@@ -97,11 +99,13 @@
                 <artifactId>kumuluzee-logs-jul</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.kumuluz.ee.logs</groupId>
                 <artifactId>kumuluzee-logs-fluentd</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

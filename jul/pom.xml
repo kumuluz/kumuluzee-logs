@@ -15,7 +15,7 @@
     <artifactId>kumuluzee-logs-jul</artifactId>
 
     <properties>
-        <slf4j.version>1.7.25</slf4j.version>
+        <slf4j.version>1.7.26</slf4j.version>
     </properties>
 
     <dependencies>
@@ -27,6 +27,7 @@
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-core</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

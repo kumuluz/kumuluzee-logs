@@ -17,16 +17,13 @@
  *  out of or in connection with the software or the use or other dealings in the
  *  software. See the License for the specific language governing permissions and
  *  limitations under the License.
-*/
+ */
 
 package com.kumuluz.ee.logs;
 
 import com.kumuluz.ee.common.LogsExtension;
 import com.kumuluz.ee.common.config.EeConfig;
-import com.kumuluz.ee.common.dependencies.EeComponentDependency;
-import com.kumuluz.ee.common.dependencies.EeComponentType;
-import com.kumuluz.ee.common.dependencies.EeExtensionDef;
-import com.kumuluz.ee.common.dependencies.EeExtensionGroup;
+import com.kumuluz.ee.common.dependencies.*;
 import com.kumuluz.ee.common.wrapper.KumuluzServerWrapper;
 
 import java.util.Optional;
@@ -40,7 +37,10 @@ import java.util.logging.LogManager;
  * @since 1.2.0
  */
 @EeExtensionDef(name = "log4j2", group = EeExtensionGroup.LOGS)
-@EeComponentDependency(EeComponentType.SERVLET)
+@EeComponentDependencies({
+        @EeComponentDependency(EeComponentType.SERVLET),
+        @EeComponentDependency(EeComponentType.CDI)
+})
 public class Log4j2LogExtension implements LogsExtension {
 
     private LogDeferrer<Logger> logDeferrer;
