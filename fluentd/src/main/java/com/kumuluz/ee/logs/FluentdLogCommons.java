@@ -30,12 +30,12 @@ import com.kumuluz.ee.logs.types.LogMethodContext;
 import com.kumuluz.ee.logs.types.LogMethodMessage;
 import com.kumuluz.ee.logs.types.LogResourceContext;
 import com.kumuluz.ee.logs.types.LogResourceMessage;
-import com.kumuluz.ee.logs.utils.BufferMessageQueue;
 import com.kumuluz.ee.logs.utils.FluentdConfig;
 import com.kumuluz.ee.logs.utils.FluentdLogUtil;
 
 import java.util.HashMap;
 import java.util.ServiceLoader;
+import java.util.logging.Logger;
 
 /**
  * @author Domen Gašperlin
@@ -48,6 +48,8 @@ public class FluentdLogCommons implements LogCommons {
     private static LogLevel DEFAULT_LOG_LEVEL = LogLevel.TRACE;
 
     private org.fluentd.logger.FluentLogger logger;
+
+    private Logger log = Logger.getLogger(FluentdLogCommons.class.getSimpleName());
 
     private FluentdLogCommons(String logName) {
 
@@ -208,14 +210,10 @@ public class FluentdLogCommons implements LogCommons {
             context.put("message", markerString + " " + message);
 
         }
-        BufferMessageQueue bufferMessageQueue = BufferMessageQueue.getInstance();
-        if (bufferMessageQueue.getBuffer()) {
-            bufferMessageQueue.addBuffer(context, System.currentTimeMillis(), logger);
-        } else {
-            bufferMessageQueue.flushBuffer(context);
-            System.out.println(logger.getName() + " " + context.toString());
-            logger.log(logger.getName(), context);
-        }
+
+        log.info(logger.getName() + " " + context.toString());
+        logger.log(logger.getName(), context);
+
 
     }
 

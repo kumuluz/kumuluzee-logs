@@ -28,7 +28,6 @@ import com.kumuluz.ee.logs.utils.FluentdLogUtil;
 import com.kumuluz.ee.logs.utils.LoggersQueue;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Domen Gašperlin
@@ -317,7 +316,7 @@ public class FluentdLogger implements Logger {
 
     private void addFieldsAndLog(LogLevel level, String message, Throwable thrown, Object... args) {
 
-        Map<String, Object> data = new HashMap<>();
+        HashMap<String, Object> data = new HashMap<>();
 
         data.put("level", FluentdLogUtil.convertToFluentdLevel(level).getName());
 
