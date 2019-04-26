@@ -36,6 +36,9 @@ import java.util.HashMap;
 public class FluentdLogger implements Logger {
 
     private org.fluentd.logger.FluentLogger logger;
+
+    private java.util.logging.Logger log = java.util.logging.Logger.getLogger(FluentdLogger.class.getSimpleName());
+
     private LoggersQueue loggersQueue = LoggersQueue.getInstance();
 
 
@@ -332,7 +335,8 @@ public class FluentdLogger implements Logger {
             data.put("args", args);
         }
 
-        System.out.println(logger.getName() + " " + data.toString());
+        log.log(FluentdLogUtil.convertToJULLevel(level), logger.getName() + " " + data);
+
         logger.log(logger.getName(), data);
 
     }

@@ -211,7 +211,9 @@ public class FluentdLogCommons implements LogCommons {
 
         }
 
-        log.info(logger.getName() + " " + context.toString());
+
+        log.log(FluentdLogUtil.convertToJULLevel(level), logger.getName() + " " + context);
+
         logger.log(logger.getName(), context);
 
 

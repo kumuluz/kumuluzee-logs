@@ -52,4 +52,23 @@ public class FluentdLogUtil {
         }
     }
 
+    public static java.util.logging.Level convertToJULLevel(LogLevel logLevel) {
+        switch (logLevel) {
+            case ERROR:
+                return java.util.logging.Level.SEVERE;
+            case WARN:
+                return java.util.logging.Level.WARNING;
+            case INFO:
+                return java.util.logging.Level.INFO;
+            case DEBUG:
+                return java.util.logging.Level.FINE;
+            case TRACE:
+                return java.util.logging.Level.FINER;
+            case FINEST:
+                return java.util.logging.Level.FINEST;
+            default:
+                return java.util.logging.Level.INFO;
+        }
+    }
+
 }
