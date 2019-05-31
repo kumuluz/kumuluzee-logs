@@ -15,7 +15,7 @@ cache:
   - $HOME/.m2
 
 before_install:
-- openssl aes-256-cbc -K $encrypted_f32d9b726118_key -iv $encrypted_f32d9b726118_iv
+- openssl aes-256-cbc -K $encrypted_839db2296952_key -iv $encrypted_839db2296952_iv
   -in gpg.tar.gz.enc -out gpg.tar.gz -d
 - tar zxvf gpg.tar.gz
 
