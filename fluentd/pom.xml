@@ -7,29 +7,34 @@
         <groupId>com.kumuluz.ee.logs</groupId>
         <version>1.4.0-SNAPSHOT</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
-    <name>KumuluzEE Logs common</name>
-    <description>Common artifacts for KumuluzEE Logs extensions</description>
+    <name>KumuluzEE Logs Fluentd</name>
+    <description>KumuluzEE Logs component implemented by Fluentd</description>
 
-    <artifactId>kumuluzee-logs-common</artifactId>
+    <artifactId>kumuluzee-logs-fluentd</artifactId>
+
+    <properties>
+        <logger.version>0.3.3</logger.version>
+    </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.kumuluz.ee.logs</groupId>
+            <artifactId>kumuluzee-logs-common</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-core</artifactId>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-cdi-weld</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson-databind.version}</version>
+            <groupId>org.fluentd</groupId>
+            <artifactId>fluent-logger</artifactId>
+            <version>${logger.version}</version>
         </dependency>
     </dependencies>
-
 </project>

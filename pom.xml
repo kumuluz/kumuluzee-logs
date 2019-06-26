@@ -11,6 +11,7 @@
         <module>common</module>
         <module>jul</module>
         <module>log4j2</module>
+        <module>fluentd</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -28,11 +29,15 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <kumuluzee.version>3.3.0</kumuluzee.version>
+
+        <kumuluzee.version>3.4.1</kumuluzee.version>
         <jaxb-api.version>2.3.1</jaxb-api.version>
 
         <nexus.staging.plugin.version>1.6.8</nexus.staging.plugin.version>
         <gpg.plugin.version>1.6</gpg.plugin.version>
+        <jaxb-api.version>2.3.0</jaxb-api.version>
+        <jackson-databind.version>2.9.8</jackson-databind.version>
+
     </properties>
 
     <scm>
@@ -78,6 +83,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <dependency>
                 <groupId>com.kumuluz.ee.logs</groupId>
                 <artifactId>kumuluzee-logs-common</artifactId>
@@ -93,6 +99,13 @@
                 <artifactId>kumuluzee-logs-jul</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.kumuluz.ee.logs</groupId>
+                <artifactId>kumuluzee-logs-fluentd</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
