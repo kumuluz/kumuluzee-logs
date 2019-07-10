@@ -35,6 +35,9 @@ import org.apache.logging.log4j.CloseableThreadContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.MarkerManager;
 
+import java.util.HashMap;
+import java.util.ServiceLoader;
+
 /**
  * Kumuluz-logs logger interface
  *
@@ -165,6 +168,10 @@ public class Log4j2LogCommons implements LogCommons {
      * @param logMessage   object defining LogMessage
      */
     private void log(LogLevel level, Marker marker, Marker parentMarker, LogMessage logMessage) {
+        HashMap<String, String> context = new HashMap<>();
+
+        context = addContextData(context);
+
 
         String message;
         if (logMessage == null || logMessage.getMessage() == null) {
@@ -174,6 +181,7 @@ public class Log4j2LogCommons implements LogCommons {
         }
 
         if (logMessage != null && logMessage.getFields() != null) {
+            CloseableThreadContext.putAll(context);
             try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(logMessage.getFields())) {
                 logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString())
                         .setParents(MarkerManager.getMarker(parentMarker.toString())), message);
@@ -181,6 +189,23 @@ public class Log4j2LogCommons implements LogCommons {
         } else {
             logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString())
                     .setParents(MarkerManager.getMarker(parentMarker.toString())), message);
+
         }
+    }
+
+    /**
+     * @param data defines input data
+     * @return data with appended context data
+     */
+    private HashMap<String, String> addContextData(HashMap<String, String> data) {
+
+        ServiceLoader.load(RequestContext.class).forEach(provider -> {
+            HashMap<String, String> context = provider.getContext();
+            if (context != null) {
+                data.putAll(context);
+            }
+        });
+
+        return data;
     }
 }
