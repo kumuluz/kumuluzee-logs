@@ -196,9 +196,8 @@ public class FluentdLogCommons implements LogCommons {
         }
 
         String markerString = parentMarker == null ? marker.toString() : marker + "[ " + parentMarker + " ]";
-        HashMap<String, Object> context = new HashMap<>();
 
-        context = addContextData(context);
+        HashMap<String, Object> context = getRequestContextData();
 
         if (logMessage != null && logMessage.getFields() != null) {
             context.put("level", FluentdLogUtil.convertToFluentdLevel(level).getName());
@@ -220,27 +219,28 @@ public class FluentdLogCommons implements LogCommons {
     }
 
     /**
-     * @param data defines input data
-     * @return data with appended context data
+     * @return request context data from external RequestContext objects
      */
-    private HashMap<String, Object> addContextData(HashMap<String, Object> data) {
+    private HashMap<String, Object> getRequestContextData() {
 
         // FluentdConfig data
         FluentdConfig fluentdConfig = FluentdConfig.getInstance();
 
-        data.put("environmentType", fluentdConfig.getEnvironmentType());
-        data.put("applicationName", fluentdConfig.getApplicationName());
-        data.put("applicationVersion", fluentdConfig.getApplicationVersion());
-        data.put("uniqueInstanceId", fluentdConfig.getUniqueInstanceId());
+        HashMap<String, Object> requestContextData = new HashMap<>();
+
+        requestContextData.put("environmentType", fluentdConfig.getEnvironmentType());
+        requestContextData.put("applicationName", fluentdConfig.getApplicationName());
+        requestContextData.put("applicationVersion", fluentdConfig.getApplicationVersion());
+        requestContextData.put("uniqueInstanceId", fluentdConfig.getUniqueInstanceId());
 
         ServiceLoader.load(RequestContext.class).forEach(provider -> {
             HashMap<String, String> context = provider.getContext();
             if (context != null) {
-                data.putAll(context);
+                requestContextData.putAll(context);
             }
         });
 
-        return data;
+        return requestContextData;
     }
 
 }

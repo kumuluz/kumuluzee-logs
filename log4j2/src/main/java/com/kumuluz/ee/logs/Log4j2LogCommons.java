@@ -17,10 +17,12 @@
  *  out of or in connection with the software or the use or other dealings in the
  *  software. See the License for the specific language governing permissions and
  *  limitations under the License.
-*/
+ */
 
 package com.kumuluz.ee.logs;
 
+import com.kumuluz.ee.common.config.EeConfig;
+import com.kumuluz.ee.common.runtime.EeRuntime;
 import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.markers.CommonsMarker;
 import com.kumuluz.ee.logs.markers.Marker;
@@ -168,10 +170,6 @@ public class Log4j2LogCommons implements LogCommons {
      * @param logMessage   object defining LogMessage
      */
     private void log(LogLevel level, Marker marker, Marker parentMarker, LogMessage logMessage) {
-        HashMap<String, String> context = new HashMap<>();
-
-        context = addContextData(context);
-
 
         String message;
         if (logMessage == null || logMessage.getMessage() == null) {
@@ -181,7 +179,7 @@ public class Log4j2LogCommons implements LogCommons {
         }
 
         if (logMessage != null && logMessage.getFields() != null) {
-            CloseableThreadContext.putAll(context);
+            CloseableThreadContext.putAll(getRequestContextData());
             try (final CloseableThreadContext.Instance ctc = CloseableThreadContext.putAll(logMessage.getFields())) {
                 logger.log(Log4j2LogUtil.convertToLog4j2Level(level), MarkerManager.getMarker(marker.toString())
                         .setParents(MarkerManager.getMarker(parentMarker.toString())), message);
@@ -194,18 +192,26 @@ public class Log4j2LogCommons implements LogCommons {
     }
 
     /**
-     * @param data defines input data
-     * @return data with appended context data
+     * @return request context data from external RequestContext objects
      */
-    private HashMap<String, String> addContextData(HashMap<String, String> data) {
+    private HashMap<String, String> getRequestContextData() {
+
+        EeConfig eeConfig = EeConfig.getInstance();
+
+        HashMap<String, String> requestContextData = new HashMap<>();
+
+        requestContextData.put("environmentType", eeConfig.getEnv().getName());
+        requestContextData.put("applicationName", eeConfig.getName());
+        requestContextData.put("applicationVersion", eeConfig.getVersion());
+        requestContextData.put("uniqueInstanceId", EeRuntime.getInstance().getInstanceId());
 
         ServiceLoader.load(RequestContext.class).forEach(provider -> {
             HashMap<String, String> context = provider.getContext();
             if (context != null) {
-                data.putAll(context);
+                requestContextData.putAll(context);
             }
         });
 
-        return data;
+        return requestContextData;
     }
 }
