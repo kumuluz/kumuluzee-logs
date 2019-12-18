@@ -9,32 +9,26 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>KumuluzEE Logs JUL</name>
-    <description>KumuluzEE Logs component implemented by log4j2</description>
+    <name>KumuluzEE Logs Audit</name>
+    <description>KumuluzEE Logs Audit extension</description>
 
-    <artifactId>kumuluzee-logs-jul</artifactId>
-
-    <properties>
-        <slf4j.version>1.7.26</slf4j.version>
-    </properties>
+    <artifactId>kumuluzee-logs-audit</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.kumuluz.ee.logs</groupId>
-            <artifactId>kumuluzee-logs-common</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-core</artifactId>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-            <version>${slf4j.version}</version>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-cdi-weld</artifactId>
+            <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.kumuluz.ee.logs</groupId>
+            <artifactId>kumuluzee-logs-common</artifactId>
+        </dependency>
     </dependencies>
+
 </project>

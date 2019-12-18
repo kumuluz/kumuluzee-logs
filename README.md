@@ -149,6 +149,55 @@ InvocationMessage invokeMessage = new InvocationMessage("Invocation of database 
     addName("User").addParameter("id",id);
 ```
 
+## Logging audit information
+Audit is an investigation of an existing system usage and is used to determine trace of system access. It provides evidence if the information systems are safeguarding assets. Audit log is different from system log in a way to provide structured and higher level of information needed to effectively process audit information.
+
+### Usage
+Add audit logs dependency:
+```xml
+<dependency>
+    <groupId>com.kumuluz.ee.logs</groupId>
+    <artifactId>kumuluzee-logs-audit</artifactId>
+</dependency>
+```
+Register AuditLogFilter as JAX-RS component.
+```java
+@Override
+public Set<Class<?>> getClasses() {
+    Set<Class<?>> classes = new HashSet<>();
+    classes.add(AuditLogFilter.class);
+    ...
+    return classes;
+}
+```
+
+#### Audit log with annotations
+LogAudit annotations can be added to classes or methods. Action name defaults to method name if not specified explicitly in action parameter.
+AuditObjectParam marks method parameter value to be included in audit log.
+```java
+@PUT
+@LogAudit(name = "user", properties = {
+    @AuditProperty(property = "action", value = "UPDATE")
+})
+@Path("/{id}")
+public Response updateUser(@AuditObjectParam("id") @PathParam("id") UUID id, @ApiParam(name = "item", required = true) User user) {
+    //...
+}
+```
+#### Audit log API
+AuditLogger can be injected into managed CDI bean. Actions or entity changes can be logged with log API.
+```java
+public class UserResource {
+
+    @Inject
+    private AuditLog auditLog;
+    
+    public void createUser(Object obj) {
+        //...
+        auditLog.log("user", DataAuditAction.CREATE, id, new AuditProperty("customProp", "customValue"));
+    }
+}
+```
 
 ## Configuring KumuluzEE Logs with KumuluzEE Config
 
