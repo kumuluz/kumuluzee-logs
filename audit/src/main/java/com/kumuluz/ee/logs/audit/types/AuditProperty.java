@@ -20,6 +20,8 @@
  */
 package com.kumuluz.ee.logs.audit.types;
 
+import java.util.Objects;
+
 /**
  * @author Gregor Porocnik
  */
@@ -47,5 +49,19 @@ public class AuditProperty {
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        AuditProperty property1 = (AuditProperty) object;
+        return Objects.equals(property, property1.property) &&
+                Objects.equals(value, property1.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(property, value);
     }
 }

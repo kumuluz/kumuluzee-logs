@@ -37,6 +37,9 @@ import java.util.Set;
  */
 public class KumuluzAuditLogger implements AuditLogger {
 
+    public static final String AUDIT_ACTION_PROPERTY = "auditAction";
+    public static final String AUDIT_OBJECT_ID = "auditObjectId";
+
     private static final Logger LOG = LogManager.getLogger(AuditLogger.class.getName());
 
     private List<AuditProperty> commonProperties = new LinkedList<>();
@@ -72,12 +75,12 @@ public class KumuluzAuditLogger implements AuditLogger {
         final AuditLogLine line = new AuditLogLine(actionName);
 
         if (null != dataAuditAction) {
-            final AuditProperty actionProperty = new AuditProperty("audit-action", dataAuditAction.name());
+            final AuditProperty actionProperty = new AuditProperty(AUDIT_ACTION_PROPERTY, dataAuditAction.name());
             line.add(actionProperty);
         }
 
         if (null != objectId) {
-            final AuditProperty idProperty = new AuditProperty("audit-object-id", String.valueOf(objectId));
+            final AuditProperty idProperty = new AuditProperty(AUDIT_OBJECT_ID, String.valueOf(objectId));
             line.add(idProperty);
         }
 

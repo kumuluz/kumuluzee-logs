@@ -76,6 +76,7 @@ public class AuditLog {
             final Class<?> clazz = Class.forName(auditLoggerClass.get());
             if (clazz.isAssignableFrom(AuditLogger.class)) {
                 this.auditLogger = (AuditLogger) clazz.getDeclaredConstructor().newInstance();
+                return;
             }
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {
             LOG.warn("Unable to create instance of provided class {}", auditLoggerClass.get());

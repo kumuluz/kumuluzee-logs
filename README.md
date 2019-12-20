@@ -146,7 +146,7 @@ In the sample above, we invoke `logResourceStart` method, with parameters:
 
 ```java
 InvocationMessage invokeMessage = new InvocationMessage("Invocation of database resource").
-    addName("User").addParameter("id",id);
+    addName("User").addParameter("id", id);
 ```
 
 ## Logging audit information
@@ -198,6 +198,21 @@ public class UserResource {
     }
 }
 ```
+
+#### Audit log configuration
+Audit log is enabled by default when added as dependency. Audit configuration can be provided at startup or runtime:
+```yaml
+kumuluzee:
+  logs:
+    audit:
+      disable: false #false by default
+      class: com.example.CustomAuditLogger #default is com.kumuluz.ee.logs.audit.loggers.KumuluzAuditLogger
+
+```
+KumuluzEE declares Audit API (available as injection or annotation) and comes with predefined `KumuluzAuditLogger` implementation which logs audit lines at INFO level to configured Log implementation (Log4j, JUL, Fluentd...).
+`KumuluzAuditLogger` implementation logs audit as `com.kumuluz.ee.logs.audit.loggers.AuditLogger` category.
+
+KumuluzEE gives you option to provide custom implementation of `com.kumuluz.ee.logs.audit.loggers.AuditLogger` via configuration property `kumuluzee.logs.audit.class`.
 
 ## Configuring KumuluzEE Logs with KumuluzEE Config
 

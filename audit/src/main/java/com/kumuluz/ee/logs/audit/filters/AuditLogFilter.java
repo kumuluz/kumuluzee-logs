@@ -47,7 +47,7 @@ public class AuditLogFilter implements ContainerResponseFilter {
 
         final boolean requestSuccess = containerResponseContext.getStatus() < 400;
 
-        AuditProperty successProperty = new AuditProperty("http-request-success", String.valueOf(requestSuccess));
+        AuditProperty successProperty = new AuditProperty("httpRequestSuccess", String.valueOf(requestSuccess));
         try {
             auditLog.addCommonProperty(successProperty);
             auditLog.flush();

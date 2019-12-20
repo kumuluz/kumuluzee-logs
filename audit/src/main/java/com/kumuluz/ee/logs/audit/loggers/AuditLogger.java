@@ -25,6 +25,10 @@ import com.kumuluz.ee.logs.audit.types.DataAuditAction;
 
 /**
  * @author Gregor Porocnik
+ * <p>
+ * Interface to Audit logger implementation.
+ * <p>
+ * Custom implementation must implement this interface and be configured as stated in documentation.
  */
 public interface AuditLogger {
 

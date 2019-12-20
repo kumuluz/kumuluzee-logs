@@ -22,6 +22,9 @@ package com.kumuluz.ee.logs.audit.annotations;
 
 import javax.enterprise.util.Nonbinding;
 
+/**
+ * @author Gregor Porocnik
+ */
 public @interface AuditProperty {
 
     @Nonbinding String property();
