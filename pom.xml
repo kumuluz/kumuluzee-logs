@@ -39,6 +39,8 @@
         <jaxb-api.version>2.3.0</jaxb-api.version>
         <jackson-databind.version>2.9.8</jackson-databind.version>
 
+        <weld-junit4.version>2.0.1.Final</weld-junit4.version>
+
     </properties>
 
     <scm>

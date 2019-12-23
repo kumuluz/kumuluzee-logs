@@ -42,8 +42,8 @@ public class AuditLog {
 
     private static final Logger LOG = LogManager.getLogger(AuditLog.class.getName());
 
-    private static final String CONFIG_AUDIT_LOG_DISABLE = "kumuluzee.logs.audit.disable";
-    private static final String CONFIG_AUDIT_LOG_LOGGER_CLASS = "kumuluzee.logs.audit.class";
+    protected static final String CONFIG_AUDIT_LOG_DISABLE = "kumuluzee.logs.audit.disable";
+    protected static final String CONFIG_AUDIT_LOG_LOGGER_CLASS = "kumuluzee.logs.audit.class";
 
     private AuditLogger auditLogger;
 
@@ -74,7 +74,7 @@ public class AuditLog {
 
         try {
             final Class<?> clazz = Class.forName(auditLoggerClass.get());
-            if (clazz.isAssignableFrom(AuditLogger.class)) {
+            if (AuditLogger.class.isAssignableFrom(clazz)) {
                 this.auditLogger = (AuditLogger) clazz.getDeclaredConstructor().newInstance();
                 return;
             }
