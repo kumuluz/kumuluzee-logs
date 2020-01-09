@@ -114,6 +114,9 @@ You can define additional attributes in `@Log` annotation for monitoring method 
 @Log(value = LogParams.METRICS, methodCall = false)
 ```
 
+### Notice regarding JAX-RS Exception mappers
+If you use `javax.ws.rs.ext.ExceptionMapper` to map exceptions to error responses, `@Log` won't log the method exit when exception is thrown because it is an interceptor and the method exit never happens. If you want to be absolutely sure to log every single API resource entry and exit, use `javax.servlet.Filter` or `javax.ws.rs.container.ContainerResponseFilter` in addition to or instead of `@Log`.
+
 
 ## Resource invocation logging
 
