@@ -21,14 +21,11 @@
 package com.kumuluz.ee.logs.audit.cdi;
 
 import com.kumuluz.ee.logs.Logger;
-import com.kumuluz.ee.logs.audit.loggers.KumuluzAuditLogger;
-import com.kumuluz.ee.logs.audit.test.beans.TestAuditedBean;
-import com.kumuluz.ee.logs.audit.test.loggers.TestAuditLogger;
+import com.kumuluz.ee.logs.audit.test.beans.TestAuditedResource;
+import com.kumuluz.ee.logs.audit.test.beans.TestRestApp;
 import com.kumuluz.ee.logs.audit.test.loggers.TestLogCommons;
 import com.kumuluz.ee.logs.audit.test.loggers.TestLogConfigurator;
 import com.kumuluz.ee.logs.audit.test.loggers.TestLogger;
-import com.kumuluz.ee.logs.audit.types.AuditProperty;
-import com.kumuluz.ee.logs.audit.types.DataAuditAction;
 import com.kumuluz.ee.logs.messages.LogMessage;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -41,27 +38,30 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.inject.Inject;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import static com.kumuluz.ee.logs.audit.cdi.AuditLog.CONFIG_AUDIT_LOG_ENABLE;
-import static com.kumuluz.ee.logs.audit.cdi.AuditLog.CONFIG_AUDIT_LOG_LOGGER_CLASS;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Gregor Porocnik
  */
 @RunWith(Arquillian.class)
-public class AuditLogTest {
+public class AuditResourceTest {
+
 
     @Deployment
     public static WebArchive createDeployment() {
 
         WebArchive jar = ShrinkWrap
                 .create(WebArchive.class)
-                .addClasses(TestAuditedBean.class, Logger.class, TestLogCommons.class, TestLogger.class, TestLogConfigurator.class)
+                .addClasses(TestRestApp.class, TestAuditedResource.class, Logger.class, TestLogCommons.class, TestLogger.class, TestLogConfigurator.class)
                 .addPackages(true, "com.kumuluz.ee.logs.audit")
                 .addAsResource("META-INF/services/com.kumuluz.ee.logs.Logger")
                 .addAsResource("META-INF/services/com.kumuluz.ee.logs.LogCommons")
@@ -72,92 +72,70 @@ public class AuditLogTest {
         return jar;
     }
 
-    @Inject
-    private AuditLog auditLog;
-
     @Before
     public void before() {
-        System.setProperty(CONFIG_AUDIT_LOG_LOGGER_CLASS, KumuluzAuditLogger.class.getName());
-        TestLogger.setMessages(new LinkedList<>());
         System.setProperty(CONFIG_AUDIT_LOG_ENABLE, "true");
+        TestLogger.setMessages(new LinkedList<>());
     }
 
     @Test
-    public void shouldLogAuditWithGenericApi() {
+    public void shouldLogClassAnnotatedAuditGetResourceWithParams() throws IOException {
+        URL url = new URL("http://localhost:8080/resourceName/parentInputParamIds/inputParamId?obj=1234");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.connect();
 
-        AuditProperty actionProperty = new AuditProperty(AuditProperty.AUDIT_ACTION_PROPERTY, "exampleAction");
-        AuditProperty objectTypeProperty = new AuditProperty(AuditProperty.AUDIT_OBJECT_TYPE, "exampleObjectType");
-
-        auditLog.log("exampleMethodName", actionProperty, objectTypeProperty);
-        auditLog.flush();
+        assertEquals(200, connection.getResponseCode());
 
         List<LogMessage> messages = TestLogger.getMessages();
+        messages.stream().forEach(this::debugMsg);
 
-        assertNotNull(messages);
         assertEquals(1, messages.size());
         LogMessage logMessage = messages.get(0);
-        assertEquals("exampleMethodName", logMessage.getMessage());
         Map<String, String> fields = logMessage.getFields();
-        assertEquals("exampleAction", fields.get(AuditProperty.AUDIT_ACTION_PROPERTY));
-        assertEquals("exampleObjectType", fields.get(AuditProperty.AUDIT_OBJECT_TYPE));
+        assertEquals(6, fields.size());
+        assertEquals("getMethodWithoutAuditAnnotation", logMessage.getMessage());
+        assertEquals("READ", fields.get("audit-action"));
+        assertEquals("resourceName", fields.get("audit-object-type"));
+        assertEquals("inputParamId", fields.get("audit-object-id"));
+        assertEquals("1234", fields.get("methodParam2"));
+        //assert class anotated properties since method does not have AuditLog annotation
+        assertEquals("resPropVal1", fields.get("resPropName1"));
+        assertEquals("resPropVal2", fields.get("resPropName2"));
+        //resource parameters not annotated with auditObjectParam are not included
+        assertNull(fields.get("parentId"));
+
     }
 
     @Test
-    public void shouldLogAudit() {
+    public void shouldLogClassAnnotatedAuditPostResourceWithParams() throws IOException {
+        URL url = new URL("http://localhost:8080/resourceName?obj=4321");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.connect();
 
-        auditLog.log("exampleMethodName", "exampleObjectType", "exampleAction", "id", new AuditProperty("propName", "propValue"));
-        auditLog.flush();
+        assertEquals(201, connection.getResponseCode());
 
         List<LogMessage> messages = TestLogger.getMessages();
+        messages.stream().forEach(this::debugMsg);
 
-        assertNotNull(messages);
         assertEquals(1, messages.size());
         LogMessage logMessage = messages.get(0);
-        assertEquals("exampleMethodName", logMessage.getMessage());
         Map<String, String> fields = logMessage.getFields();
-        assertEquals("exampleAction", fields.get(AuditProperty.AUDIT_ACTION_PROPERTY));
-        assertEquals("exampleObjectType", fields.get(AuditProperty.AUDIT_OBJECT_TYPE));
+        assertEquals(5, fields.size());
+        assertEquals("postMethodWithFullAuditProps", logMessage.getMessage());
+        assertEquals("CREATE", fields.get("audit-action"));
+        assertEquals("resourceName", fields.get("audit-object-type"));
+        assertEquals("locationReturnedIdentifier", fields.get("audit-object-id"));
+        //assert class anotated properties since method does not have AuditLog annotation
+        assertEquals("resPropVal1", fields.get("resPropName1"));
+        assertEquals("resPropVal2", fields.get("resPropName2"));
+
     }
 
-    @Test
-    public void shouldLogNullWithNullParams() {
-
-        auditLog.log(null, null, (DataAuditAction) null, null, null);
-        auditLog.flush();
-
-        List<LogMessage> messages = TestLogger.getMessages();
-
-        assertNotNull(messages);
-        assertEquals(1, messages.size());
-        LogMessage logMessage = messages.get(0);
-        assertNull(logMessage.getMessage());
-        Map<String, String> fields = logMessage.getFields();
-        assertNull(fields);
-    }
-
-    @Test
-    public void disabledAuditShouldNotLog() {
-
-        System.setProperty(CONFIG_AUDIT_LOG_ENABLE, "false");
-
-        AuditProperty actionProperty = new AuditProperty(AuditProperty.AUDIT_ACTION_PROPERTY, "update");
-        AuditProperty objectTypeProperty = new AuditProperty(AuditProperty.AUDIT_OBJECT_TYPE, "user");
-
-        auditLog.log("updateProp", actionProperty, objectTypeProperty);
-        auditLog.flush();
-
-        List<LogMessage> messages = TestLogger.getMessages();
-        assertTrue(messages.isEmpty());
-    }
-
-    @Test
-    public void shouldLogAuditWithCustomAuditLogger() {
-
-        System.setProperty(CONFIG_AUDIT_LOG_LOGGER_CLASS, TestAuditLogger.class.getName());
-
-        auditLog.log("actionName");
-
-        assertEquals(1, TestAuditLogger.logCount);
+    private void debugMsg(LogMessage logMessage) {
+        System.out.println(logMessage.getMessage());
+        System.out.println(logMessage.getFields() + "\n");
     }
 
 }

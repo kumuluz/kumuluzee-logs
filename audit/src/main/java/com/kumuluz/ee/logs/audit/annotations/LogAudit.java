@@ -40,6 +40,10 @@ public @interface LogAudit {
 
     @Nonbinding String name() default "";
 
+    @Nonbinding String auditAction() default "";
+
+    @Nonbinding String objectType() default "";
+
     @Nonbinding AuditProperty[] properties() default {};
 
 }

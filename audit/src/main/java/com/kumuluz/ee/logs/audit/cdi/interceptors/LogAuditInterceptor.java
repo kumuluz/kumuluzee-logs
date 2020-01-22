@@ -22,7 +22,7 @@ package com.kumuluz.ee.logs.audit.cdi.interceptors;
  */
 
 import com.kumuluz.ee.common.utils.StringUtils;
-import com.kumuluz.ee.logs.audit.annotations.AuditObjectParam;
+import com.kumuluz.ee.logs.audit.AuditLogUtil;
 import com.kumuluz.ee.logs.audit.annotations.AuditProperty;
 import com.kumuluz.ee.logs.audit.annotations.LogAudit;
 import com.kumuluz.ee.logs.audit.cdi.AuditLog;
@@ -32,12 +32,10 @@ import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
+import javax.ws.rs.Path;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * @author Gregor Porocnik
@@ -55,43 +53,30 @@ public class LogAuditInterceptor {
 
         final Method method = context.getMethod();
 
-        LogAudit logAuditClassAnnotation = method.getDeclaringClass().getDeclaredAnnotation(LogAudit.class);
-        LogAudit logAuditMethodAnnotation = method.getDeclaredAnnotation(LogAudit.class);
-
-        if (logAuditClassAnnotation == null && logAuditMethodAnnotation == null) {
+        if (method.getDeclaringClass().getAnnotation(Path.class) != null) {
+            //API resource method, annotations are handled by filter
             return context.proceed();
         }
 
-        final String actionName = logAuditMethodAnnotation == null ? null : logAuditMethodAnnotation.name();
+        LogAudit logAuditMethodAnnotation = method.getDeclaredAnnotation(LogAudit.class);
+        LogAudit logAuditAnnotation = logAuditMethodAnnotation != null ? logAuditMethodAnnotation : method.getDeclaringClass().getDeclaredAnnotation(LogAudit.class);
+
+        if (logAuditAnnotation == null) {
+            return context.proceed();
+        }
+
+        final String actionName = logAuditAnnotation.name();
         final String action = StringUtils.isNullOrEmpty(actionName) ? method.getName() : actionName;
-
-        //method or class annotated properties merged
-        final AuditProperty[] classAuditProperties = logAuditClassAnnotation == null ? null : logAuditClassAnnotation.properties();
-        final AuditProperty[] methodAuditProperties = logAuditMethodAnnotation == null ? null : logAuditMethodAnnotation.properties();
-
-        Set<com.kumuluz.ee.logs.audit.types.AuditProperty> auditPropertySet = new HashSet<>();
-        if (null != classAuditProperties) {
-            Stream.of(classAuditProperties).forEach(prop -> auditPropertySet.add(new com.kumuluz.ee.logs.audit.types.AuditProperty(prop.property(), prop.val())));
-        }
-
-        if (null != methodAuditProperties) {
-            Stream.of(methodAuditProperties).forEach(prop -> auditPropertySet.add(new com.kumuluz.ee.logs.audit.types.AuditProperty(prop.property(), prop.val())));
-        }
+        final AuditProperty[] auditPropertyAnnotations = logAuditAnnotation.properties();
+        Set<com.kumuluz.ee.logs.audit.types.AuditProperty> auditProperties = AuditLogUtil.getAuditProperties(auditPropertyAnnotations);
 
         Object[] parameterValues = context.getParameters();
         Parameter[] methodParameters = method.getParameters();
 
         //method parameter annotated values
-        IntStream.range(0, methodParameters.length)
-                .forEach(paramIndex -> {
-                    AuditObjectParam auditObjectId = methodParameters[paramIndex].getAnnotation(AuditObjectParam.class);
+        auditProperties.addAll(AuditLogUtil.getAuditProperties(methodParameters, parameterValues));
 
-                    if (null != auditObjectId) {
-                        auditPropertySet.add(new com.kumuluz.ee.logs.audit.types.AuditProperty(auditObjectId.value(), parameterValues[paramIndex]));
-                    }
-                });
-
-        auditLog.log(action, auditPropertySet.stream().toArray(com.kumuluz.ee.logs.audit.types.AuditProperty[]::new));
+        auditLog.log(action, auditProperties.stream().toArray(com.kumuluz.ee.logs.audit.types.AuditProperty[]::new));
 
         return context.proceed();
     }

@@ -34,7 +34,9 @@ public interface AuditLogger {
 
     void addCommonProperty(AuditProperty property);
 
-    void log(String actionName, DataAuditAction dataAuditAction, Object objectId, AuditProperty... properties);
+    void log(String actionName, String objectType, DataAuditAction dataAuditAction, Object objectId, AuditProperty... properties);
+
+    void log(String actionName, String objectType, String auditAction, Object objectId, AuditProperty... properties);
 
     void log(String actionName, AuditProperty... properties);
 

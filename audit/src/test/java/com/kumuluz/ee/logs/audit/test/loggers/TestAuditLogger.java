@@ -14,7 +14,12 @@ public class TestAuditLogger implements AuditLogger {
     }
 
     @Override
-    public void log(String actionName, DataAuditAction dataAuditAction, Object objectId, AuditProperty... properties) {
+    public void log(String actionName, String objectType, DataAuditAction dataAuditAction, Object objectId, AuditProperty... properties) {
+        logCount++;
+    }
+
+    @Override
+    public void log(String actionName, String objectType, String auditAction, Object objectId, AuditProperty... properties) {
         logCount++;
     }
 

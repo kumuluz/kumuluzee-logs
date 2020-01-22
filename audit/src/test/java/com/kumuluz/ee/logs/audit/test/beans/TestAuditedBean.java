@@ -32,7 +32,7 @@ import java.util.UUID;
  */
 @LogAudit(properties = {@AuditProperty(property = "classPropertyName1", val = "classPropertyVal1"), @AuditProperty(property = "classPropertyName2", val = "classPropertyVal2")})
 @ApplicationScoped
-public class AuditedBean {
+public class TestAuditedBean {
 
     @LogAudit(properties = {@AuditProperty(property = "methodPropertyName1", val = "methodPropertyVal1"), @AuditProperty(property = "methodPropertyName2", val = "methodPropertyVal2")})
     public void updateObject(@AuditObjectParam("methodParam1") final UUID objectId, @AuditObjectParam("methodParam2") final String object) {

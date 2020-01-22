@@ -32,13 +32,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import static com.kumuluz.ee.logs.audit.types.AuditProperty.*;
+
 /**
  * @author Gregor Porocnik
  */
 public class KumuluzAuditLogger implements AuditLogger {
-
-    public static final String AUDIT_ACTION_PROPERTY = "auditAction";
-    public static final String AUDIT_OBJECT_ID = "auditObjectId";
 
     private static final Logger LOG = LogManager.getLogger(AuditLogger.class.getName());
 
@@ -54,16 +53,21 @@ public class KumuluzAuditLogger implements AuditLogger {
     }
 
     @Override
-    public void log(final String actionName, final DataAuditAction dataAuditAction, final Object objectId, final AuditProperty... properties) {
-        logAudit(actionName, dataAuditAction, objectId, properties);
+    public void log(final String actionName, final String objectType, final DataAuditAction dataAuditAction, final Object objectId, final AuditProperty... properties) {
+        logAudit(actionName, objectType, dataAuditAction == null ? null : dataAuditAction.name(), objectId, properties);
+    }
+
+    @Override
+    public void log(String actionName, String objectType, String auditAction, Object objectId, AuditProperty... properties) {
+        logAudit(actionName, objectType, auditAction, objectId, properties);
     }
 
     @Override
     public void log(String actionName, final AuditProperty... properties) {
-        logAudit(actionName, null, null, properties);
+        logAudit(actionName, null, null, null, properties);
     }
 
-    private void logAudit(final String actionName, final DataAuditAction dataAuditAction, final Object objectId, final AuditProperty... properties) {
+    private void logAudit(final String actionName, final String objectType, final String auditAction, final Object objectId, final AuditProperty... properties) {
 
         String logLevel = LogManager.getLogLevel(AuditLogger.class.getName());
         boolean loggerEnabled = LogLevel.valueOf(logLevel).compareTo(LogLevel.INFO) <= 0;
@@ -74,8 +78,13 @@ public class KumuluzAuditLogger implements AuditLogger {
 
         final AuditLogLine line = new AuditLogLine(actionName);
 
-        if (null != dataAuditAction) {
-            final AuditProperty actionProperty = new AuditProperty(AUDIT_ACTION_PROPERTY, dataAuditAction.name());
+        if (null != objectType) {
+            final AuditProperty objectNameProperty = new AuditProperty(AUDIT_OBJECT_TYPE, objectType);
+            line.add(objectNameProperty);
+        }
+
+        if (null != auditAction) {
+            final AuditProperty actionProperty = new AuditProperty(AUDIT_ACTION_PROPERTY, auditAction);
             line.add(actionProperty);
         }
 
@@ -121,9 +130,11 @@ public class KumuluzAuditLogger implements AuditLogger {
         }
 
         private void addProperties(AuditProperty[] properties) {
-            for (AuditProperty property : properties) {
-                if (null != property) {
-                    this.properties.add(property);
+            if (properties != null) {
+                for (AuditProperty property : properties) {
+                    if (null != property) {
+                        this.properties.add(property);
+                    }
                 }
             }
         }

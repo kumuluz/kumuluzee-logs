@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014-2019 Kumuluz and/or its affiliates
+ *  Copyright (c) 2014-2017 Kumuluz and/or its affiliates
  *  and other contributors as indicated by the @author tags and
  *  the contributor list.
  *
@@ -18,38 +18,43 @@
  *  software. See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.kumuluz.ee.logs.audit.loggers;
+package com.kumuluz.ee.logs.audit;
 
-import com.kumuluz.ee.logs.audit.types.AuditProperty;
-import com.kumuluz.ee.logs.audit.types.DataAuditAction;
+import com.kumuluz.ee.testing.arquillian.spi.MavenDependencyAppender;
+import org.jboss.shrinkwrap.resolver.api.maven.ConfigurableMavenResolverSystem;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
+ * Adds required dependencies to the deployments.
+ *
  * @author Gregor Porocnik
+ * @since 1.4.0
  */
-public class NoOpAuditLogger implements AuditLogger {
+public class DependencyAppender implements MavenDependencyAppender {
 
-    public NoOpAuditLogger() {
+    @Override
+    public List<String> addLibraries() {
+
+        List<String> libs = new ArrayList<>();
+
+        libs.add("com.kumuluz.ee:kumuluzee-jax-rs-jersey:");
+
+        return libs;
     }
 
     @Override
-    public void addCommonProperty(AuditProperty property) {
+    public ConfigurableMavenResolverSystem configureResolver(ConfigurableMavenResolverSystem resolver) {
+
+        try {
+            resolver.withRemoteRepo("central", new URL("https://repo1.maven.org/maven2"), "default");
+        } catch (MalformedURLException e) {
+        }
+
+        return resolver;
     }
 
-    @Override
-    public void log(String actionName, String objectType, DataAuditAction dataAuditAction, Object objectId, AuditProperty... properties) {
-
-    }
-
-    @Override
-    public void log(String actionName, String objectType, String auditAction, Object objectId, AuditProperty... properties) {
-
-    }
-
-    @Override
-    public void log(String actionName, final AuditProperty... properties) {
-    }
-
-    @Override
-    public void flush() {
-    }
 }

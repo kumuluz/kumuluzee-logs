@@ -27,6 +27,10 @@ import java.util.Objects;
  */
 public class AuditProperty {
 
+    public static final String AUDIT_ACTION_PROPERTY = "audit-action";
+    public static final String AUDIT_OBJECT_TYPE = "audit-object-type";
+    public static final String AUDIT_OBJECT_ID = "audit-object-id";
+
     private String property;
     private Object value;
 

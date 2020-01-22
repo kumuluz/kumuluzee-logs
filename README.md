@@ -200,12 +200,12 @@ public class UserResource {
 ```
 
 #### Audit log configuration
-Audit log is enabled by default when added as dependency. Audit configuration can be provided at startup or runtime:
+Audit log is disabled by default when added as dependency. Audit configuration can be provided at startup or runtime:
 ```yaml
 kumuluzee:
   logs:
     audit:
-      disable: false #false by default
+      enable: true #false by default
       class: com.example.CustomAuditLogger #default is com.kumuluz.ee.logs.audit.loggers.KumuluzAuditLogger
 
 ```

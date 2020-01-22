@@ -42,10 +42,12 @@ public class AuditLog {
 
     private static final Logger LOG = LogManager.getLogger(AuditLog.class.getName());
 
-    protected static final String CONFIG_AUDIT_LOG_DISABLE = "kumuluzee.logs.audit.disable";
+    protected static final String CONFIG_AUDIT_LOG_ENABLE = "kumuluzee.logs.audit.enable";
     protected static final String CONFIG_AUDIT_LOG_LOGGER_CLASS = "kumuluzee.logs.audit.class";
 
     private AuditLogger auditLogger;
+
+    private boolean enabled;
 
     public AuditLog() {
     }
@@ -57,9 +59,9 @@ public class AuditLog {
             return;
         }
 
-        boolean isDisabled = ConfigurationUtil.getInstance().getBoolean(CONFIG_AUDIT_LOG_DISABLE).orElse(false);
+        enabled = ConfigurationUtil.getInstance().getBoolean(CONFIG_AUDIT_LOG_ENABLE).orElse(false);
 
-        if (isDisabled) {
+        if (!enabled) {
             LOG.debug("Audit logger is disabled");
             this.auditLogger = new NoOpAuditLogger();
             return;
@@ -85,8 +87,12 @@ public class AuditLog {
         this.auditLogger = new NoOpAuditLogger();
     }
 
-    public void log(final String actionName, final DataAuditAction dataAuditAction, final Object objectId, final AuditProperty... properties) {
-        auditLogger.log(actionName, dataAuditAction, objectId, properties);
+    public void log(final String actionName, final String objectType, final String auditAction, final Object objectId, final AuditProperty... properties) {
+        auditLogger.log(actionName, objectType, auditAction, objectId, properties);
+    }
+
+    public void log(final String actionName, final String objectType, final DataAuditAction dataAuditAction, final Object objectId, final AuditProperty... properties) {
+        auditLogger.log(actionName, objectType, dataAuditAction, objectId, properties);
     }
 
     public void log(String actionName, final AuditProperty... properties) {
@@ -95,6 +101,10 @@ public class AuditLog {
 
     public void flush() {
         auditLogger.flush();
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     /**
