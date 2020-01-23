@@ -171,6 +171,14 @@ public Set<Class<?>> getClasses() {
 }
 ```
 
+#### Auto audit log based on HTTP request properties
+Due to reduce effort on adding / maintaining annotations Kumuluz Audit generates audit log automatically on all REST resources annotated with @Path.
+- audit-action comes from HTTP method and produces values: READ, CREATE, UPDATE, DELETE
+- audit-object-type comes from Resource @Path value annotation
+- audit-object-id comes from URI or from Location response header for POST requests
+
+Audit log can be overridden with audit annotations, placed on REST resource class or method.
+
 #### Audit log with annotations
 LogAudit annotations can be added to classes or methods. Action name defaults to method name if not specified explicitly in action parameter.
 AuditObjectParam marks method parameter value to be included in audit log.
