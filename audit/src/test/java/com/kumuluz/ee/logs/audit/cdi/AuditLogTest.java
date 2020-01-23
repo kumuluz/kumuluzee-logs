@@ -45,6 +45,7 @@ import javax.inject.Inject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static com.kumuluz.ee.logs.audit.cdi.AuditLog.CONFIG_AUDIT_LOG_ENABLE;
 import static com.kumuluz.ee.logs.audit.cdi.AuditLog.CONFIG_AUDIT_LOG_LOGGER_CLASS;
@@ -59,6 +60,8 @@ public class AuditLogTest {
     @Deployment
     public static WebArchive createDeployment() {
 
+        ResourceBundle versionsBundle = ResourceBundle.getBundle("META-INF/kumuluzee/logs/audit/versions");
+
         WebArchive jar = ShrinkWrap
                 .create(WebArchive.class)
                 .addClasses(TestAuditedBean.class, Logger.class, TestLogCommons.class, TestLogger.class, TestLogConfigurator.class)
@@ -67,7 +70,7 @@ public class AuditLogTest {
                 .addAsResource("META-INF/services/com.kumuluz.ee.logs.LogCommons")
                 .addAsResource("META-INF/services/com.kumuluz.ee.logs.LogConfigurator")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
-        jar.merge(Maven.resolver().resolve("com.kumuluz.ee.logs:kumuluzee-logs-common:1.4.0-audit").withoutTransitivity().asSingle(JavaArchive.class));
+        jar.merge(Maven.resolver().resolve("com.kumuluz.ee.logs:kumuluzee-logs-common:" + versionsBundle.getString("kumuluzee-logs-common-version")).withoutTransitivity().asSingle(JavaArchive.class));
 
         return jar;
     }
