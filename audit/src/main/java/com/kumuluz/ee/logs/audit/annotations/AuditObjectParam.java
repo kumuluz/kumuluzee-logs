@@ -26,6 +26,9 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * @author Gregor Porocnik
+ */
 @Retention(RUNTIME)
 @Target({ElementType.PARAMETER})
 public @interface AuditObjectParam {
