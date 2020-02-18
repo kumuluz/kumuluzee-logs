@@ -76,9 +76,9 @@ public class AuditLogFilter implements ContainerResponseFilter {
             final Class<?> resourceClass = resourceInfo.getResourceClass();
 
             //parse from resource log audit annotation
-            String name = AuditLogUtil.getLogAnnotatedFieldValue(resourceInfo.getResourceMethod().getAnnotation(LogAudit.class), annotation -> annotation.name()).orElseGet(() -> resourceMethod.getName());
-            String auditAction = AuditLogUtil.getLogAnnotatedFieldValue(resourceInfo, annotation -> annotation.auditAction()).orElseGet(() -> getAuditAction(resourceMethod));
-            String objectType = AuditLogUtil.getLogAnnotatedFieldValue(resourceInfo, annotation -> annotation.objectType()).orElseGet(() -> getResourceObjectType(resourceClass));
+            String name = AuditLogUtil.getLogAnnotatedFieldValue(resourceInfo.getResourceMethod().getAnnotation(LogAudit.class), LogAudit::name).orElseGet(resourceMethod::getName);
+            String auditAction = AuditLogUtil.getLogAnnotatedFieldValue(resourceInfo, LogAudit::auditAction).orElseGet(() -> getAuditAction(resourceMethod));
+            String objectType = AuditLogUtil.getLogAnnotatedFieldValue(resourceInfo, LogAudit::objectType).orElseGet(() -> getResourceObjectType(resourceClass));
             String objectIdentifier = DataAuditAction.CREATE.name().equals(auditAction) ? getUriCreatedIdentifier(containerResponseContext) : getResourceObjectIdentifier(resourceMethod, uriInfo);
 
             //method parameter annotated property values
@@ -86,7 +86,7 @@ public class AuditLogFilter implements ContainerResponseFilter {
             Set<AuditProperty> auditProperties = AuditLogUtil.getAuditProperties(methodParameters, containerRequestContext.getUriInfo());
 
             //method or class annotated property values
-            Optional<com.kumuluz.ee.logs.audit.annotations.AuditProperty[]> methodAnnotatedProperties = AuditLogUtil.getLogAnnotatedFieldValue(resourceInfo, annotation -> annotation.properties());
+            Optional<com.kumuluz.ee.logs.audit.annotations.AuditProperty[]> methodAnnotatedProperties = AuditLogUtil.getLogAnnotatedFieldValue(resourceInfo, LogAudit::properties);
             if (methodAnnotatedProperties.isPresent()) {
                 com.kumuluz.ee.logs.audit.annotations.AuditProperty[] annotatedAuditProperties = methodAnnotatedProperties.get();
                 auditProperties.addAll(AuditLogUtil.getAuditProperties(annotatedAuditProperties));
@@ -121,13 +121,14 @@ public class AuditLogFilter implements ContainerResponseFilter {
         if (parameters != null) {
             for (int i = 0; i < parameters.length; i++) {
                 PathParam annotation = parameters[i].getAnnotation(PathParam.class);
-                if ("id".equalsIgnoreCase(annotation.value())) {
-                    idParamName = annotation.value();
-                    //full match for found
+                String annotationVal = annotation == null ? null : annotation.value();
+                if ("id".equalsIgnoreCase(annotationVal)) {
+                    idParamName = annotationVal;
+                    //full match found
                     break;
-                } else if (annotation.value().toLowerCase().endsWith("id")) {
+                } else if (annotationVal != null && annotationVal.toLowerCase().endsWith("id")) {
                     //partial match found
-                    idParamName = annotation.value();
+                    idParamName = annotationVal;
                 }
             }
         }
