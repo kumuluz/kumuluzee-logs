@@ -30,6 +30,16 @@ public class LogManager {
     /**
      * Returns Logger instance. Use this method for retrieval of Logger instances in your code.
      *
+     * @param clazz Class to log
+     * @return Logger instance
+     */
+    public static <T> Logger getLogger(Class<T> clazz) {
+        return LogUtil.getInstance().getLogInstance(clazz.getName());
+    }
+
+    /**
+     * Returns Logger instance. Use this method for retrieval of Logger instances in your code.
+     *
      * @param loggerName String logger name
      * @return Logger instance
      */
