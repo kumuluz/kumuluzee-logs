@@ -34,6 +34,7 @@ import com.kumuluz.ee.logs.types.LogResourceContext;
 import com.kumuluz.ee.logs.types.LogResourceMessage;
 import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
 import org.apache.logging.log4j.CloseableThreadContext;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.MarkerManager;
 
@@ -196,21 +197,26 @@ public class Log4j2LogCommons implements LogCommons {
      */
     private HashMap<String, String> getRequestContextData() {
 
-        EeConfig eeConfig = EeConfig.getInstance();
-
         HashMap<String, String> requestContextData = new HashMap<>();
 
-        requestContextData.put("environmentType", eeConfig.getEnv().getName());
-        requestContextData.put("applicationName", eeConfig.getName());
-        requestContextData.put("applicationVersion", eeConfig.getVersion());
-        requestContextData.put("uniqueInstanceId", EeRuntime.getInstance().getInstanceId());
+        try {
+            EeConfig eeConfig = EeConfig.getInstance();
 
-        ServiceLoader.load(RequestContext.class).forEach(provider -> {
-            HashMap<String, String> context = provider.getContext();
-            if (context != null) {
-                requestContextData.putAll(context);
-            }
-        });
+            requestContextData.put("environmentType", eeConfig.getEnv().getName());
+            requestContextData.put("applicationName", eeConfig.getName());
+            requestContextData.put("applicationVersion", eeConfig.getVersion());
+            requestContextData.put("uniqueInstanceId", EeRuntime.getInstance().getInstanceId());
+
+            ServiceLoader.load(RequestContext.class).forEach(provider -> {
+                HashMap<String, String> context = provider.getContext();
+                if (context != null) {
+                    requestContextData.putAll(context);
+                }
+            });
+        }
+        catch(IllegalStateException e) {
+            logger.log(Level.TRACE, "EeConfig was not initialized, no context data will be logged.");
+        }
 
         return requestContextData;
     }
