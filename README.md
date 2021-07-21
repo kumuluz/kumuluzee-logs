@@ -7,7 +7,7 @@ KumuluzEE Logs is a lightweight open-source logging framework specifically desig
 
 It provides easy and efficient logging of common log events, such as logging method entries and exits, logging external resource invocations and other events. It also provides automated logging of parameters and performance metrics. 
 
-KumuluzEE Logs has been designed to simplify logging for the developer. It introduces a `@Log` annotation, which can be used on a class or on a method to enable legging the method entry, parameters, method exit and optionally include performance metrics. 
+KumuluzEE Logs has been designed to simplify logging for the developer. It introduces a `@Log` annotation, which can be used on a class or on a method to enable logging the method entry, parameters, method exit and optionally include performance metrics. 
 
 In addition, KumuluzEE Logs also support logging with explicit commands. It provides logging methods for the developer, which can be used in the code directly. 
 
