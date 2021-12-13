@@ -21,7 +21,6 @@
 
 package com.kumuluz.ee.logs;
 
-import com.kumuluz.ee.logs.enums.LogLevel;
 import com.kumuluz.ee.logs.utils.Log4j2LogUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -39,7 +38,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * @Author Rok Povse, Marko Skrjanec
+ * @author Rok Povse
+ * @author Marko Skrjanec
  */
 public class Log4j2LogConfigurator implements LogConfigurator {
 
