@@ -27,19 +27,20 @@ import com.kumuluz.ee.logs.audit.test.loggers.TestLogCommons;
 import com.kumuluz.ee.logs.audit.test.loggers.TestLogConfigurator;
 import com.kumuluz.ee.logs.audit.test.loggers.TestLogger;
 import com.kumuluz.ee.logs.messages.LogMessage;
+import org.jboss.arquillian.container.test.api.BeforeDeployment;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,19 +48,17 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import static com.kumuluz.ee.logs.audit.cdi.AuditLog.CONFIG_AUDIT_LOG_ENABLE;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author Gregor Porocnik
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AuditResourceTest {
-
 
     @Deployment
     public static WebArchive createDeployment() {
-
         ResourceBundle versionsBundle = ResourceBundle.getBundle("META-INF/kumuluzee/logs/audit/versions");
 
         WebArchive jar = ShrinkWrap
@@ -70,20 +69,20 @@ public class AuditResourceTest {
                 .addAsResource("META-INF/services/com.kumuluz.ee.logs.LogCommons")
                 .addAsResource("META-INF/services/com.kumuluz.ee.logs.LogConfigurator")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
-        jar.merge(Maven.resolver().resolve("com.kumuluz.ee.logs:kumuluzee-logs-common:"+ versionsBundle.getString("kumuluzee-logs-common-version")).withoutTransitivity().asSingle(JavaArchive.class));
+        jar.merge(Maven.resolver().resolve("com.kumuluz.ee.logs:kumuluzee-logs-common:" + versionsBundle.getString("kumuluzee-logs-common-version")).withoutTransitivity().asSingle(JavaArchive.class));
 
         return jar;
     }
 
-    @Before
+    @BeforeDeployment
     public void before() {
         System.setProperty(CONFIG_AUDIT_LOG_ENABLE, "true");
         TestLogger.setMessages(new LinkedList<>());
     }
 
     @Test
-    public void shouldLogClassAnnotatedAuditGetResourceWithParams() throws IOException {
-        URL url = new URL("http://localhost:8080/resourceName/parentInputParamIds/inputParamId?obj=1234");
+    void shouldLogClassAnnotatedAuditGetResourceWithParams() throws IOException {
+        URL url = URI.create("http://localhost:8080/resourceName/parentInputParamIds/inputParamId?obj=1234").toURL();
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.connect();
@@ -91,7 +90,7 @@ public class AuditResourceTest {
         assertEquals(200, connection.getResponseCode());
 
         List<LogMessage> messages = TestLogger.getMessages();
-        messages.stream().forEach(this::debugMsg);
+        messages.forEach(this::debugMsg);
 
         assertEquals(1, messages.size());
         LogMessage logMessage = messages.get(0);
@@ -107,12 +106,11 @@ public class AuditResourceTest {
         assertEquals("resPropVal2", fields.get("resPropName2"));
         //resource parameters not annotated with auditObjectParam are not included
         assertNull(fields.get("parentId"));
-
     }
 
     @Test
-    public void shouldLogClassAnnotatedAuditPostResourceWithParams() throws IOException {
-        URL url = new URL("http://localhost:8080/resourceName?obj=4321");
+    void shouldLogClassAnnotatedAuditPostResourceWithParams() throws IOException {
+        URL url = URI.create(("http://localhost:8080/resourceName?obj=4321")).toURL();
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.connect();
@@ -133,7 +131,6 @@ public class AuditResourceTest {
         //assert class anotated properties since method does not have AuditLog annotation
         assertEquals("resPropVal1", fields.get("resPropName1"));
         assertEquals("resPropVal2", fields.get("resPropName2"));
-
     }
 
     private void debugMsg(LogMessage logMessage) {

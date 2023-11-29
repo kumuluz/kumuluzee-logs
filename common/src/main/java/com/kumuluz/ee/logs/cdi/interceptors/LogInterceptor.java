@@ -17,7 +17,7 @@
  *  out of or in connection with the software or the use or other dealings in the
  *  software. See the License for the specific language governing permissions and
  *  limitations under the License.
-*/
+ */
 package com.kumuluz.ee.logs.cdi.interceptors;
 
 import com.kumuluz.ee.logs.LogCommons;
@@ -27,11 +27,11 @@ import com.kumuluz.ee.logs.cdi.LogParams;
 import com.kumuluz.ee.logs.messages.SimpleLogMessage;
 import com.kumuluz.ee.logs.types.LogMethodContext;
 import com.kumuluz.ee.logs.types.LogMethodMessage;
+import jakarta.annotation.Priority;
+import jakarta.interceptor.AroundInvoke;
+import jakarta.interceptor.Interceptor;
+import jakarta.interceptor.InvocationContext;
 
-import javax.annotation.Priority;
-import javax.interceptor.AroundInvoke;
-import javax.interceptor.Interceptor;
-import javax.interceptor.InvocationContext;
 import java.util.Arrays;
 import java.util.HashMap;
 

@@ -28,9 +28,9 @@ import com.kumuluz.ee.logs.audit.loggers.KumuluzAuditLogger;
 import com.kumuluz.ee.logs.audit.loggers.NoOpAuditLogger;
 import com.kumuluz.ee.logs.audit.types.AuditProperty;
 import com.kumuluz.ee.logs.audit.types.DataAuditAction;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.RequestScoped;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
@@ -80,7 +80,8 @@ public class AuditLog {
                 this.auditLogger = (AuditLogger) clazz.getDeclaredConstructor().newInstance();
                 return;
             }
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException |
+                 ClassNotFoundException e) {
             LOG.warn("Unable to create instance of provided class {}", auditLoggerClass.get());
         }
 

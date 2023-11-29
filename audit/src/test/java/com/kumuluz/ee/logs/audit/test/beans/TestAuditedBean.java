@@ -23,8 +23,8 @@ package com.kumuluz.ee.logs.audit.test.beans;
 import com.kumuluz.ee.logs.audit.annotations.AuditObjectParam;
 import com.kumuluz.ee.logs.audit.annotations.AuditProperty;
 import com.kumuluz.ee.logs.audit.annotations.LogAudit;
+import jakarta.enterprise.context.ApplicationScoped;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.UUID;
 
 /**

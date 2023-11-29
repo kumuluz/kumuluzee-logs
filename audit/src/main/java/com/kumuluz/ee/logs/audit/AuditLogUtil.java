@@ -24,11 +24,11 @@ package com.kumuluz.ee.logs.audit;
 import com.kumuluz.ee.logs.audit.annotations.AuditObjectParam;
 import com.kumuluz.ee.logs.audit.annotations.LogAudit;
 import com.kumuluz.ee.logs.audit.types.AuditProperty;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.container.ResourceInfo;
+import jakarta.ws.rs.core.UriInfo;
 
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.container.ResourceInfo;
-import javax.ws.rs.core.UriInfo;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 import java.util.Set;

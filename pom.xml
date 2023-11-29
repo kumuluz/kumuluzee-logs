@@ -6,7 +6,7 @@
 
     <groupId>com.kumuluz.ee.logs</groupId>
     <artifactId>kumuluzee-logs</artifactId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <modules>
         <module>common</module>
         <module>jul</module>
@@ -26,22 +26,21 @@
     <url>https://ee.kumuluz.com</url>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <kumuluzee.version>5.0.0-SNAPSHOT</kumuluzee.version>
+        <arquillian.version>1.8.0.Final</arquillian.version>
+        <kumuluzee-arquillian-container.version>2.0.0-SNAPSHOT</kumuluzee-arquillian-container.version>
 
-        <kumuluzee.version>3.10.0</kumuluzee.version>
-        <arquillian.version>1.6.0.Final</arquillian.version>
-        <kumuluzee-arquillian-container.version>1.1.0</kumuluzee-arquillian-container.version>
+        <nexus.staging.plugin.version>1.6.13</nexus.staging.plugin.version>
+        <gpg.plugin.version>3.1.0</gpg.plugin.version>
+        <jakarta-xml-bind-api.version>4.0.1</jakarta-xml-bind-api.version>
+        <jaxb-impl.version>4.0.4</jaxb-impl.version>
+        <jackson-databind.version>2.15.3</jackson-databind.version>
 
-        <nexus.staging.plugin.version>1.6.8</nexus.staging.plugin.version>
-        <gpg.plugin.version>1.6</gpg.plugin.version>
-        <jaxb-api.version>2.3.1</jaxb-api.version>
-        <jackson-databind.version>2.11.1</jackson-databind.version>
-
-        <weld-junit4.version>2.0.1.Final</weld-junit4.version>
-
+        <weld-junit5.version>4.0.1.Final</weld-junit5.version>
     </properties>
 
     <scm>
@@ -192,9 +191,15 @@
             </activation>
             <dependencies>
                 <dependency>
-                    <groupId>javax.xml.bind</groupId>
-                    <artifactId>jaxb-api</artifactId>
-                    <version>${jaxb-api.version}</version>
+                    <groupId>jakarta.xml.bind</groupId>
+                    <artifactId>jakarta.xml.bind-api</artifactId>
+                    <version>${jakarta-xml-bind-api.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.sun.xml.bind</groupId>
+                    <artifactId>jaxb-impl</artifactId>
+                    <version>${jaxb-impl.version}</version>
+                    <scope>runtime</scope>
                 </dependency>
             </dependencies>
         </profile>

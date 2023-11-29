@@ -20,7 +20,7 @@
  */
 package com.kumuluz.ee.logs.audit.annotations;
 
-import javax.enterprise.util.Nonbinding;
+import jakarta.enterprise.util.Nonbinding;
 
 /**
  * @author Gregor Porocnik

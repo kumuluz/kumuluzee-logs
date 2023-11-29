@@ -23,12 +23,12 @@ package com.kumuluz.ee.logs.audit.test.beans;
 import com.kumuluz.ee.logs.audit.annotations.AuditObjectParam;
 import com.kumuluz.ee.logs.audit.annotations.AuditProperty;
 import com.kumuluz.ee.logs.audit.annotations.LogAudit;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import java.util.UUID;
 
 /**

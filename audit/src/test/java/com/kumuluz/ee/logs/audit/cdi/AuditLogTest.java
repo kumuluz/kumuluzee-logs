@@ -31,15 +31,15 @@ import com.kumuluz.ee.logs.audit.types.AuditProperty;
 import com.kumuluz.ee.logs.audit.types.DataAuditAction;
 import com.kumuluz.ee.logs.messages.LogMessage;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.inject.Inject;
 import java.util.LinkedList;
@@ -49,12 +49,12 @@ import java.util.ResourceBundle;
 
 import static com.kumuluz.ee.logs.audit.cdi.AuditLog.CONFIG_AUDIT_LOG_ENABLE;
 import static com.kumuluz.ee.logs.audit.cdi.AuditLog.CONFIG_AUDIT_LOG_LOGGER_CLASS;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Gregor Porocnik
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AuditLogTest {
 
     @Deployment
@@ -78,7 +78,7 @@ public class AuditLogTest {
     @Inject
     private AuditLog auditLog;
 
-    @Before
+    @BeforeAll
     public void before() {
         System.setProperty(CONFIG_AUDIT_LOG_LOGGER_CLASS, KumuluzAuditLogger.class.getName());
         TestLogger.setMessages(new LinkedList<>());
@@ -106,7 +106,7 @@ public class AuditLogTest {
     }
 
     @Test
-    public void shouldLogAudit() {
+    void shouldLogAudit() {
 
         auditLog.log("exampleMethodName", "exampleObjectType", "exampleAction", "id", new AuditProperty("propName", "propValue"));
         auditLog.flush();
@@ -123,7 +123,7 @@ public class AuditLogTest {
     }
 
     @Test
-    public void shouldLogNullWithNullParams() {
+    void shouldLogNullWithNullParams() {
 
         auditLog.log(null, null, (DataAuditAction) null, null, null);
         auditLog.flush();
@@ -139,7 +139,7 @@ public class AuditLogTest {
     }
 
     @Test
-    public void disabledAuditShouldNotLog() {
+    void disabledAuditShouldNotLog() {
 
         System.setProperty(CONFIG_AUDIT_LOG_ENABLE, "false");
 
@@ -154,7 +154,7 @@ public class AuditLogTest {
     }
 
     @Test
-    public void shouldLogAuditWithCustomAuditLogger() {
+    void shouldLogAuditWithCustomAuditLogger() {
 
         System.setProperty(CONFIG_AUDIT_LOG_LOGGER_CLASS, TestAuditLogger.class.getName());
 
